@@ -25,3 +25,7 @@ Route::get('/admin', function () {
 Route::get('/login', function () {
     return view('template.login');
 });
+
+Route::name('admin.')->prefix('admin')->group(function () {
+    Route::resource('/pilihan', PilihanController::class);
+});

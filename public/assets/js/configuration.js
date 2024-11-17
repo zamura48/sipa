@@ -32,3 +32,17 @@ function notif_error(message = '') {
         title: "Terjadi Kesalahan! " + message
     });
 }
+
+function displayErrors(errors) {
+    removeErrors();
+    $.each(errors, function(field, messages) {
+        var inputField = $('[name="' + field + '"]');
+        inputField.addClass('is-invalid');
+        inputField.after('<div class="invalid-feedback">' + messages.join('<br>') + '</div>');
+    });
+}
+
+function removeErrors() {
+    $('.invalid-feedback').remove();
+    $('input, select, textarea').removeClass('is-invalid');
+}
