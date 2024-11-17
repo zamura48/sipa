@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PilihanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('template.landing');
+});
+
+Route::get('/admin', function () {
+    return view('template.admin');
+});
+
+Route::get('/login', function () {
+    return view('template.login');
 });
