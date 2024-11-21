@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class JadwalDetail extends Model
 {
     use HasFactory;
+
+    public function jadwal()
+    {
+        return $this->hasOne(Jadwal::class, 'id', 'jadwal_id');
+    }
+
+    public function kegiatan()
+    {
+        return $this->hasOne(Kegiatan::class, 'id', 'kegiatan_id');
+    }
+
+    public function jadwalBySiswas()
+    {
+        return $this->hasMany(JadwalBySiswa::class, 'jadwal_detail_id', 'id');
+    }
 }

@@ -81,10 +81,10 @@ class PilihanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($pilihan)
+    public function edit(Pilihan $pilihan)
     {
-        $data_ = Pilihan::findOrFail($pilihan);
-        return response()->json($data_);
+        // $data_ = Pilihan::findOrFail($pilihan);
+        return response()->json($pilihan);
     }
 
     /**
