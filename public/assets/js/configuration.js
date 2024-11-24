@@ -5,6 +5,23 @@ $(document).ready(function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    $('.js-select2').select2({
+        theme: 'bootstrap4',
+        width: '100%'
+    });
+
+    $('.js-currency').on('input', function() {
+        var input_val = $(this).val();
+        $(this).val(format_currency(input_val));
+    });
+
+    $(".js-datepicker").datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: true,
+        orientation: "auto",
+        todayHighlight: true
+    });
 })
 
 const Toast = Swal.mixin({
@@ -45,4 +62,11 @@ function displayErrors(errors) {
 function removeErrors() {
     $('.invalid-feedback').remove();
     $('input, select, textarea').removeClass('is-invalid');
+}
+
+function format_currency(value) {
+    value = value.replace(/[^0-9]/g, '');
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    return value;
 }

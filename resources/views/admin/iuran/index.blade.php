@@ -5,10 +5,10 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h6>
+                    <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h5>
                 </div>
                 <div class="col-md-6">
-                    <a href="{{ route('admin.pilihan.create') }}" class="btn btn-primary btn-sm float-right">
+                    <a href="{{ route('admin.iuran.create') }}" class="btn btn-primary btn-sm float-right">
                         <i class="fa fa-plus mr-2"></i> Tambah Data
                     </a>
                 </div>
@@ -21,8 +21,9 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Parameter</th>
-                            <th>Isi</th>
+                            <th>Jenis Iuran</th>
+                            <th>Total</th>
+                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -31,13 +32,14 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->parameter }}</td>
-                                <td>{{ $item->isi }}</td>
+                                <td>{{ $item->jenisIuran->nama }}</td>
+                                <td>{{ format_currency($item->total) }}</td>
+                                <td>{{ $item->keterangan }}</td>
                                 <td>
-                                    <a href="{{ route('admin.pilihan.show', $item->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('admin.iuran.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail
                                     </a>
-                                    <form action="{{ route('admin.pilihan.destroy', $item->id) }}" method="POST"
+                                    <form action="{{ route('admin.iuran.destroy', $item->id) }}" method="POST"
                                         style="display:inline;" id="delete-form-{{ $item->id }}">
                                         @csrf
                                         @method('DELETE')

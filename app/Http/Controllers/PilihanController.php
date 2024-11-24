@@ -4,31 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Pilihan;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Validator;
 
 class PilihanController extends Controller
 {
+    protected $title;
+
+    public function __construct()
+    {
+        $this->title = 'Master Opsi';
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $title = 'Master Opsi';
+        $title = $this->title;
+        $data = Pilihan::all();
 
-        if ($request->ajax()) {
-            $data = Pilihan::all();
-
-            return DataTables::of($data)
-                ->addColumn('aksi', function ($model) {
-                    return '<button class="btn btn-warning btn-sm btn-edit" data-id="' . $model->id . '"><i class="fa fa-edit mr-1"></i> Edit</button>
-                        <button class="btn btn-danger btn-sm btn-delete" data-id="' . $model->id . '"><i class="fa fa-trash mr-1"></i> Delete</button>';
-                })
-                ->rawColumns(['aksi'])
-                ->toJson();
-        }
-
-        return view('admin.pilihan.index', compact('title'));
+        return view('admin.pilihan.index', compact('title', 'data'));
     }
 
     /**
@@ -36,23 +30,17 @@ class PilihanController extends Controller
      */
     public function create()
     {
-        //
+        $title = $this->title;
+        return view('admin.pilihan.create', compact('title'));
     }
 
-    private function validation($request)
+    private function validation(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'parameter' => 'required',
             'nama' => 'required',
             'isi' => 'required',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ], 200);
-        }
     }
 
     /**
@@ -60,14 +48,11 @@ class PilihanController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $this->validation($request);
-        if ($validate) {
-            return $validate;
-        }
+        $this->validation($request);
 
         Pilihan::create($request->all());
 
-        return response()->json(['status' => true], 200);
+        return redirect()->route('admin.pilihan.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -75,7 +60,8 @@ class PilihanController extends Controller
      */
     public function show(Pilihan $pilihan)
     {
-        //
+        $title = $this->title;
+        return view('admin.pilihan.show', compact('title', 'pilihan'));
     }
 
     /**
@@ -83,34 +69,28 @@ class PilihanController extends Controller
      */
     public function edit(Pilihan $pilihan)
     {
-        // $data_ = Pilihan::findOrFail($pilihan);
-        return response()->json($pilihan);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $pilihan)
+    public function update(Request $request, Pilihan $pilihan)
     {
-        $validate = $this->validation($request);
-        if ($validate) {
-            return $validate;
-        }
+        $this->validation($request);
 
-        $data_ = Pilihan::findOrFail($pilihan);
-        $data_->update($request->all());
+        $pilihan->update($request->all());
 
-        return response()->json(['status' => true], 200);
+        return redirect()->route('admin.pilihan.index')->with('success', 'Data berhasil diperbaharui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($pilihan)
+    public function destroy(Pilihan $pilihan)
     {
-        $data_ = Pilihan::findOrFail($pilihan);
-        $data_->delete();
+        $pilihan->delete();
 
-        return response()->json(['status' => true], 200);
+        return redirect()->route('admin.pilihan.index')->with('success', 'Data berhasil diihapus!');
     }
 }

@@ -10,8 +10,8 @@
     "zeroRecords": "Tidak ditemukan data yang sesuai",
     "thousands": "'",
     "paginate": {
-        "first": "<<",
-        "last": ">>",
+        "first": "&#171;",
+        "last": "&#187;",
         "next": "Selanjutnya",
         "previous": "Sebelumnya"
     },

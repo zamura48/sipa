@@ -7,12 +7,22 @@ use Illuminate\Http\Request;
 
 class KamarController extends Controller
 {
+    protected $title;
+
+    public function __construct()
+    {
+        $this->title = 'Master Kamar';
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $title = $this->title;
+        $data = Kamar::all();
+
+        return view('admin.kamar.index', compact('title', 'data'));
     }
 
     /**
@@ -20,7 +30,16 @@ class KamarController extends Controller
      */
     public function create()
     {
-        //
+        $title = $this->title;
+        return view('admin.kamar.create', compact('title'));
+    }
+
+    private function validation(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'jumlah_penghuni' => 'required|numeric',
+        ]);
     }
 
     /**
@@ -28,7 +47,11 @@ class KamarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validation($request);
+
+        Kamar::create($request->all());
+
+        return redirect()->route('admin.kamar.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -36,7 +59,8 @@ class KamarController extends Controller
      */
     public function show(Kamar $kamar)
     {
-        //
+        $title = $this->title;
+        return view('admin.kamar.show', compact('title', 'kamar'));
     }
 
     /**
@@ -52,7 +76,11 @@ class KamarController extends Controller
      */
     public function update(Request $request, Kamar $kamar)
     {
-        //
+        $this->validation($request);
+
+        $kamar->update($request->all());
+
+        return redirect()->route('admin.kamar.index')->with('success', 'Data berhasil diperbaharui!');
     }
 
     /**
@@ -60,6 +88,8 @@ class KamarController extends Controller
      */
     public function destroy(Kamar $kamar)
     {
-        //
+        $kamar->delete();
+
+        return redirect()->route('admin.kamar.index')->with('success', 'Data berhasil diihapus!');
     }
 }

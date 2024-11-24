@@ -8,7 +8,7 @@
                     <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h6>
                 </div>
                 <div class="col-md-6">
-                    <a href="{{ route('admin.pilihan.create') }}" class="btn btn-primary btn-sm float-right">
+                    <a href="{{ route('admin.periode.create') }}" class="btn btn-primary btn-sm float-right">
                         <i class="fa fa-plus mr-2"></i> Tambah Data
                     </a>
                 </div>
@@ -21,8 +21,9 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Parameter</th>
-                            <th>Isi</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Akhir</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -31,13 +32,14 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->parameter }}</td>
-                                <td>{{ $item->isi }}</td>
+                                <td>{{ format_date_w_bs($item->tgl_mulai) }}</td>
+                                <td>{{ format_date_w_bs($item->tgl_akhir) }}</td>
+                                <td>{{ $item->status == '1' ? 'Aktif' : 'Tidak Aktif' }}</td>
                                 <td>
-                                    <a href="{{ route('admin.pilihan.show', $item->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('admin.periode.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail
                                     </a>
-                                    <form action="{{ route('admin.pilihan.destroy', $item->id) }}" method="POST"
+                                    <form action="{{ route('admin.periode.destroy', $item->id) }}" method="POST"
                                         style="display:inline;" id="delete-form-{{ $item->id }}">
                                         @csrf
                                         @method('DELETE')

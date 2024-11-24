@@ -7,12 +7,22 @@ use Illuminate\Http\Request;
 
 class JenisIuranController extends Controller
 {
+    protected $title;
+
+    public function __construct()
+    {
+        $this->title = 'Master Jenis Iuran';
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $title = $this->title;
+        $data = JenisIuran::all();
+
+        return view('admin.jenis_iuran.index', compact('title', 'data'));
     }
 
     /**
@@ -20,7 +30,16 @@ class JenisIuranController extends Controller
      */
     public function create()
     {
-        //
+        $title = $this->title;
+        return view('admin.jenis_iuran.create', compact('title'));
+    }
+
+    private function validation(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'keterangan' => 'required',
+        ]);
     }
 
     /**
@@ -28,7 +47,11 @@ class JenisIuranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validation($request);
+
+        JenisIuran::create($request->all());
+
+        return redirect()->route('admin.jenis_iuran.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -36,7 +59,8 @@ class JenisIuranController extends Controller
      */
     public function show(JenisIuran $jenisIuran)
     {
-        //
+        $title = $this->title;
+        return view('admin.jenis_iuran.show', compact('title', 'jenisIuran'));
     }
 
     /**
@@ -52,7 +76,11 @@ class JenisIuranController extends Controller
      */
     public function update(Request $request, JenisIuran $jenisIuran)
     {
-        //
+        $this->validation($request);
+
+        $jenisIuran->update($request->all());
+
+        return redirect()->route('admin.jenis_iuran.index')->with('success', 'Data berhasil diperbaharui!');
     }
 
     /**
@@ -60,6 +88,8 @@ class JenisIuranController extends Controller
      */
     public function destroy(JenisIuran $jenisIuran)
     {
-        //
+        $jenisIuran->delete();
+
+        return redirect()->route('admin.jenis_iuran.index')->with('success', 'Data berhasil diihapus!');
     }
 }

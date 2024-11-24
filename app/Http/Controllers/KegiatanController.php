@@ -3,16 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
+use App\Models\Pilihan;
 use Illuminate\Http\Request;
 
 class KegiatanController extends Controller
 {
+    protected $title;
+
+    public function __construct()
+    {
+        $this->title = 'Master Kegiatan';
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $title = $this->title;
+        $data = Kegiatan::with('pilihan')->get();
+
+        return view('admin.kegiatan.index', compact('title', 'data'));
     }
 
     /**
@@ -20,7 +31,18 @@ class KegiatanController extends Controller
      */
     public function create()
     {
-        //
+        $title = $this->title;
+        $option_kegiatan = Pilihan::where('nama', 'kegiatan')->get();
+        return view('admin.kegiatan.create', compact('title', 'option_kegiatan'));
+    }
+
+    private function validation(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'tipe' => 'required',
+            'keterangan' => 'required',
+        ]);
     }
 
     /**
@@ -28,7 +50,11 @@ class KegiatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validation($request);
+
+        Kegiatan::create($request->all());
+
+        return redirect()->route('admin.kegiatan.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -36,7 +62,10 @@ class KegiatanController extends Controller
      */
     public function show(Kegiatan $kegiatan)
     {
-        //
+        $title = $this->title;
+        $kegiatan->load('pilihan');
+        $option_kegiatan = Pilihan::where('nama', 'kegiatan')->get();
+        return view('admin.kegiatan.show', compact('title', 'kegiatan', 'option_kegiatan'));
     }
 
     /**
@@ -52,7 +81,11 @@ class KegiatanController extends Controller
      */
     public function update(Request $request, Kegiatan $kegiatan)
     {
-        //
+        $this->validation($request);
+
+        $kegiatan->update($request->all());
+
+        return redirect()->route('admin.kegiatan.index')->with('success', 'Data berhasil diperbaharui!');
     }
 
     /**
@@ -60,6 +93,8 @@ class KegiatanController extends Controller
      */
     public function destroy(Kegiatan $kegiatan)
     {
-        //
+        $kegiatan->delete();
+
+        return redirect()->route('admin.kegiatan.index')->with('success', 'Data berhasil diihapus!');
     }
 }
