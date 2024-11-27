@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('periodes', function (Blueprint $table) {
             $table->id();
-            $table->date('tgl_mulai');
-            $table->date('tgl_akhir');
+            $table->date('tgl_mulai')->nullable();
+            $table->date('tgl_akhir')->nullable();
             $table->string('nama', 50);
-            $table->integer('status');
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

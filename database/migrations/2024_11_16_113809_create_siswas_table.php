@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Kamar::class);
             $table->foreignIdFor(Periode::class);
-            $table->bigInteger('nis');
-            $table->string('nama', 100);
-            $table->string('jenis_kelamin', 5);
-            $table->text('foto');
+            $table->bigInteger('nis')->nullable();
+            $table->string('nama', 100)->nullable();
+            $table->string('jenis_kelamin', 5)->nullable();
+            $table->text('foto')->nullable();
             $table->timestamps();
         });
     }

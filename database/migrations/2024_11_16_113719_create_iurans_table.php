@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(JenisIuran::class);
             $table->string('nama', 50);
-            $table->double('total');
-            $table->text('keterangan');
+            $table->double('total')->nullable();
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

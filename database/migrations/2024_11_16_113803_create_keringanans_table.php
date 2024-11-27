@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('keringanans', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->text('keterangan');
-            $table->double('total');
-            $table->integer('tipe');
+            $table->text('keterangan')->nullable();
+            $table->double('total')->nullable();
+            $table->integer('tipe')->nullable();
             $table->timestamps();
         });
     }

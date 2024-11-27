@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('parameter');
             $table->string('nama');
-            $table->string('isi');
+            $table->string('isi')->nullable();
             $table->timestamps();
         });
     }
