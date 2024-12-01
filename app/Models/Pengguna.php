@@ -10,6 +10,9 @@ class Pengguna extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = "penggunas";
+    protected $fillable = ['nama', 'alamat', 'telepon', 'jenis_kelamin', 'agama'];
+
     public function siswa()
     {
         return $this->hasOne(Siswa::class, 'id', 'siswa_id');

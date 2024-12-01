@@ -15,7 +15,7 @@ class PengurusMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (isset($request->user()->role_id) && $request->user()->role_id == 1) {
+        if (isset($request->user()->role_id) && $request->user()->role_id == 2) {
             return $next($request);
         }
         abort(403);

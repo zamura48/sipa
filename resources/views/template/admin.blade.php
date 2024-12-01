@@ -99,12 +99,6 @@
     <!-- Custom scripts for all pages-->
     <script src="<?= asset('assets/lib/sb_admin') ?>/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    {{-- <script src="<?= asset('assets/lib/sb_admin') ?>/vendor/chart.js/Chart.min.js"></script> --}}
-
-    <!-- Page level custom scripts -->
-    {{-- <script src="<?= asset('assets/lib/sb_admin') ?>/js/demo/chart-area-demo.js"></script>
-    <script src="<?= asset('assets/lib/sb_admin') ?>/js/demo/chart-pie-demo.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
         integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="

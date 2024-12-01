@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class MasterSeeder extends Seeder
 {
@@ -79,6 +80,22 @@ class MasterSeeder extends Seeder
                 'parameter' => '2',
                 'isi' => 'Yayasan',
             ],
+        ]);
+
+        DB::table('penggunas')->insert([
+            'nama' => 'admin',
+            'alamat' => 'Jln. Bintang',
+            'telepon' => '0888888888',
+            'jenis_kelamin' => 'L',
+        ]);
+
+        DB::table('users')->insert([
+            'role_id' => 1,
+            'pengguna_id' => 1,
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'username' => 'admin',
+            'password' => Hash::make('admin'),
         ]);
     }
 }

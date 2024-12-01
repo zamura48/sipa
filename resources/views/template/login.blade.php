@@ -24,6 +24,7 @@
     <!-- Custom styles for this template-->
     <link href="<?= asset('assets/lib/sb_admin') ?>/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= asset('assets/css') ?>/custom.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
 
@@ -46,12 +47,16 @@
 
     <!-- Core plugin JavaScript-->
     <script src="<?= asset('assets/lib/sb_admin') ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= asset('assets/lib/sb_admin') ?>/js/sb-admin-2.min.js"></script>
-    <script src="<?= asset('assets/js') ?>/configuration.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('js')
+
+    <script src="<?= asset('assets/js') ?>/configuration.js"></script>
+    @include('template.partials.flash_message')
 
 </body>
 

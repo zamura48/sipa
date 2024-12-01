@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     /* Ajax Token */
     $.ajaxSetup({
         headers: {
@@ -39,7 +40,7 @@ const Toast = Swal.mixin({
 function notif_success(message = '') {
     Toast.fire({
         icon: "success",
-        title: "Berhasil! " + message
+        title: message
     });
 }
 

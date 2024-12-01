@@ -14,12 +14,12 @@ return new class extends Migration
     {
         Schema::create('penggunas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Siswa::class);
+            $table->foreignIdFor(Siswa::class)->nullable();
             $table->string('nama', 100);
             $table->text('alamat');
             $table->string('telepon');
-            $table->integer('jenis_kelamin');
-            $table->integer('agama');
+            $table->string('jenis_kelamin', 5);
+            $table->integer('agama')->nullable();
             $table->timestamps();
         });
     }

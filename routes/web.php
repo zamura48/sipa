@@ -10,6 +10,7 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KeringananController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\PilihanController;
@@ -34,15 +35,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingController::class, 'index']);
 
 Route::middleware('guest')->group(function () {
-    Route::get('admin/login', [LoginController::class, 'admin_login']);
-    Route::post('admin/do_log', [LoginController::class, 'do_log_admin']);
-    Route::get('pengurus/login', [LoginController::class, 'pengurus_login']);
-    Route::post('pengurus/do_log', [LoginController::class, 'do_log_pengurus']);
-    Route::get('wali_murid/login', [LoginController::class, 'wali_mulid_login']);
-    Route::post('wali_murid/do_log', [LoginController::class, 'do_log_wali_murid']);
+    Route::get('admin/login', [LoginController::class, 'admin_login'])->name('admin.login');
+    Route::post('admin/do_log', [LoginController::class, 'do_log_admin'])->name('admin.do_log');
+    Route::get('pengurus/login', [LoginController::class, 'pengurus_login'])->name('pengurus.login');
+    Route::post('pengurus/do_log', [LoginController::class, 'do_log_pengurus'])->name('pengurus.do_log');
+    Route::get('wali_murid/login', [LoginController::class, 'wali_murid_login'])->name('walmur.login');
+    Route::get('wali_murid/pendaftaran', [LoginController::class, 'wali_murid_regis'])->name('walmur.regis');
+    Route::post('wali_murid/do_regis', [LoginController::class, 'wali_murid_do_regis'])->name('walmur.do_regis');
+    Route::post('wali_murid/do_log', [LoginController::class, 'do_log_wali_murid'])->name('walmur.do_log');
 });
 
 Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
+    Route::get('login/logout', [LoginController::class, 'logout']);
+
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_admin'])->name('index');
     });
@@ -57,6 +62,7 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::resource('/periode', PeriodeController::class);
     Route::resource('/pilihan', PilihanController::class);
     Route::resource('/role', RoleController::class);
+    Route::resource('/pendaftaran', PendaftaranController::class);
     Route::resource('/siswa', SiswaController::class);
     Route::resource('/tagihan', TagihanController::class);
     Route::resource('/tagihan_keringanan', TagihanKeringananController::class);

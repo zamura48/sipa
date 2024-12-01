@@ -15,7 +15,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (isset($request->user()->role_id) && $request->user()->role_id == 0) {
+        if (isset($request->user()->role_id) && $request->user()->role_id == 1) {
             return $next($request);
         }
         abort(403);
