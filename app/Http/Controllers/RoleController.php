@@ -14,7 +14,6 @@ class RoleController extends Controller
     public function index()
     {
         $get_data = User::all()->load('role', 'pengguna.siswa');
-        dd($get_data);
     }
 
     /**

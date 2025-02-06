@@ -11,7 +11,7 @@
                     <div class="col-lg-6">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Selamat Datang</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Selamat Datang di Portal Pengurus</h1>
                             </div>
                             <form class="user" action="{{ route('pengurus.do_log') }}" method="POST">
                                 @csrf

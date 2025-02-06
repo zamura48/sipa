@@ -10,6 +10,6 @@ class LandingController extends Controller
     {
         $title = 'SIPA';
 
-        return view('template.landing', compact('title'));
+        return view('landing_page.home.index', compact('title'));
     }
 }

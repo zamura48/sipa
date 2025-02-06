@@ -10,6 +10,9 @@ class TagihanKeringanan extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'tagihan_keringanans';
+    protected $fillable = ['tagihan_id', 'keringanan_id', 'total_keringanan'];
+
     // tagihan, keringanan
     public function tagihan()
     {

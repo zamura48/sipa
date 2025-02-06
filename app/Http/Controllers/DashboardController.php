@@ -10,20 +10,20 @@ class DashboardController extends Controller
     {
         $title = 'Dashboard';
 
-        return view('admin.dashboard.index');
+        return view('admin.dashboard.index', compact('title'));
     }
 
     public function dashboard_pengurus()
     {
         $title = 'Dashboard';
 
-        return view('pengurus.dashboard.index');
+        return view('pengurus.dashboard.index', compact('title'));
     }
 
     public function dashboard_walmur()
     {
         $title = 'Dashboard';
 
-        return view('walmur.dashboard.index');
+        return view('walmur.dashboard.index', compact('title'));
     }
 }

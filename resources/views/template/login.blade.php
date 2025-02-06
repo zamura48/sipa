@@ -12,7 +12,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'SIPA') }}</title>
+    <title>{{ config('app.name', 'SIPA') }} || {{ $title }}</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= asset('assets/lib/sb_admin') ?>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"

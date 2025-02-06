@@ -9,20 +9,35 @@
                 <h6>sudah punya akun? <a href="{{ route('walmur.login') }}">Log in</a></h6>
             </div>
             <div class="card-body p-5">
-                <small class="text-danger">lengkapi data dibawah ini, tunggu admin konfirmasi pendaftaran anda dan akan diberikan akses untuk masuk kedalam sistem ini</small>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <small class="text-danger">lengkapi data dibawah ini, tunggu admin konfirmasi pendaftaran anda dan akan
+                    diberikan akses untuk masuk kedalam sistem ini</small>
                 <!-- Nested Row within Card Body -->
                 <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link tab-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home"
-                            role="tab" aria-controls="pills-home" aria-selected="true">Siswa</a>
+                            role="tab" aria-controls="pills-home" aria-selected="true" disabled>Siswa</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link tab-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile"
-                            role="tab" aria-controls="pills-profile" aria-selected="false">Orang Tua</a>
+                            role="tab" aria-controls="pills-profile" aria-selected="false" disabled>Orang Tua</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link tab-link" id="pills-keringanan-tab" data-toggle="pill" href="#pills-keringanan"
+                            role="tab" aria-controls="pills-keringanan" aria-selected="false" disabled>Keringanan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link tab-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
-                            role="tab" aria-controls="pills-contact" aria-selected="false">Simpan</a>
+                            role="tab" aria-controls="pills-contact" aria-selected="false" disabled>Simpan</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
@@ -33,16 +48,27 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="sekolah">Sekolah</label>
+                                        <select name="sekolah" id="sekolah" class="form-control">
+                                            <option value="">-- Pilih Sekolah --</option>
+                                            @foreach ($sekolah as $key => $value )
+                                                <option value="{{ $value->id }}" {{ $value->id == old('sekolah') ? 'selected' : '' }}>{{ $value->nama_sekolah }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label for="nis">NIS</label>
-                                        <input type="text" class="form-control" name="nis" id="nis"
-                                            placeholder="Masukkan NIS ...">
+                                        <input type="number" class="form-control" name="nis" id="nis"
+                                            placeholder="Masukkan NIS ..." value="{{ old('nis') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="siswa_name">Nama Siswa</label>
                                         <input type="text" class="form-control" name="siswa_name" id="siswa_name"
-                                            placeholder="Masukkan nama siswa ...">
+                                            placeholder="Masukkan nama siswa ..." value="{{ old('siswa_name') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -50,14 +76,15 @@
                                         <label for="jenis_kelamin_siswa">Jenis Kelamin</label>
                                         <select name="jenis_kelamin_siswa" id="jenis_kelamin_siswa" class="form-control">
                                             <option value="">-- Pilih Jenis Kelamin --</option>
-                                            <option value="L">Laki - Laki</option>
-                                            <option value="P">Perempuan</option>
+                                            <option value="L" {{ old('jenis_kelamin_siswa') == 'L' ? 'checked' : '' }}>Laki - Laki</option>
+                                            <option value="P" {{ old('jenis_kelamin_siswa') == 'P' ? 'checked' : '' }}>Perempuan</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="foto_siswa">Foto Siswa</label>
+                                        <small class="text-danger">jpeg,png,jpg</small>
                                         <input type="file" class="form-control-file" name="foto_siswa" id="foto_siswa"
                                             accept=".jpg,.jpeg,.png" placeholder="Masukkan nama siswa ...">
                                     </div>
@@ -75,7 +102,7 @@
                                     <div class="form-group">
                                         <label for="ortu_name">Nama Orang Tua</label>
                                         <input type="text" class="form-control" name="ortu_name" id="ortu_name"
-                                            placeholder="Masukkan nama ortu ...">
+                                            placeholder="Masukkan nama ortu ..." value="{{ old('ortu_name') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -83,8 +110,8 @@
                                         <label for="jenis_kelamin_ortu">Jenis Kelamin</label>
                                         <select name="jenis_kelamin_ortu" id="jenis_kelamin_ortu" class="form-control">
                                             <option value="">-- Pilih Jenis Kelamin --</option>
-                                            <option value="L">Laki - Laki</option>
-                                            <option value="P">Perempuan</option>
+                                            <option value="L" {{ old('jenis_kelamin_siswa') == 'L' ? 'checked' : '' }}>Laki - Laki</option>
+                                            <option value="P" {{ old('jenis_kelamin_siswa') == 'P' ? 'checked' : '' }}>Perempuan</option>
                                         </select>
                                     </div>
                                 </div>
@@ -92,18 +119,58 @@
                                     <div class="form-group">
                                         <label for="alamat_ortu">Alamat</label>
                                         <textarea class="form-control" name="alamat_ortu" id="alamat_ortu" cols="30" rows="3"
-                                            placeholder="Masukkan alamat orang tua"></textarea>
+                                            placeholder="Masukkan alamat orang tua">{{ old('alamat_ortu') }}</textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nomor_hp">Nomor Telepon</label>
-                                        <input type="text" class="form-control" name="nomor_hp" id="nomor_hp"
-                                            placeholder="Masukkan nomor telepon orang tua ...">
+                                        <input type="number" class="form-control" name="nomor_hp" id="nomor_hp"
+                                            placeholder="Masukkan nomor telepon orang tua ..." value="{{ old('nomor_hp') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-12 d-flex justify-content-between">
                                     <button class="btn btn-info btn-prev" data-target="pills-home">Kembali</button>
+                                    <button class="btn btn-primary btn-next btn-last-next"
+                                        data-target="pills-keringanan">Selanjutnya</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade mt-3 border rounded p-3" id="pills-keringanan" role="tabpanel"
+                            aria-labelledby="pills-keringanan-tab" hidden>
+                            <div class="d-flex">
+                                <span class="text-danger">form ini bisa dilewati jika tidak diisi.</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button class="btn btn-sm btn-info btn_add_ext"><i class="fa fa-plus"></i> Tambah
+                                        Keringanan</button>
+                                    <small class="text-danger"><br>jika ingin mengajukan keringanan lebih dari 1 bisa klik
+                                        tombol "Tambah Keringanan"</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tipe_keringanan">Tipe Keringanan</label>
+                                        <select name="tipe_keringanan[]" id="tipe_keringanan" class="form-control">
+                                            <option value="">-- Pilih Tipe Keringanan --</option>
+                                            @foreach ($tipe_keringanan as $key => $value)
+                                                <option value="{{ $value->id }}" {{ old('tipe_keringanan') == $value->id ? 'checked' : ''}}>{{ $value->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="dokumen_pelengkap">Dokumen Pelengkap</label>
+                                        <input type="file" class="form-control-file" name="dokumen_pelengkap[]"
+                                            id="dokumen_pelengkap" placeholder="Masukkan dokumen pelengkap ..." multiple>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ext_input_keringanan"></div>
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-between">
+                                    <button class="btn btn-info btn-prev" data-target="pills-profile">Kembali</button>
                                     <button class="btn btn-primary btn-next btn-last-next"
                                         data-target="pills-contact">Selanjutnya</button>
                                 </div>
@@ -152,7 +219,7 @@
                                     </table>
                                 </div>
                                 <div class="col-md-12 d-flex justify-content-between">
-                                    <button class="btn btn-info btn-prev" data-target="pills-profile">Kembali</button>
+                                    <button class="btn btn-info btn-prev" data-target="pills-keringanan">Kembali</button>
                                     <button type="submit" class="btn btn-success">Simpan</button>
                                 </div>
                             </div>
@@ -220,6 +287,20 @@
 
             hide_tab();
             show_tab(this_target);
+        });
+
+        $('.btn_add_ext').click(function(e) {
+            e.preventDefault();
+            let clone_element = $(this).parent().parent().clone();
+
+            clone_element.find('.btn_add_ext').parent().find('small').remove();
+            clone_element.find('.btn_add_ext').removeClass('btn_add_ext btn-info').addClass(
+                'btn_remove_ext btn-danger').html('<i class="fa fa-minus"></i> Hapus Keringanan');
+            $("#ext_input_keringanan").append(clone_element);
+        });
+
+        $(document).on('click', '.btn_remove_ext', function() {
+            $(this).parent().parent().remove();
         });
     </script>
 @endpush

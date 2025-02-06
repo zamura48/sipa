@@ -12,7 +12,18 @@ class TagihanController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Tagihan';
+        $data = Tagihan::all()->load('iuran', 'siswa');
+
+        if (auth()->user()->role_id == 3) {
+            $data = Tagihan::with('iuran', 'siswa')->whereHas('siswa', function ($query) {
+                $query->where('pengguna_id', auth()->user()->pengguna_id);
+            })->get();
+
+            return view('walmur.tagihan.index', compact('title', 'data'));
+        }
+
+        return view('admin.tagihan.index', compact('title', 'data'));
     }
 
     /**
@@ -47,12 +58,49 @@ class TagihanController extends Controller
         //
     }
 
+    public function bayar(Tagihan $tagihan)
+    {
+        $title = 'Bayar Tagihan';
+
+        $data = $tagihan->load('iuran', 'siswa');
+
+        return view('walmur.tagihan.bayar', compact('title', 'data'));
+    }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Tagihan $tagihan)
     {
         //
+    }
+
+    public function konfirmasi_pembayaran(Tagihan $tagihan)
+    {
+        $tagihan->update([
+            'status' => 2
+        ]);
+
+        return redirect()->route('admin.tagihan.index')->with('success', 'Data berhasil simpan!');
+    }
+
+    public function upload_bayar(Request $request, Tagihan $tagihan)
+    {
+        $request->validate([
+            'foto' => 'file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
+        ]);
+
+        $file = $request->file('foto');
+        $file_name =  'Bukti_bayar'.time().'.'.$file->getClientOriginalExtension();
+        $file_save = 'bukti_bayar';
+        $file->move($file_save, $file_name);
+
+        $tagihan->update([
+            'bukti_bayar' => $file_name,
+            'status' => 1
+        ]);
+
+        return redirect()->route('walmur.tagihan.index')->with('success', 'Data berhasil simpan!');
     }
 
     /**

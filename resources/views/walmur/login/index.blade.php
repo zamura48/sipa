@@ -11,9 +11,10 @@
                     <div class="col-lg-6">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Selamat Datang</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Selamat Datang di Portal Wali Murid</h1>
                             </div>
                             <form class="user" action="{{ route('walmur.do_log') }}" method="POST">
+                                @csrf
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-user" id="username" name="username"
                                         aria-describedby="emailHelp" placeholder="Enter username...">

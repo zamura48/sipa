@@ -10,6 +10,9 @@ class Tagihan extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'tagihans';
+    protected $fillable = ['siswa_id', 'iuran_id', 'jatuh_tempo', 'total_tagihan', 'total_semua_keringanan', 'total_semua', 'nominal_bayar', 'bukti_bayar', 'status'];
+
     public function siswa()
     {
         return $this->hasOne(Siswa::class, 'id', 'siswa_id');

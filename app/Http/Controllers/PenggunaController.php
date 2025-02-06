@@ -12,7 +12,12 @@ class PenggunaController extends Controller
      */
     public function index()
     {
-        //
+        $data = Pengguna::with('user.role')->whereNotIn('id', [1])->whereHas('user', function ($query) {
+            $query->where('role_id', 3);
+        })->get();
+        $title = 'Pengguna';
+
+        return view('admin.pengguna.index', compact('title', 'data'));
     }
 
     /**
