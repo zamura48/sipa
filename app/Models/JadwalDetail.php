@@ -10,6 +10,9 @@ class JadwalDetail extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = "jadwal_details";
+    protected $fillable = ['jadwal_id', 'kegiatan_id', 'keterangan'];
+
     public function jadwal()
     {
         return $this->hasOne(Jadwal::class, 'id', 'jadwal_id');

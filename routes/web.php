@@ -61,6 +61,9 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::resource('/absensi', AbsensiController::class);
     Route::resource('/iuran', IuranController::class);
     Route::resource('/jadwal', JadwalController::class);
+    Route::prefix('jadwal')->name('jadwal.')->group(function () {
+        Route::get('siswa/{jadwal}', [JadwalController::class, 'siswa'])->name('siswa');
+    });
     Route::resource('/keringanan', KeringananController::class);
     Route::resource('/siswa', SiswaController::class);
     Route::resource('/pendaftaran', PendaftaranController::class);
