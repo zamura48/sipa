@@ -63,6 +63,8 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::resource('/jadwal', JadwalController::class);
     Route::prefix('jadwal')->name('jadwal.')->group(function () {
         Route::get('siswa/{jadwal}', [JadwalController::class, 'siswa'])->name('siswa');
+        Route::post('siswa/store_siswa_jadwal/{jadwal}', [JadwalController::class, 'store_siswa_jadwal'])->name('store_siswa_jadwal');
+        Route::post('siswa/delete_siswa_jadwal/{jadwal}', [JadwalController::class, 'delete_siswa_jadwal'])->name('delete_siswa_jadwal');
     });
     Route::resource('/keringanan', KeringananController::class);
     Route::resource('/siswa', SiswaController::class);

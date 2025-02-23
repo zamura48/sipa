@@ -22,6 +22,7 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Hari, Jam</th>
+                            <th>Kegiatan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -31,6 +32,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->hari }}, {{ date('H:i', strtotime($item->jam)) }}</td>
+                                <td>
+                                    <ul>
+                                        @foreach ($item->jadwalDetails as $value)
+                                        <li>{{ $value->kegiatan->nama }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
                                 <td>
                                     <a href="{{ route('admin.jadwal.siswa', $item->id) }}" class="btn btn-primary btn-sm">
                                         <i class="fa fa-plus mr-2"></i> Tambah Siswa

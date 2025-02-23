@@ -10,13 +10,21 @@ class JadwalBySiswa extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function jadwalDetail()
+    protected $table = "jadwal_by_siswas";
+    protected $fillable = ['jadwal_id', 'siswa_id'];
+
+    public function jadwal()
     {
-        return $this->hasOne(JadwalDetail::class, 'id', 'jadwal_detail_id');
+        return $this->hasOne(Jadwal::class, 'id', 'jadwal_id');
     }
 
     public function siswas()
     {
         return $this->hasMany(Siswa::class, 'id', 'siswa_id');
+    }
+
+    public function siswa()
+    {
+        return $this->hasOne(Siswa::class, 'id', 'siswa_id');
     }
 }

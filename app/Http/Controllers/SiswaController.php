@@ -15,6 +15,7 @@ class SiswaController extends Controller
     {
         $title = 'Siswa';
         $data = Siswa::all()->load(['kamar', 'periode', 'ortu', 'sekolah']);
+        $data = Siswa::with(['kamar', 'periode', 'ortu', 'sekolah'])->get();
 
         // jika user yang login rolenya adalah 3(wali murid) maka data yang ditampilkan hanya siswa dengan pengguna_id saja
         if (auth()->user()->role_id == 3) {

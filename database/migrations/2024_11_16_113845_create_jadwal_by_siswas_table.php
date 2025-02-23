@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Jadwal;
 use App\Models\JadwalDetail;
 use App\Models\Siswa;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('jadwal_by_siswas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(JadwalDetail::class);
+            $table->foreignIdFor(Jadwal::class);
             $table->foreignIdFor(Siswa::class);
             $table->timestamps();
         });

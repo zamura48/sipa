@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jadwal;
+use App\Models\JadwalBySiswa;
 use App\Models\JadwalDetail;
 use App\Models\Kegiatan;
 use App\Models\Siswa;
@@ -36,9 +37,15 @@ class JadwalController extends Controller
     public function siswa(Jadwal $jadwal)
     {
         $title = 'Siswa ke Jadwal';
-        $siswas = Siswa::with('kamar')->get();
+        $jadwal_siswa = JadwalBySiswa::with('siswa.kamar')->where('jadwal_id', $jadwal->id)->get();
 
-        return view('admin.jadwal.siswa', compact('title', 'siswas', 'jadwal'));
+        $siswa_id = [];
+        foreach ($jadwal_siswa as $key => $value) {
+            $siswa_id[] = $value->siswa_id;
+        }
+        $siswas = Siswa::with('kamar')->whereNotIn('id', $siswa_id)->get();
+
+        return view('admin.jadwal.siswa', compact('title', 'jadwal_siswa', 'siswas', 'jadwal'));
     }
 
     private function validation($request, $id = '')
@@ -54,6 +61,19 @@ class JadwalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function store_siswa_jadwal(Request $request, Jadwal $jadwal)
+    {
+        $explode = explode(',', $request->post('data_nim_selected'));
+        foreach ($explode as $key => $value) {
+            JadwalBySiswa::create([
+                'jadwal_id' => $jadwal->id,
+                'siswa_id' => $value,
+            ]);
+        }
+
+        return redirect()->route('admin.jadwal.index')->with('success', 'Data berhasil ditambahkan!');
+    }
+
     public function store(Request $request)
     {
         $this->validation($request);
@@ -79,7 +99,12 @@ class JadwalController extends Controller
      */
     public function show(Jadwal $jadwal)
     {
-        //
+        $jadwal->load('jadwalDetails');
+        $title = 'Detail Jadwal';
+        $weekday = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $kegiatan = Kegiatan::with('pilihan')->get();
+
+        return view('admin.jadwal.show', compact('title', 'jadwal', 'weekday', 'kegiatan'));
     }
 
     /**
@@ -95,7 +120,23 @@ class JadwalController extends Controller
      */
     public function update(Request $request, Jadwal $jadwal)
     {
-        //
+        $this->validation($request);
+
+        $jadwal->update([
+            'nama' => $request->post('nama'),
+            'hari' => $request->post('hari'),
+            'jam' => $request->post('jam')
+        ]);
+
+        JadwalDetail::where('jadwal_id', $jadwal->id)->delete();
+        foreach ($request->kegiatan as $key => $value) {
+            JadwalDetail::create([
+                'jadwal_id' => $jadwal->id,
+                'kegiatan_id' => $value,
+            ]);
+        }
+
+        return redirect()->route('admin.jadwal.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -104,6 +145,19 @@ class JadwalController extends Controller
     public function destroy(Jadwal $jadwal)
     {
         $jadwal->delete();
+
+        return redirect()->route('admin.jadwal.index')->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function delete_siswa_jadwal(Request $request)
+    {
+        $explode = explode(',', $request->post('data_siswa_deleted'));
+
+        $id_jadwal_by_siswa = [];
+        foreach ($explode as $key => $value) {
+            $id_jadwal_by_siswa[] = $value;
+        }
+        JadwalBySiswa::whereIn('id', $id_jadwal_by_siswa)->delete();
 
         return redirect()->route('admin.jadwal.index')->with('success', 'Data berhasil dihapus!');
     }
