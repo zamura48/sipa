@@ -27,4 +27,9 @@ class JadwalBySiswa extends Model
     {
         return $this->hasOne(Siswa::class, 'id', 'siswa_id');
     }
+
+    public function absensi()
+    {
+        return $this->hasOne(Absensi::class, 'jadwal_by_siswa_id', 'id');
+    }
 }

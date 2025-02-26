@@ -10,6 +10,9 @@ class Absensi extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = "absensis";
+    protected $fillable = ['jadwal_by_siswa_id', 'absen', 'izin', 'masuk', 'tanggal'];
+
     // siswa, jadwalbysiswa
     public function jadwalBySiswas()
     {

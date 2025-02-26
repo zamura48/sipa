@@ -95,7 +95,7 @@
                 e.preventDefault();
                 $(this).addClass('d-none');
                 $('.btn_edit').removeClass('d-none');
-                $('.btn_save').addClass('d-none');
+                $('.btn_save').addClass('d-none';);
                 $('.form-control').attr('readonly', true);
                 $('.form-select').prop('disabled', true);
             });
