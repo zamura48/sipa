@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('absensis', function (Blueprint $table) {
-            $table->tinyInteger('absen')->nullable()->after('siswa_id');
-            $table->tinyInteger('izin')->nullable()->after('absen');
-            $table->tinyInteger('masuk')->nullable()->after('izin');
+            $table->tinyInteger('absen')->nullable()->after('siswa_id')->nullable();
+            $table->tinyInteger('izin')->nullable()->after('absen')->nullable();
+            $table->tinyInteger('masuk')->nullable()->after('izin')->nullable();
         });
     }
 

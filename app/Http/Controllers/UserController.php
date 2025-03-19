@@ -36,12 +36,12 @@ class UserController extends Controller
 
     private function validation(Request $request)
     {
-        $request->validate([
+        $request->validate([[
             'username' => 'required',
             'password' => 'required|min:6|confirmed',
         ], [
             'password.confirmed' => 'Password dan konfirmasi password tidak cocok.',
-        ]);
+        ]]);
     }
 
     /**

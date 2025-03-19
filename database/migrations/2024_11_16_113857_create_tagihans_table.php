@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Siswa::class);
             $table->foreignIdFor(Iuran::class);
-            $table->date('jatuh_tempo');
-            $table->double('total_tagihan');
-            $table->double('total_semua_keringanan');
-            $table->double('total_semua');
-            $table->double('nominal_bayar');
-            $table->text('bukti_bayar');
-            $table->integer('status');
+            $table->date('jatuh_tempo')->nullable();
+            $table->double('total_tagihan')->nullable();
+            $table->double('total_semua_keringanan')->nullable();
+            $table->double('total_semua')->nullable();
+            $table->double('nominal_bayar')->nullable();
+            $table->text('bukti_bayar')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

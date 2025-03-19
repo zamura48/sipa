@@ -19,7 +19,7 @@ class SiswaController extends Controller
 
         // jika user yang login rolenya adalah 3(wali murid) maka data yang ditampilkan hanya siswa dengan pengguna_id saja
         if (auth()->user()->role_id == 3) {
-            $data = Siswa::where('pengguna_id', '=', auth()->user()->pengguna_id)->get();
+            $data = Siswa::where('wali_murid_id', '=', auth()->user()->wali_murid_id)->get();
 
             return view('walmur.siswa.index', compact('title', 'data'));
         }

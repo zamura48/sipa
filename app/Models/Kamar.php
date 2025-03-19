@@ -12,4 +12,14 @@ class Kamar extends Model
 
     protected $table = "kamars";
     protected $fillable = ['nama', 'jumlah_penghuni'];
+
+    public function penghuni()
+    {
+        return $this->hasOne(Penghuni::class, 'kamar_id', 'id');
+    }
+
+    public function penghunis()
+    {
+        return $this->hasMany(Penghuni::class, 'kamar_id', 'id');
+    }
 }

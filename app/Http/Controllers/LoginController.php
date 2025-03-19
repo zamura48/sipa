@@ -103,6 +103,10 @@ class LoginController extends Controller
 
         $periode = Periode::where('status', 1)->first();
 
+        if (empty($periode)) {
+            return redirect()->route('walmur.regis')->with('error', 'Pendaftaran Belum Dibuka.');
+        }
+
         $data_insert_siswa = [
             'sekolah_id' => $request->sekolah,
             'nama_ortu' => $request->ortu_name,

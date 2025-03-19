@@ -10,10 +10,6 @@ class Role extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guard = ['id'];
-
-    public function user()
-    {
-        return $this->hasOne(User::class, 'role_id', 'id');
-    }
+    protected $table = "roles";
+    protected $fillable = ['nama'];
 }

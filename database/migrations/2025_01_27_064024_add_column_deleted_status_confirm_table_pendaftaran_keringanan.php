@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pendaftaran_keringanan', function (Blueprint $table) {
-            $table->tinyInteger('status_pengajuan')->comment('status pengajuan apakah diterima atau tidak')->after('dokumen_pendukung');
+            $table->tinyInteger('status_pengajuan')->comment('status pengajuan apakah diterima atau tidak')->after('dokumen_pendukung')->nullable();
             $table->softDeletes();
         });
     }

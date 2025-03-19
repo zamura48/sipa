@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pendaftarans', function (Blueprint $table) {
-            $table->tinyInteger('status')->default(0)->after('foto_siswa');
+            $table->tinyInteger('status')->default(0)->after('foto_siswa')->nullable();
         });
     }
 

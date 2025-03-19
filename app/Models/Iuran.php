@@ -11,7 +11,7 @@ class Iuran extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'iurans';
-    protected $fillable = ['nama', 'jenis_iuran_id', 'nama', 'total', 'keterangan'];
+    protected $fillable = ['nama', 'jenis_iuran_id', 'nama', 'total', 'keterangan', 'is_pendaftaran'];
 
     public function jenisIuran()
     {

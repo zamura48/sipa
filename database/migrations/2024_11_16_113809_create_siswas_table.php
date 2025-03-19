@@ -2,6 +2,7 @@
 
 use App\Models\Kamar;
 use App\Models\Periode;
+use App\Models\WaliMurid;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(WaliMurid::class);
             $table->foreignIdFor(Kamar::class);
             $table->foreignIdFor(Periode::class);
             $table->bigInteger('nis')->nullable();

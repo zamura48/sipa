@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -13,7 +12,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $get_data = User::all()->load('role', 'pengguna.siswa');
+        $data = Role::all();
+        $title = 'Role';
+
+        return view('admin.role.index', compact('title', 'data'));
     }
 
     /**
@@ -21,7 +23,16 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Tambah Role';
+
+        return view('admin.role.create', compact('title'));
+    }
+
+    private function validation($request)
+    {
+        $request->validate([
+            'nama' => 'required',
+        ]);
     }
 
     /**
@@ -29,7 +40,11 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validation($request);
+
+        WaliMurid::create($request->all());
+
+        return redirect()->route('admin.role.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -37,7 +52,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        $title = 'Detail Role';
+
+        return view('admin.role.show', compact('title', 'role'));
     }
 
     /**
@@ -45,7 +62,6 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        dd($role);
     }
 
     /**
@@ -53,7 +69,11 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $this->validation($request);
+
+        $role->update($request->all());
+
+        return redirect()->route('admin.role.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -61,6 +81,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        return redirect()->route('admin.role.index')->with('success', 'Data berhasil dihapus!');
     }
 }

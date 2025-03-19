@@ -12,6 +12,7 @@ use App\Models\Siswa;
 use App\Models\Tagihan;
 use App\Models\TagihanKeringanan;
 use App\Models\User;
+use App\Models\WaliMurid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -90,7 +91,7 @@ class PendaftaranController extends Controller
             $request->validate([
                 'foto_siswa' => 'file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
             ]);
-            $file_name = $request->nis . time().str_replace(' ', '_', $request->siswa_name) . '.' . $file->getClientOriginalExtension();
+            $file_name = $request->nis . time() . str_replace(' ', '_', $request->siswa_name) . '.' . $file->getClientOriginalExtension();
             $file_save = 'foto_siswa';
             $file->move($file_save, $file_name);
             $data_insert_siswa['foto_siswa'] = $file_name;
@@ -163,16 +164,15 @@ class PendaftaranController extends Controller
         DB::beginTransaction();
 
         try {
-            $data_pengguna = Pengguna::where([
+            $data_wali_murid = WaliMurid::where([
                 ['nama', 'like', "%{$pendaftaran->nama_ortu}%"],
                 ['telepon', '=', $pendaftaran->telepon_ortu]
             ])->first();
 
-            if ($data_pengguna) {
-                $pengguna = $data_pengguna;
+            if ($data_wali_murid) {
+                $wali_murid = $data_wali_murid;
             } else {
-                $pengguna = Pengguna::create([
-                    // 'siswa_id' => $siswa->id,
+                $wali_murid = WaliMurid::create([
                     'nama' => $pendaftaran->nama_ortu,
                     'alamat' => $pendaftaran->alamat,
                     'telepon' => $pendaftaran->telepon_ortu,
@@ -181,7 +181,7 @@ class PendaftaranController extends Controller
 
                 User::create([
                     'role_id' => 3,
-                    'pengguna_id' => $pengguna->id,
+                    'wali_murid_id' => $wali_murid->id,
                     'name' => $pendaftaran->nama_ortu,
                     'email' => $pendaftaran->nis . '@gmail.com',
                     'username' => $pendaftaran->nis,
@@ -190,7 +190,7 @@ class PendaftaranController extends Controller
             }
 
             $siswa = Siswa::create([
-                'pengguna_id' => $pengguna->id,
+                'wali_murid_id' => $wali_murid->id,
                 'sekolah_id' => $pendaftaran->sekolah_id,
                 'kamar_id' => 0,
                 'periode_id' => $pendaftaran->periode_id,
@@ -200,7 +200,12 @@ class PendaftaranController extends Controller
                 'foto' => $pendaftaran->foto_siswa,
             ]);
 
-            $iuran = Iuran::where('jenis_iuran_id', '=', 3)->first();
+            $iuran = Iuran::where('is_pendaftaran', 1)->first();
+
+            if (empty($iuran)) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Iuran Belum Ditambahkan.');
+            }
 
             $tagihan = Tagihan::create([
                 'siswa_id' => $siswa->id,
@@ -237,6 +242,8 @@ class PendaftaranController extends Controller
 
             return redirect()->back()->with('success', 'Data berhasil dikonfirmasi!');
         } catch (\Exception $ex) {
+            DB::rollBack();
+
             return redirect()->back()->with('error', $ex->getMessage());
         }
     }

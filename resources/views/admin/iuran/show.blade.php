@@ -59,6 +59,23 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="is_pendaftaran" class="form-label">Apakah Untuk Iuran Pendaftaran?</label>
+                        <select name="is_pendaftaran" id="is_pendaftaran"
+                            class="form-control form-select js-select2 @error('is_pendaftaran') is-invalid @enderror"
+                            data-placeholder="- Pilih -" disabled>
+                            <option value=""></option>
+                            <option value="1" {{ old('is_pendaftaran', $iuran->is_pendaftaran) == '1' ? 'selected' : '' }}>
+                                Aktif
+                            </option>
+                            <option value="0" {{ old('is_pendaftaran', $iuran->is_pendaftaran) == '0' ? 'selected' : '' }}>
+                                Tidak Aktif
+                            </option>
+                        </select>
+                        @error('is_pendaftaran')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary float-right d-none btn_save"><i
                         class="fa fa-save mr-2"></i>Simpan</button>

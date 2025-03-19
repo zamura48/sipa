@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="jumlah_penghuni" class="form-label">
-                            Jumlah Penghuni
+                            Kapasitas Penghuni
                             <span class="text-danger"><small>*orang</small></span>
                         </label>
                         <input type="number" class="form-control @error('jumlah_penghuni') is-invalid @enderror"

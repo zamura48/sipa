@@ -164,6 +164,8 @@
                 $.map(table.rows('.selected').data(), function(item, index) {
                     data.push(item[4]);
                 });
+
+                
                 $("#data_siswa_selected").val(data);
                 $("#form-siswa").submit();
             });

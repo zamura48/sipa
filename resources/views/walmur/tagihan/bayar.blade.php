@@ -63,11 +63,6 @@
                         @endif
                     </div>
                 </div>
-
-                <hr>
-                <div class="d-flex">
-                    <span class="text-danger">form ini bisa dilewati jika tidak diisi.</span>
-                </div>
                 <div id="ext_input_keringanan"></div>
                 <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save mr-2"></i>Simpan</button>
                 <a href="{{ route('walmur.tagihan.index') }}" class="btn btn-secondary mr-2 float-right"><i

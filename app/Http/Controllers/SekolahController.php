@@ -12,7 +12,10 @@ class SekolahController extends Controller
      */
     public function index()
     {
-        //
+        $data = sekolah::all();
+        $title = 'Sekolah';
+
+        return view('admin.sekolah.index', compact('title', 'data'));
     }
 
     /**
@@ -20,7 +23,16 @@ class SekolahController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Tambah Sekolah';
+
+        return view('admin.sekolah.create', compact('title'));
+    }
+
+    private function validation($request)
+    {
+        $request->validate([
+            'nama_sekolah' => 'required',
+        ]);
     }
 
     /**
@@ -28,7 +40,13 @@ class SekolahController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validation($request);
+
+        Sekolah::create([
+            'nama_sekolah' => $request->post('nama_sekolah')
+        ]);
+
+        return redirect()->route('admin.sekolah.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -36,7 +54,9 @@ class SekolahController extends Controller
      */
     public function show(Sekolah $sekolah)
     {
-        //
+        $title = 'Detail Sekolah';
+
+        return view('admin.sekolah.show', compact('title', 'sekolah'));
     }
 
     /**
@@ -52,7 +72,11 @@ class SekolahController extends Controller
      */
     public function update(Request $request, Sekolah $sekolah)
     {
-        //
+        $this->validation($request);
+
+        $sekolah->update($request->all());
+
+        return redirect()->route('admin.sekolah.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -60,6 +84,8 @@ class SekolahController extends Controller
      */
     public function destroy(Sekolah $sekolah)
     {
-        //
+        $sekolah->delete();
+
+        return redirect()->route('admin.sekolah.index')->with('success', 'Data berhasil dihapus!');
     }
 }

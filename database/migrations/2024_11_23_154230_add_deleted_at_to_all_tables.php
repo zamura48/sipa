@@ -47,10 +47,6 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::table('penggunas', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-
         Schema::table('pilihans', function (Blueprint $table) {
             $table->softDeletes();
         });
@@ -135,12 +131,6 @@ return new class extends Migration
 
         Schema::table('keringanans', function (Blueprint $table) {
             if (Schema::hasColumn('keringanans', 'deleted_at')) {
-                $table->dropColumn('deleted_at');
-            }
-        });
-
-        Schema::table('penggunas', function (Blueprint $table) {
-            if (Schema::hasColumn('penggunas', 'deleted_at')) {
                 $table->dropColumn('deleted_at');
             }
         });

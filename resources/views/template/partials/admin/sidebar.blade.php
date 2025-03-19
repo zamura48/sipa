@@ -16,7 +16,7 @@
     }
 @endphp
 
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav sidebar accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route($modul.".dashboard.index") }}">
@@ -48,6 +48,11 @@
             <a class="nav-link" href="{{ route('admin.periode.index') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Periode</span></a>
+        </li>
+        <li class="nav-item {{ $sub_modul == 'sekolah' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.sekolah.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Sekolah</span></a>
         </li>
         <li class="nav-item {{ $sub_modul == 'kamar' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.kamar.index') }}">
@@ -87,13 +92,13 @@
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Pengguna</span>
             </a>
-            <div id="pengguna" class="collapse {{ $sub_modul == 'role' || $sub_modul == 'siswa' || $sub_modul == 'pengguna' || $sub_modul == 'user' ? 'show' : '' }}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="pengguna" class="collapse {{ $sub_modul == 'role' || $sub_modul == 'siswa' || $sub_modul == 'wali_murid' || $sub_modul == 'pengurus' ? 'show' : '' }}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header"></h6>
                     <a class="collapse-item {{ $sub_modul == 'role' ? 'active' : '' }}" href="{{ route('admin.role.index') }}">Role</a>
                     <a class="collapse-item {{ $sub_modul == 'siswa' ? 'active' : '' }}" href="{{ route('admin.siswa.index') }}">Siswa</a>
-                    <a class="collapse-item {{ $sub_modul == 'pengguna' ? 'active' : '' }}" href="{{ route('admin.pengguna.index') }}">Wali Murid</a>
-                    <a class="collapse-item {{ $sub_modul == 'user' ? 'active' : '' }}" href="{{ route('admin.user.index') }}">Pegawai</a>
+                    <a class="collapse-item {{ $sub_modul == 'wali_murid' ? 'active' : '' }}" href="{{ route('admin.wali_murid.index') }}">Wali Murid</a>
+                    <a class="collapse-item {{ $sub_modul == 'pengurus' ? 'active' : '' }}" href="{{ route('admin.pengurus.index') }}">Pengurus</a>
                 </div>
             </div>
         </li>
@@ -112,6 +117,11 @@
             <a class="nav-link" href="{{ route('admin.tagihan.index') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Tagihan</span></a>
+        </li>
+        <li class="nav-item {{ $sub_modul == 'penghuni' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.penghuni.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Penghuni</span></a>
         </li>
         <li class="nav-item {{ $sub_modul == 'absensi' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.absensi.index') }}">

@@ -11,15 +11,19 @@ use App\Http\Controllers\KeringananController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\PenghuniController;
+use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\PilihanController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TagihanKeringananController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WaliMuridController;
 use App\Models\Tagihan;
+use App\Models\WaliMurid;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,8 +62,19 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::resource('/role', RoleController::class);
     Route::resource('/jenis_iuran', JenisIuranController::class);
     Route::resource('/pilihan', PilihanController::class);
+    Route::resource('/absensi', AbsensiController::class);
+    Route::prefix('absensi')->name('absensi.')->group(function () {
+        Route::get('presensi/{jadwal}', [AbsensiController::class, 'presensi'])->name('presensi');
+        Route::post('presensi/save/{jadwal}', [AbsensiController::class, 'presensi_save'])->name('presensi.save');
+    });
 
     Route::resource('/iuran', IuranController::class);
+    Route::resource('/jadwal', JadwalController::class);
+    Route::prefix('jadwal')->name('jadwal.')->group(function () {
+        Route::get('siswa/{jadwal}', [JadwalController::class, 'siswa'])->name('siswa');
+        Route::post('siswa/store_siswa_jadwal/{jadwal}', [JadwalController::class, 'store_siswa_jadwal'])->name('store_siswa_jadwal');
+        Route::post('siswa/delete_siswa_jadwal/{jadwal}', [JadwalController::class, 'delete_siswa_jadwal'])->name('delete_siswa_jadwal');
+    });
     Route::resource('/keringanan', KeringananController::class);
     Route::resource('/siswa', SiswaController::class);
     Route::resource('/pendaftaran', PendaftaranController::class);
@@ -67,7 +82,14 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
         Route::post('konfirmasi_keringanan', [PendaftaranController::class, 'konfirmasi_keringanan'])->name('konfirmasi_keringanan');
     });
 
-    Route::resource('/pengguna', PenggunaController::class);
+    Route::resource('/sekolah', SekolahController::class);
+    Route::resource('/wali_murid', WaliMuridController::class);
+    Route::resource('/pengurus', PengurusController::class);
+    Route::resource('/tagihan', TagihanController::class);
+    Route::resource('/penghuni', PenghuniController::class);
+    Route::prefix('tagihan')->name('tagihan.')->group(function () {
+        Route::post('/bayar/konfirmasi_pembayaran/{tagihan}', [TagihanController::class, 'konfirmasi_pembayaran'])->name('konfirmasi_pembayaran');
+    });
     Route::resource('/tagihan_keringanan', TagihanKeringananController::class);
     Route::resource('/user', UserController::class);
 });

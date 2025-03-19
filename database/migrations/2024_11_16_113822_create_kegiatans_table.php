@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kegiatans', function (Blueprint $table) {
             $table->id();
             $table->string('nama', 50);
-            $table->integer('tipe');
+            $table->integer('tipe')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });

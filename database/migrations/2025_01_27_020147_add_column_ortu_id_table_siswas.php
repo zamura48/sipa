@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('siswas', function (Blueprint $table) {
-            $table->foreignIdFor(Pengguna::class)->after('id')->comment('id ortu diambil dari tb penggunas');
+            $table->foreignIdFor(Pengguna::class)->after('id')->comment('id ortu diambil dari tb penggunas')->nullable();
         });
     }
 

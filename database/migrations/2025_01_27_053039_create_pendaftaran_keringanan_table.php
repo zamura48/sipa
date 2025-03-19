@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('pendaftaran_keringanan', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Pendaftaran::class);
-            $table->foreignIdFor(Keringanan::class);
-            $table->text('dokumen_pendukung');
+            $table->foreignIdFor(Pendaftaran::class)->nullable();
+            $table->foreignIdFor(Keringanan::class)->nullable();
+            $table->text('dokumen_pendukung')->nullable();
             $table->timestamps();
         });
     }

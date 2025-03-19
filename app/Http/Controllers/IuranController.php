@@ -56,6 +56,12 @@ class IuranController extends Controller
         $total = filter_var($request->input('total'), FILTER_SANITIZE_NUMBER_INT);
         $request->merge(['total' => (int) $total]);
 
+        if ($request->post('is_pendaftaran') == 1) {
+            Iuran::where('is_pendaftaran', 1)->update([
+                'is_pendaftaran' => 0
+            ]);
+        }
+
         Iuran::create($request->all());
 
         return redirect()->route('admin.iuran.index')->with('success', 'Data berhasil ditambahkan!');
@@ -89,6 +95,12 @@ class IuranController extends Controller
 
         $total = filter_var($request->input('total'), FILTER_SANITIZE_NUMBER_INT);
         $request->merge(['total' => (int) $total]);
+
+        if ($request->post('is_pendaftaran') == 1) {
+            Iuran::where('is_pendaftaran', 1)->update([
+                'is_pendaftaran' => 0
+            ]);
+        }
 
         $iuran->update($request->all());
 

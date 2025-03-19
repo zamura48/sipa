@@ -1,47 +1,50 @@
 @extends('template.login')
 
 @section('content')
-    <div class="col-xl-10 col-lg-12 col-md-9">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                    <div class="col-lg-6">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Selamat Datang di Portal Wali Murid</h1>
-                            </div>
-                            <form class="user" action="{{ route('walmur.do_log') }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="username" name="username"
-                                        aria-describedby="emailHelp" placeholder="Enter username...">
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control form-control-user" id="password" name="password"
-                                        placeholder="Password">
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-user btn-block">
-                                    Login
-                                </button>
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                                <a href="{{ route('walmur.regis') }}" class="btn btn-primary btn-user btn-block">
-                                    Pendaftaran Siswa
-                                </a>
-                            </div>
+    <section class="vh-100">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                        class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <form action="{{ route('walmur.do_log') }}" method="POST">
+                        @csrf
+                        <div class="divider d-flex align-items-center my-4">
+                            <p class="text-center fw-bold mx-3 mb-0">Selamat Datang Di Login Wali Murid</p>
                         </div>
-                    </div>
+
+                        <!-- Email input -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <label class="form-label" for="username">Username</label>
+                            <input type="textt" id="username" name="username" class="form-control form-control-lg"
+                                placeholder="Masukkan username" />
+                        </div>
+
+                        <!-- Password input -->
+                        <div data-mdb-input-init class="form-outline mb-3">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-control form-control-lg"
+                                placeholder="Masukkan password" />
+                        </div>
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Belum punya akun? <a href="{{ route('walmur.regis') }}"
+                                    class="link-danger">Daftar Sekarang</a></p>
+                            <small class="text-danger px-1">Note: Setelah melakukan pendaftaran, tunggu hingga admin melakukan
+                                konfirmasi. Kemudian anda akan mendapatkan notif yang berisi username dan password yang
+                                digunakan untuk login.</small>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
-
-    </div>
+    </section>
 @endsection
 
 @push('js')
-
 @endpush

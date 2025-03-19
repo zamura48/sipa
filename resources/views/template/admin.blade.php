@@ -35,6 +35,34 @@
 
 </head>
 
+<style>
+    .sidebar .nav-item .nav-link span,
+    .sidebar .nav-item .nav-link i {
+        color: #578FCA;
+    }
+
+    .sidebar .nav-item.active .nav-link span,
+    .sidebar .nav-item.active .nav-link i {
+        color: #3674B5;
+    }
+
+    .sidebar .nav-item .nav-link span:hover,
+    .sidebar .nav-item .nav-link span:hover + i {
+        color: #3674B5;
+    }
+
+    .sidebar-heading, .sidebar-dark .sidebar-brand {
+        color: #a1b5bb !important;
+    }
+    .nav-item.active {
+        background-color: aliceblue
+    }
+
+    .card-header {
+        background-color: white
+    }
+</style>
+
 <body id="page-top">
 
     <!-- Page Wrapper -->

@@ -82,7 +82,19 @@ class MasterSeeder extends Seeder
             ],
         ]);
 
-        DB::table('penggunas')->insert([
+        DB::table('roles')->insert([
+            [
+                'nama' => 'Admin',
+            ],
+            [
+                'nama' => 'Pengurus',
+            ],
+            [
+                'nama' => 'Wali Murid',
+            ],
+        ]);
+
+        DB::table('penguruses')->insert([
             'nama' => 'admin',
             'alamat' => 'Jln. Bintang',
             'telepon' => '0888888888',
@@ -91,7 +103,7 @@ class MasterSeeder extends Seeder
 
         DB::table('users')->insert([
             'role_id' => 1,
-            'pengguna_id' => 1,
+            'pengurus_id' => 1,
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'username' => 'admin',

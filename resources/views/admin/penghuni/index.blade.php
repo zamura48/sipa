@@ -5,12 +5,7 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h6>
-                </div>
-                <div class="col-md-6">
-                    <a href="{{ route('admin.pilihan.create') }}" class="btn btn-primary btn-sm float-right">
-                        <i class="fa fa-plus mr-2"></i> Tambah Data
-                    </a>
+                    <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h5>
                 </div>
             </div>
         </div>
@@ -21,8 +16,9 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Username</th>
-                            <th>Role</th>
+                            <th>Kapasitas</th>
+                            <th>Penghuni</th>
+                            <th>Sisa</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -31,13 +27,14 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->user->username }}</td>
-                                <td>{{ $item->user->role->nama }}</td>
+                                <td>{{ $item->jumlah_penghuni }}</td>
+                                <td>{{ $item->penghunis_count }}</td>
+                                <td>{{ $item->jumlah_penghuni - $item->penghunis_count }}</td>
                                 <td>
-                                    <a href="{{ route('admin.user.show', $item->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('admin.penghuni.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail
                                     </a>
-                                    <form action="{{ route('admin.user.destroy', $item->id) }}" method="POST"
+                                    <form action="{{ route('admin.penghuni.destroy', $item->id) }}" method="POST"
                                         style="display:inline;" id="delete-form-{{ $item->id }}">
                                         @csrf
                                         @method('DELETE')

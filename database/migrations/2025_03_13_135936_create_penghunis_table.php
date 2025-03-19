@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Kamar;
 use App\Models\Siswa;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,14 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penggunas', function (Blueprint $table) {
+        Schema::create('penghunis', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Siswa::class)->nullable();
-            $table->string('nama', 100);
-            $table->text('alamat');
-            $table->string('telepon');
-            $table->string('jenis_kelamin', 5);
-            $table->integer('agama')->nullable();
+            $table->foreignIdFor(Kamar::class)->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penggunas');
+        Schema::dropIfExists('penghunis');
     }
 };

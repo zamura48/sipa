@@ -13,10 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pendaftarans', function (Blueprint $table) {
-            $table->foreignIdFor(Sekolah::class)->after('periode_id');
+            $table->foreignIdFor(Sekolah::class)->after('periode_id')->nullable();
         });
         Schema::table('siswas', function (Blueprint $table) {
-            $table->foreignIdFor(Sekolah::class)->after('periode_id');
+            $table->foreignIdFor(Sekolah::class)->after('periode_id')->nullable();
         });
     }
 

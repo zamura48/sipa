@@ -21,7 +21,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Jumlah Penghuni</th>
+                            <th>Kapasitas Penghuni</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>

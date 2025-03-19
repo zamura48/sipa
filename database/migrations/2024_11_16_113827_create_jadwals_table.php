@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
-            $table->string('hari');
-            $table->string('nama');
-            $table->time('jam');
+            $table->string('hari')->nullable();
+            $table->string('nama')->nullable();
+            $table->time('jam')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });
