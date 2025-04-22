@@ -25,7 +25,7 @@ class PendaftaranController extends Controller
     public function index()
     {
         $title = 'Pendaftaran Siswa';
-        $data_pendaftaran = Pendaftaran::where('status', 0)->orderBy('id', 'DESC')->get()->load('periode', 'pendaftaran_keringanan.keringanan', 'sekolah');
+        $data_pendaftaran = Pendaftaran::orderBy('id', 'DESC')->get()->load('periode', 'pendaftaran_keringanan.keringanan', 'sekolah');
 
         // jika user yang login rolenya adalah 3(wali murid) maka data yang ditampilkan hanya siswa dengan pengguna_id saja
         if (auth()->user()->role_id == 3) {

@@ -5,7 +5,7 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-md-12 d-flex">
-                    <a href="{{ route('admin.jadwal.index') }}" class="btn btn-secondary mr-2"><i
+                    <a href="{{ route('admin.penghuni.index') }}" class="btn btn-secondary mr-2"><i
                             class="fa fa-arrow-left mr-2"></i>Kembali</a>
                     <h5 class="m-0 font-weight-bold text-primary">Tambah Data {{ $title }}</h6>
                 </div>
@@ -78,7 +78,7 @@
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md-6 text-end">
-                        <h4>Tambah Siswa Ke Jadwal</h4>
+                        <h4>Tambah Siswa Ke Kamar</h4>
                     </div>
                     <div class="col-md-6 text-left">
                         <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
