@@ -18,6 +18,11 @@ class Siswa extends Model
         return $this->hasOne(Kamar::class, 'id', 'kamar_id');
     }
 
+    public function penghuni()
+    {
+        return $this->hasOne(Penghuni::class, 'siswa_id', 'id');
+    }
+
     public function periode()
     {
         return $this->hasOne(Periode::class, 'id', 'periode_id');

@@ -71,7 +71,7 @@ class JadwalController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.jadwal.index')->with('success', 'Data berhasil ditambahkan!');
+        return redirect()->route('admin.jadwal.siswa', $jadwal->id)->with('success', 'Data berhasil ditambahkan!');
     }
 
     public function store(Request $request)
@@ -149,7 +149,7 @@ class JadwalController extends Controller
         return redirect()->route('admin.jadwal.index')->with('success', 'Data berhasil dihapus!');
     }
 
-    public function delete_siswa_jadwal(Request $request)
+    public function delete_siswa_jadwal(Jadwal $jadwal, Request $request)
     {
         $explode = explode(',', $request->post('data_siswa_deleted'));
 
@@ -159,6 +159,6 @@ class JadwalController extends Controller
         }
         JadwalBySiswa::whereIn('id', $id_jadwal_by_siswa)->delete();
 
-        return redirect()->route('admin.jadwal.index')->with('success', 'Data berhasil dihapus!');
+        return redirect()->route('admin.jadwal.siswa', $jadwal->id)->with('success', 'Data berhasil dihapus!');
     }
 }

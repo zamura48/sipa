@@ -36,22 +36,33 @@ class PenghuniController extends Controller
         //
     }
 
+    public function tambah_penghuni(Kamar $kamar, Request $request)
+    {
+        $explode = explode(',', $request->post('data_siswa_selected'));
+
+        foreach ($explode as $key => $value) {
+            Penghuni::create([
+                'kamar_id' => $kamar->id,
+                'siswa_id' => $value,
+            ]);
+        }
+
+        return redirect()->route('admin.penghuni.show', $kamar->id)->with('success', 'Data berhasil disimpan!');
+    }
+
     /**
      * Display the specified resource.
      */
-    public function show(Kamar $kamar)
+    public function show($kamar)
     {
         $title = 'Penghuni Kamar';
-        $kamar = $kamar->withCount('penghunis')->first();
-        $penghuni = Penghuni::with('siswa')->get();
+        $kamar = Kamar::where('id', $kamar)->first();
+        $penghuni = Penghuni::with('siswa')->where('kamar_id', $kamar->id)->get();
+        $sisa_kuota_kamar = $kamar->jumlah_penghuni - $penghuni->count();
 
-        $siswa_id = [];
-        foreach ($penghuni as $key => $value) {
-            $siswa_id[] = $value->siswa_id;
-        }
-        $siswas = Siswa::with('kamar')->whereNotIn('id', $siswa_id)->get();
+        $siswas = Siswa::whereDoesntHave('penghuni')->get();
 
-        return view('admin.penghuni.show', compact('title', 'kamar', 'siswas', 'penghuni'));
+        return view('admin.penghuni.show', compact('title', 'kamar', 'sisa_kuota_kamar', 'siswas', 'penghuni'));
     }
 
     /**
@@ -76,5 +87,18 @@ class PenghuniController extends Controller
     public function destroy(Penghuni $penghuni)
     {
         //
+    }
+
+    public function delete_penghuni(Kamar $kamar, Request $request)
+    {
+        $explode = explode(',', $request->post('data_siswa_deleted'));
+
+        $id_jadwal_by_siswa = [];
+        foreach ($explode as $key => $value) {
+            $id_jadwal_by_siswa[] = $value;
+        }
+        Penghuni::whereIn('id', $id_jadwal_by_siswa)->delete();
+
+        return redirect()->route('admin.penghuni.show', $kamar->id)->with('success', 'Data berhasil dihapus!');
     }
 }

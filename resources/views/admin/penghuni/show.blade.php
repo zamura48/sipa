@@ -31,12 +31,12 @@
                 <tr>
                     <td>Sisa</td>
                     <td>:</td>
-                    <td>{{ $kamar->jumlah_penghuni - $kamar->penghunis_count }}</td>
+                    <td>{{ $sisa_kuota_kamar }}</td>
                 </tr>
             </table>
             <hr>
 
-            <form action="" method="POST" id="form-delete-siswa">
+            <form action="{{ route('admin.penghuni.delete_penghuni', $kamar->id) }}" method="POST" id="form-delete-siswa">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md-6 text-end">
@@ -74,7 +74,7 @@
             </form>
             <hr>
 
-            <form action="" method="POST" id="form-siswa">
+            <form action="{{ route('admin.penghuni.tambah_penghuni', $kamar->id) }}" method="POST" id="form-siswa">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md-6 text-end">
@@ -167,8 +167,9 @@
                 }
 
                 $.map(table.rows('.selected').data(), function(item, index) {
-                    data.push(item[4]);
+                    data.push(item[3]);
                 });
+
                 $("#data_siswa_selected").val(data);
                 $("#form-siswa").submit();
             });
@@ -183,7 +184,7 @@
                 }
 
                 $.map(table_list_siswa.rows('.selected').data(), function(item, index) {
-                    data.push(item[4]);
+                    data.push(item[3]);
                 });
                 $("#data_siswa_deleted").val(data);
                 $("#form-delete-siswa").submit();
