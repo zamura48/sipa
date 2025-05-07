@@ -87,7 +87,9 @@ class TagihanController extends Controller
     public function upload_bayar(Request $request, Tagihan $tagihan)
     {
         $request->validate([
-            'foto' => 'file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
+            'foto' => 'required|file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
+        ], [
+            'foto' => 'Bukti bayar wajib diisi.'
         ]);
 
         $file = $request->file('foto');

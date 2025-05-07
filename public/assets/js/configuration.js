@@ -14,7 +14,7 @@ $(document).ready(function() {
 
     $('.js-currency').on('input', function() {
         var input_val = $(this).val();
-        $(this).val(format_currency(input_val));
+        $(this).val('Rp'+format_currency(input_val));
     });
 
     $(".js-datepicker").datepicker({

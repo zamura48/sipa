@@ -24,7 +24,8 @@
                             <th>Jenis Iuran</th>
                             <th>Total</th>
                             <th>Keterangan</th>
-                            <th>Iuran Pendaftaran <br> <small class="text-danger">Hanya bisa diaktifkan salah satu</small></th>
+                            <th>Iuran Pendaftaran <br> <small class="text-danger">Hanya bisa diaktifkan salah satu</small>
+                            </th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -34,9 +35,11 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->jenisIuran->nama }}</td>
-                                <td>{{ format_currency($item->total) }}</td>
+                                <td>{{ 'Rp' . format_currency($item->total) }}</td>
                                 <td>{{ $item->keterangan }}</td>
-                                <td>{!! $item->is_pendaftaran ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tidak Aktif</span>' !!}</td>
+                                <td>{!! $item->is_pendaftaran
+                                    ? '<span class="badge badge-success">Aktif</span>'
+                                    : '<span class="badge badge-danger">Tidak Aktif</span>' !!}</td>
                                 <td>
                                     <a href="{{ route('admin.iuran.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail

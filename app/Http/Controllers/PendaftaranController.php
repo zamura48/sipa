@@ -8,6 +8,7 @@ use App\Models\Pendaftaran;
 use App\Models\PendaftaranKeringanan;
 use App\Models\Pengguna;
 use App\Models\Periode;
+use App\Models\Sekolah;
 use App\Models\Siswa;
 use App\Models\Tagihan;
 use App\Models\TagihanKeringanan;
@@ -31,7 +32,6 @@ class PendaftaranController extends Controller
         if (auth()->user()->role_id == 3) {
             $ortu_name = auth()->user()->name;
             $data_pendaftaran = Pendaftaran::where([
-                ['status', '=', 0],
                 ['nama_ortu', 'like', "%$ortu_name%"],
             ])->orderBy('id', 'DESC')->get()->load('periode', 'pendaftaran_keringanan.keringanan');
 
@@ -48,8 +48,9 @@ class PendaftaranController extends Controller
     {
         $title = 'Tambah Siswa Baru';
         $tipe_keringanan = Keringanan::all();
+        $sekolah = Sekolah::all();
 
-        return view('walmur.pendaftaran.create', compact('title', 'tipe_keringanan'));
+        return view('walmur.pendaftaran.create', compact('title', 'tipe_keringanan', 'sekolah'));
     }
 
     /**
@@ -59,9 +60,16 @@ class PendaftaranController extends Controller
     {
         $request->validate([
             'sekolah' => 'required',
-            'nis' => 'required|integer|unique:pendaftarans,nis',
+            'nis' => 'required|integer|min_digits:8|unique:pendaftarans,nis',
             'nama' => 'required',
             'jenis_kelamin' => 'required',
+        ], [
+            'nis.required' => 'NIS wajib diisi.',
+            'nis.min_digits' => 'NIS harus terdiri dari 8 digit angka.',
+            'nis.unique' => 'NIS ini sudah terdaftar.',
+            'sekolah.required' => 'Nama sekolah tidak boleh kosong.',
+            'nama.required' => 'Nama siswa wajib diisi.',
+            'jenis_kelamin.required' => 'Jenis kelamin siswa wajib dipilih.',
         ]);
 
         if ($request->tipe_keringanan[0] != '' && empty($request->dokumen_pelengkap)) {
@@ -71,7 +79,7 @@ class PendaftaranController extends Controller
         }
 
         $periode = Periode::where('status', 1)->first();
-        $ortu = Pengguna::where('id', '=', auth()->user()->pengguna_id)->first();
+        $ortu = WaliMurid::where('id', auth()->user()->wali_murid_id)->first();
 
         $data_insert_siswa = [
             'sekolah_id' => $request->sekolah,
@@ -179,13 +187,15 @@ class PendaftaranController extends Controller
                     'jenis_kelamin' => $pendaftaran->jenis_kelamin_ortu,
                 ]);
 
+                $explode = explode(' ', $pendaftaran->nama_ortu);
+                $username = $explode[0] . rand(00000, 99999);
                 User::create([
                     'role_id' => 3,
                     'wali_murid_id' => $wali_murid->id,
                     'name' => $pendaftaran->nama_ortu,
                     'email' => $pendaftaran->nis . '@gmail.com',
-                    'username' => $pendaftaran->nis,
-                    'password' => Hash::make($pendaftaran->nis),
+                    'username' => $username,
+                    'password' => Hash::make($username),
                 ]);
             }
 
@@ -237,6 +247,19 @@ class PendaftaranController extends Controller
             ]);
 
             $pendaftaran->update(['status' => 1]);
+
+            $nominal_pembayaran = format_currency($subtotal);
+            $text_wa = "Selamat siswa dengan nama {$pendaftaran->nama_siswa} telah terdaftar ke asrama.
+            \nAnda dapat memantau kegiatan siswa dengan login ke halaman wali murid.
+            \n " . url('walli_murid/login'). "
+            \n Anda dapat login dengan menggunakan akun dibawah ini:
+            \nUsername: $username
+            \nPassword: $username
+            \n
+            \n Silakan melakukan pembayaran dengan nominal Rp.{$nominal_pembayaran}.
+            \n Jika sudah anda dapat mengupload bukti bayar pada halaman wali murid pada menu Tagihan.
+            \n\nTerimakasih";
+            send_wa($pendaftaran->telepon_ortu, $text_wa);
 
             DB::commit();
 

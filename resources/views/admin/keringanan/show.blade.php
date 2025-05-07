@@ -46,7 +46,7 @@
                         </label>
                         <input type="text" class="form-control js-currency @error('total') is-invalid @enderror"
                             placeholder="Masukkan total..." id="total" name="total"
-                            value="{{ old('total', format_currency($keringanan->total)) }}" readonly>
+                            value="{{ old('total', 'Rp' . format_currency($keringanan->total)) }}" readonly>
                         @error('total')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

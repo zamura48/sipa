@@ -14,6 +14,10 @@
     if (isset($segments[1])) {
         $sub_modul = $segments[1];
     }
+
+    if ($sub_modul == 'laporan') {
+        $sub_modul = isset($segments[2]) ? $sub_modul.'/'.$segments[2] : $sub_modul;
+    }
 @endphp
 
 <ul class="navbar-nav sidebar accordion" id="accordionSidebar">
@@ -128,6 +132,16 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Absensi</span></a>
         </li>
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Laporan
+        </div>
+        <li class="nav-item {{ $sub_modul == 'laporan/absensi' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.laporan.absensi.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Laporan Absensi</span></a>
+        </li>
     @endif
 
     @if (auth()->user()->role_id == 3)
@@ -154,7 +168,7 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Tagihan</span></a>
         </li>
-        <li class="nav-item {{ $sub_modul == 'pendaftaran' ? 'active' : '' }}">
+        <li class="nav-item {{ $sub_modul == 'periode' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.periode.index') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Rekap Kegiatan</span></a>

@@ -4,13 +4,14 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3">
                     <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h6>
                 </div>
                 <div class="col-md-6">
-                    <a href="{{ route('admin.keringanan.create') }}" class="btn btn-primary btn-sm float-right">
-                        <i class="fa fa-plus mr-2"></i> Tambah Data
-                    </a>
+                    <div class="form-group">
+                        <span class="text-danger">Pilih Tanggal Terlebih Dahulu</span>
+                        <input type="date" name="tanggal" id="tanggal" class="form-control" placeholder="Pilih Tanggal" value="{{ $tanggal ?? '' }}">
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,33 +22,33 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Tipe</th>
-                            <th>Total</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
+                            <th>Jadwal</th>
+                            <th>Tanggal</th>
+                            <th>Absensi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $item)
+                            @php
+                                $tanggal = $item->absensi ? $item->absensi->tanggal : '-';
+                            @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->nama }}</td>
-                                <td>{{ $item->pilihan->isi }}</td>
-                                <td>{{ 'Rp' . format_currency($item->total) }}</td>
-                                <td>{{ $item->keterangan }}</td>
+                                <td>{{ $item->siswa->nama }}</td>
+                                <td>{{ $item->jadwal->nama }}</td>
+                                <td>{{ $item->jadwal->hari . ', ' . $tanggal }}</td>
                                 <td>
-                                    <a href="{{ route('admin.keringanan.show', $item->id) }}" class="btn btn-info btn-sm">
-                                        <i class="fa fa-info mr-2"></i> Detail
-                                    </a>
-                                    <form action="{{ route('admin.keringanan.destroy', $item->id) }}" method="POST"
-                                        style="display:inline;" id="delete-form-{{ $item->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="confirm_delete({{ $item->id }})">
-                                            <i class="fa fa-trash mr-2"></i> Hapus
-                                        </button>
-                                    </form>
+                                    @if ($item->absensi)
+                                        @if ($item->absensi->absen == 1)
+                                            <span class="badge badge-warning">Absen</span>
+                                        @endif
+                                        @if ($item->absensi->izin == 1)
+                                            <span class="badge badge-secondary">Izin</span>
+                                        @endif
+                                        @if ($item->absensi->masuk == 1)
+                                            <span class="badge badge-success">Masuk</span>
+                                        @endif
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -65,7 +66,12 @@
                 oLanguage: {
                     sUrl: "/assets/js/datatable_id.json"
                 }
-            })
+            });
+
+            $("#tanggal").change(function(e) {
+                e.preventDefault();
+                window.location.href = "{{ url()->current() }}?tanggal=" + $(this).val();
+            });
         });
 
         function confirm_delete(id) {

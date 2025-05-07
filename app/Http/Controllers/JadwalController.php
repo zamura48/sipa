@@ -36,7 +36,7 @@ class JadwalController extends Controller
 
     public function siswa(Jadwal $jadwal)
     {
-        $title = 'Siswa ke Jadwal';
+        $title = 'Tambah Siswa ke Jadwal';
         $jadwal_siswa = JadwalBySiswa::with('siswa.kamar')->where('jadwal_id', $jadwal->id)->get();
 
         $siswa_id = [];

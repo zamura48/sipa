@@ -46,7 +46,7 @@
                         </label>
                         <input type="text" class="form-control js-currency @error('total') is-invalid @enderror"
                             placeholder="Masukkan total..." id="total" name="total"
-                            value="{{ old('total', format_currency($iuran->total)) }}" readonly>
+                            value="{{ old('total', 'Rp' . format_currency($iuran->total)) }}" readonly>
                         @error('total')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -65,10 +65,12 @@
                             class="form-control form-select js-select2 @error('is_pendaftaran') is-invalid @enderror"
                             data-placeholder="- Pilih -" disabled>
                             <option value=""></option>
-                            <option value="1" {{ old('is_pendaftaran', $iuran->is_pendaftaran) == '1' ? 'selected' : '' }}>
+                            <option value="1"
+                                {{ old('is_pendaftaran', $iuran->is_pendaftaran) == '1' ? 'selected' : '' }}>
                                 Aktif
                             </option>
-                            <option value="0" {{ old('is_pendaftaran', $iuran->is_pendaftaran) == '0' ? 'selected' : '' }}>
+                            <option value="0"
+                                {{ old('is_pendaftaran', $iuran->is_pendaftaran) == '0' ? 'selected' : '' }}>
                                 Tidak Aktif
                             </option>
                         </select>

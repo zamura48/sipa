@@ -85,7 +85,7 @@ class LoginController extends Controller
     public function wali_murid_do_regis(Request $request)
     {
         $request->validate([
-            'nis' => 'required|integer|unique:pendaftarans,nis',
+            'nis' => 'required|integer|min_digits:8|unique:pendaftarans,nis',
             'sekolah' => 'required',
             'siswa_name' => 'required',
             'jenis_kelamin_siswa' => 'required',
@@ -93,6 +93,17 @@ class LoginController extends Controller
             'jenis_kelamin_ortu' => 'required',
             'alamat_ortu' => 'required',
             'nomor_hp' => 'required',
+        ], [
+            'nis.required' => 'NIS wajib diisi.',
+            'nis.min_digits' => 'NIS harus terdiri dari 8 digit angka.',
+            'nis.unique' => 'NIS ini sudah terdaftar.',
+            'sekolah.required' => 'Nama sekolah tidak boleh kosong.',
+            'siswa_name.required' => 'Nama siswa wajib diisi.',
+            'jenis_kelamin_siswa.required' => 'Jenis kelamin siswa wajib dipilih.',
+            'ortu_name.required' => 'Nama orang tua wajib diisi.',
+            'jenis_kelamin_ortu.required' => 'Jenis kelamin orang tua wajib dipilih.',
+            'alamat_ortu.required' => 'Alamat orang tua wajib diisi.',
+            'nomor_hp.required' => 'Nomor HP wajib diisi.',
         ]);
 
         if ($request->tipe_keringanan[0] != '' && empty($request->dokumen_pelengkap)) {
@@ -125,7 +136,7 @@ class LoginController extends Controller
             $request->validate([
                 'foto_siswa' => 'file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
             ]);
-            $file_name = $request->nis . time().str_replace(' ', '_', $request->siswa_name) . '.' . $file->getClientOriginalExtension();
+            $file_name = $request->nis . time() . str_replace(' ', '_', $request->siswa_name) . '.' . $file->getClientOriginalExtension();
             $file_save = 'foto_siswa';
             $file->move($file_save, $file_name);
             $data_insert_siswa['foto_siswa'] = $file_name;

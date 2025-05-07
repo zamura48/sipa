@@ -9,12 +9,14 @@ use App\Http\Controllers\KamarController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KeringananController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LaporanAbsensi;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\PilihanController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\SiswaController;
@@ -52,6 +54,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::get('login/logout', [LoginController::class, 'logout'])->name('login.logout');
+    Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_admin'])->name('index');
@@ -96,10 +99,15 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     });
     Route::resource('/tagihan_keringanan', TagihanKeringananController::class);
     Route::resource('/user', UserController::class);
+
+    Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::get('absensi', [LaporanAbsensi::class, 'index'])->name('absensi.index');
+    });
 });
 
 Route::middleware('pengurus')->name('pengurus.')->prefix('pengurus')->group(function () {
     Route::get('login/logout', [LoginController::class, 'logout'])->name('login.logout');
+    Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_pengurus'])->name('index');
@@ -108,6 +116,7 @@ Route::middleware('pengurus')->name('pengurus.')->prefix('pengurus')->group(func
 
 Route::middleware('walmur')->name('walmur.')->prefix('wali_murid')->group(function () {
     Route::get('login/logout', [LoginController::class, 'logout'])->name('login.logout');
+    Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_walmur'])->name('index');

@@ -32,4 +32,9 @@ class JadwalBySiswa extends Model
     {
         return $this->hasOne(Absensi::class, 'jadwal_by_siswa_id', 'id');
     }
+
+    public function absensis()
+    {
+        return $this->hasMany(Absensi::class, 'jadwal_by_siswa_id', 'id');
+    }
 }

@@ -22,6 +22,19 @@
             <form action="{{ route('walmur.pendaftaran.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="sekolah">Sekolah</label>
+                            <select name="sekolah" id="sekolah" class="form-control">
+                                <option value="">-- Pilih Sekolah --</option>
+                                @foreach ($sekolah as $key => $value)
+                                    <option value="{{ $value->id }}"
+                                        {{ $value->id == old('sekolah') ? 'selected' : '' }}>
+                                        {{ $value->nama_sekolah }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-12 mb-3">
                         <label for="nis" class="form-label">NIS</label>
                         <input type="number" class="form-control @error('nis') is-invalid @enderror"

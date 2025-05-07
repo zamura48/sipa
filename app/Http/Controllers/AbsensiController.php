@@ -23,7 +23,9 @@ class AbsensiController extends Controller
     public function presensi(Jadwal $jadwal)
     {
         $title = 'Absensi Siswa ' . $jadwal->nama;
-        $data = JadwalBySiswa::with('siswa.kamar', 'absensi')->where('jadwal_id', $jadwal->id)->get();
+        $data = JadwalBySiswa::with(['siswa.kamar', 'absensi' => function ($q) {
+            $q->where('tanggal', date('Y-m-d'));
+        }])->where('jadwal_id', $jadwal->id)->get();
 
         return view('admin.absensi.presensi', compact('title', 'data', 'jadwal'));
     }
@@ -45,6 +47,7 @@ class AbsensiController extends Controller
                 ['jadwal_by_siswa_id' => $key, 'tanggal' => date('Y-m-d')],
                 // Data yang akan diset atau diperbarui
                 [
+                    'siswa_id' => 0,
                     'absen' => $value == 1 ? 1 : 0,  // Jika absen, set 'absen' = 1, jika tidak = 0
                     'izin' => $value == 2 ? 1 : 0,    // Jika izin, set 'izin' = 1, jika tidak = 0
                     'masuk' => $value == 3 ? 1 : 0,   // Jika masuk, set 'masuk' = 1, jika tidak = 0

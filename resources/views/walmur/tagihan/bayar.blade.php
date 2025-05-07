@@ -42,7 +42,7 @@
                             <tr>
                                 <td>Nominal Pembayaran</td>
                                 <td>:</td>
-                                <td>{{ $data->total_semua }}</td>
+                                <td>Rp{{ format_currency($data->total_semua) }}</td>
                             </tr>
                         </table>
                     </div>

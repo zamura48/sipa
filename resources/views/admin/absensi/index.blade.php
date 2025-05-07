@@ -18,7 +18,7 @@
                             <th>Nama</th>
                             <th>Hari, Jam</th>
                             <th>Kegiatan</th>
-                            <th>Aksi</th>
+                            <th>Aksi <br><small class="text-danger">Tombol absen akan muncul sesuai dengan hari.</small></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,14 +30,17 @@
                                 <td>
                                     <ul>
                                         @foreach ($item->jadwalDetails as $value)
-                                        <li>{{ $value->kegiatan->nama }}</li>
+                                            <li>{{ $value->kegiatan->nama }}</li>
                                         @endforeach
                                     </ul>
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.absensi.presensi', $item->id) }}" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-plus mr-2"></i> Absensi
-                                    </a>
+                                    @if (nama_hari_indo(date('l')) == $item->hari)
+                                        <a href="{{ route('admin.absensi.presensi', $item->id) }}"
+                                            class="btn btn-primary btn-sm">
+                                            <i class="fa fa-plus mr-2"></i> Absensi
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

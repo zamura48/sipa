@@ -7,7 +7,6 @@
                 <div class="col-md-12 d-flex">
                     <a href="{{ route('admin.jadwal.index') }}" class="btn btn-secondary mr-2"><i
                             class="fa fa-arrow-left mr-2"></i>Kembali</a>
-                    <h5 class="m-0 font-weight-bold text-primary">Tambah Data {{ $title }}</h6>
                 </div>
             </div>
         </div>
@@ -165,7 +164,7 @@
                     data.push(item[4]);
                 });
 
-                
+
                 $("#data_siswa_selected").val(data);
                 $("#form-siswa").submit();
             });

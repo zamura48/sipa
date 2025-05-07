@@ -34,7 +34,7 @@
                                 </td>
                                 <td>{{ $item->iuran->nama }}</td>
                                 {{-- <td class="d-none">{{ $item->jatuh_tempo }}</td> --}}
-                                <td>{{ $item->total_semua }}</td>
+                                <td>Rp{{ format_currency($item->total_semua) }}</td>
                                 <td>
                                     @if ($item->status == 1)
                                         <span class="badge badge-warning">Sudah Bayar</span>
@@ -46,9 +46,11 @@
                                 </td>
                                 <td>
                                     @if ($item->status == 0)
-                                        <a href="{{ route('walmur.tagihan.bayar', $item->id) }}" class="btn btn-primary">Bayar</a>
+                                        <a href="{{ route('walmur.tagihan.bayar', $item->id) }}"
+                                            class="btn btn-primary">Bayar</a>
                                     @else
-                                        <a href="{{ asset('bukti_bayar/' . $item->bukti_bayar) }}" target="_blank" class="btn btn-info">Lihat Foto</a>
+                                        <a href="{{ asset('bukti_bayar/' . $item->bukti_bayar) }}" target="_blank"
+                                            class="btn btn-info">Lihat Foto</a>
                                     @endif
                                 </td>
                             </tr>

@@ -20,7 +20,7 @@
                                 <td>Nama</td>
                                 <td>Kamar</td>
                                 <td>Jenis Kelamin</td>
-                                <td>Absen</td>
+                                <td>Alpha</td>
                                 <td>Izin</td>
                                 <td>Masuk</td>
                             </tr>
