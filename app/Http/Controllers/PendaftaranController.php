@@ -177,6 +177,9 @@ class PendaftaranController extends Controller
                 ['telepon', '=', $pendaftaran->telepon_ortu]
             ])->first();
 
+            $explode = explode(' ', $pendaftaran->nama_ortu);
+            $username = $explode[0] . rand(00000, 99999);
+
             if ($data_wali_murid) {
                 $wali_murid = $data_wali_murid;
             } else {
@@ -187,8 +190,6 @@ class PendaftaranController extends Controller
                     'jenis_kelamin' => $pendaftaran->jenis_kelamin_ortu,
                 ]);
 
-                $explode = explode(' ', $pendaftaran->nama_ortu);
-                $username = $explode[0] . rand(00000, 99999);
                 User::create([
                     'role_id' => 3,
                     'wali_murid_id' => $wali_murid->id,
@@ -251,7 +252,7 @@ class PendaftaranController extends Controller
             $nominal_pembayaran = format_currency($subtotal);
             $text_wa = "Selamat siswa dengan nama {$pendaftaran->nama_siswa} telah terdaftar ke asrama.
             \nAnda dapat memantau kegiatan siswa dengan login ke halaman wali murid.
-            \n " . url('walli_murid/login'). "
+            \n " . url('walli_murid/login') . "
             \n Anda dapat login dengan menggunakan akun dibawah ini:
             \nUsername: $username
             \nPassword: $username
