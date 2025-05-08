@@ -179,7 +179,7 @@ class PendaftaranController extends Controller
 
             $explode = explode(' ', $pendaftaran->nama_ortu);
             $username = $explode[0] . rand(00000, 99999);
-
+            $text_username = "";
             if ($data_wali_murid) {
                 $wali_murid = $data_wali_murid;
             } else {
@@ -198,6 +198,12 @@ class PendaftaranController extends Controller
                     'username' => $username,
                     'password' => Hash::make($username),
                 ]);
+
+                $text_username = "\n " . url('walli_murid/login') . "
+            \n Anda dapat login dengan menggunakan akun dibawah ini:
+            \nUsername: $username
+            \nPassword: $username
+            \n";
             }
 
             $siswa = Siswa::create([
@@ -252,11 +258,7 @@ class PendaftaranController extends Controller
             $nominal_pembayaran = format_currency($subtotal);
             $text_wa = "Selamat siswa dengan nama {$pendaftaran->nama_siswa} telah terdaftar ke asrama.
             \nAnda dapat memantau kegiatan siswa dengan login ke halaman wali murid.
-            \n " . url('walli_murid/login') . "
-            \n Anda dapat login dengan menggunakan akun dibawah ini:
-            \nUsername: $username
-            \nPassword: $username
-            \n
+            $text_username
             \n Silakan melakukan pembayaran dengan nominal Rp.{$nominal_pembayaran}.
             \n Jika sudah anda dapat mengupload bukti bayar pada halaman wali murid pada menu Tagihan.
             \n\nTerimakasih";
