@@ -30,12 +30,7 @@
                             </p>
 
                             <div class="hero-buttons">
-                                <a href="#about" class="btn btn-primary me-0 me-sm-2 mx-1">Daftar Sekarang</a>
-                                <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
-                                    class="btn btn-link mt-2 mt-sm-0 glightbox">
-                                    <i class="bi bi-play-circle me-1"></i>
-                                    Lihat Video
-                                </a>
+                                <a href="{{ route('walmur.login') }}" class="btn btn-primary me-0 me-sm-2 mx-1">Daftar Sekarang</a>
                             </div>
                         </div>
                     </div>
@@ -324,7 +319,7 @@
         <!-- Features 2 Section -->
         <section id="features-2" class="features-2 section">
             <div class="container" data-aos="fade-up" data-aos-delay="100">
-                <div class="row align-items-center">
+                <div class="row align-items-center d-flex justify-content-center">
                     <div class="col-lg-4">
                         <div class="feature-item text-end mb-5" data-aos="fade-right" data-aos-delay="200">
                             <div class="d-flex align-items-center justify-content-end gap-4">
@@ -353,7 +348,7 @@
                         </div><!-- End .feature-item -->
 
                         <div class="feature-item text-end" data-aos="fade-right" data-aos-delay="400">
-                            <div class="d-flex align-items-center justify-content-end gap-4">
+                            <div class="d-flex align-items-center justify-content-end gap-4 d-none">
                                 <div class="feature-content">
                                     <h3>Notifikasi Real-Time</h3>
                                     <p>Orang tua menerima notifikasi langsung tentang absensi, aktivitas, dan perkembangan
@@ -365,13 +360,6 @@
                             </div>
                         </div><!-- End .feature-item -->
                     </div>
-
-                    <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
-                        <div class="phone-mockup text-center">
-                            <img src="<?= asset('assets/lib/ilanding') ?>/assets/img/phone-app-screen.webp"
-                                alt="Phone Mockup" class="img-fluid">
-                        </div>
-                    </div><!-- End Phone Mockup -->
 
                     <div class="col-lg-4">
                         <div class="feature-item mb-5" data-aos="fade-left" data-aos-delay="200">
@@ -401,7 +389,7 @@
                         </div><!-- End .feature-item -->
 
                         <div class="feature-item" data-aos="fade-left" data-aos-delay="400">
-                            <div class="d-flex align-items-center gap-4">
+                            <div class="d-flex align-items-center gap-4 d-none">
                                 <div class="feature-icon flex-shrink-0">
                                     <i class="bi bi-graph-up-arrow"></i>
                                 </div>
@@ -455,11 +443,11 @@
         </section><!-- /Stats Section -->
 
         <!-- Contact Section -->
-        <section id="contact" class="contact section light-background">
+        <section id="contact" class="contact section light-background d-none">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Contact</h2>
+                <h2>Kontak</h2>
                 <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
             </div><!-- End Section Title -->
 
@@ -468,9 +456,8 @@
                 <div class="row g-4 g-lg-5">
                     <div class="col-lg-5">
                         <div class="info-box" data-aos="fade-up" data-aos-delay="200">
-                            <h3>Contact Info</h3>
-                            <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante
-                                ipsum primis.</p>
+                            <h3>Info Kontak</h3>
+                            <p>Punya pertanyaan atau ingin tahu lebih banyak tentang layanan kami? Tim kami siap membantu Anda!</p>
 
                             <div class="info-item" data-aos="fade-up" data-aos-delay="300">
                                 <div class="icon-box">
@@ -478,8 +465,8 @@
                                 </div>
                                 <div class="content">
                                     <h4>Our Location</h4>
-                                    <p>A108 Adam Street</p>
-                                    <p>New York, NY 535022</p>
+                                    <p>Jl. Raya Kandung Dsn. Purwodadi Kidul, RT.02/RW.08, Purwodadi, Tanen, Kec. Rejotangan, Kabupaten Tulungagung</p>
+                                    <p>Jawa Timur 66293</p>
                                 </div>
                             </div>
 
@@ -489,12 +476,11 @@
                                 </div>
                                 <div class="content">
                                     <h4>Phone Number</h4>
-                                    <p>+1 5589 55488 55</p>
-                                    <p>+1 6678 254445 41</p>
+                                    <p>0821-4100-4788</p>
                                 </div>
                             </div>
 
-                            <div class="info-item" data-aos="fade-up" data-aos-delay="500">
+                            <div class="info-item d-none" data-aos="fade-up" data-aos-delay="500">
                                 <div class="icon-box">
                                     <i class="bi bi-envelope"></i>
                                 </div>

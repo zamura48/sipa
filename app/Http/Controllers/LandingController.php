@@ -12,4 +12,11 @@ class LandingController extends Controller
 
         return view('landing_page.home.index', compact('title'));
     }
+
+    public function login()
+    {
+        $title = 'Login';
+
+        return view('landing_page.login.index', compact('title'));
+    }
 }

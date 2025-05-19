@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [LandingController::class, 'index']);
+Route::get('/login', [LandingController::class, 'login'])->name('landing.login');
 
 Route::middleware('guest')->group(function () {
     Route::get('admin/login', [LoginController::class, 'admin_login'])->name('admin.login');
@@ -112,6 +113,23 @@ Route::middleware('pengurus')->name('pengurus.')->prefix('pengurus')->group(func
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_pengurus'])->name('index');
     });
+    Route::resource('/pendaftaran', PendaftaranController::class);
+    Route::prefix('pendaftaran')->name('pendaftaran.')->group(function () {
+        Route::post('konfirmasi_keringanan', [PendaftaranController::class, 'konfirmasi_keringanan'])->name('konfirmasi_keringanan');
+    });
+    Route::resource('/penghuni', PenghuniController::class);
+    Route::prefix('penghuni')->name('penghuni.')->group(function () {
+        Route::post('/tambah_penghuni/{kamar}', [PenghuniController::class, 'tambah_penghuni'])->name('tambah_penghuni');
+        Route::post('/delete_penghuni/{kamar}', [PenghuniController::class, 'delete_penghuni'])->name('delete_penghuni');
+    });
+    Route::resource('/absensi', AbsensiController::class);
+    Route::prefix('absensi')->name('absensi.')->group(function () {
+        Route::get('presensi/{jadwal}', [AbsensiController::class, 'presensi'])->name('presensi');
+        Route::post('presensi/save/{jadwal}', [AbsensiController::class, 'presensi_save'])->name('presensi.save');
+    });
+    Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::get('absensi', [LaporanAbsensi::class, 'index'])->name('absensi.index');
+    });
 });
 
 Route::middleware('walmur')->name('walmur.')->prefix('wali_murid')->group(function () {
@@ -127,5 +145,8 @@ Route::middleware('walmur')->name('walmur.')->prefix('wali_murid')->group(functi
     Route::prefix('tagihan')->name('tagihan.')->group(function () {
         Route::get('/bayar/{tagihan}', [TagihanController::class, 'bayar'])->name('bayar');
         Route::post('/bayar/upload_bayar/{tagihan}', [TagihanController::class, 'upload_bayar'])->name('upload_bayar');
+    });
+    Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::get('absensi', [LaporanAbsensi::class, 'index'])->name('absensi.index');
     });
 });

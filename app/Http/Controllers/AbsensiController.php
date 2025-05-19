@@ -17,6 +17,10 @@ class AbsensiController extends Controller
         $title = 'Absensi';
         $data = Jadwal::with('jadwalDetails')->get();
 
+        if (auth()->user()->role_id == 2) {
+            return view('pengurus.absensi.index', compact('title', 'data'));
+        }
+
         return view('admin.absensi.index', compact('title', 'data'));
     }
 
@@ -27,6 +31,9 @@ class AbsensiController extends Controller
             $q->where('tanggal', date('Y-m-d'));
         }])->where('jadwal_id', $jadwal->id)->get();
 
+        if (auth()->user()->role_id == 2) {
+            return view('pengurus.absensi.presensi', compact('title', 'data', 'jadwal'));
+        }
         return view('admin.absensi.presensi', compact('title', 'data', 'jadwal'));
     }
 
@@ -56,7 +63,12 @@ class AbsensiController extends Controller
         }
 
         // Mengarahkan kembali ke halaman presensi jadwal dengan pesan sukses
-        return redirect()->route('admin.absensi.presensi', $jadwal->id)
+
+        $role = 'admin';
+        if (auth()->user()->role_id == 2) {
+            $role = 'pengurus';
+        }
+        return redirect()->route($role . '.absensi.presensi', $jadwal->id)
             ->with('success', 'Data berhasil ditambahkan!');
     }
 

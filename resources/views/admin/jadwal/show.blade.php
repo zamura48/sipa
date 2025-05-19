@@ -17,7 +17,8 @@
                     <div class="col-md-12 mb-3">
                         <label for="nama" class="form-label">Nama Jadwal</label>
                         <input type="text" class="form-control @if ($errors->has('nama')) is-invalid @endif"
-                            placeholder="Masukkan nama..." id="nama" name="nama" value="{{ $jadwal->nama }}" readonly>
+                            placeholder="Masukkan nama..." id="nama" name="nama" value="{{ $jadwal->nama }}"
+                            readonly>
                         @if ($errors->has('nama'))
                             <div class="invalid-feedback">{{ $errors->first('nama') }}</div>
                         @endif
@@ -40,7 +41,8 @@
                     <div class="col-md-6 mb-3">
                         <label for="jam" class="form-label">Jam</label>
                         <input type="time" class="form-control @if ($errors->has('jam')) is-invalid @endif"
-                            placeholder="Masukkan jam..." id="jam" name="jam" value="{{ date('H:i', strtotime($jadwal->jam)) }}" readonly>
+                            placeholder="Masukkan jam..." id="jam" name="jam"
+                            value="{{ date('H:i', strtotime($jadwal->jam)) }}" readonly>
                         @if ($errors->has('jam'))
                             <div class="invalid-feedback">{{ $errors->first('jam') }}</div>
                         @endif
@@ -58,7 +60,8 @@
                                 }
                             @endphp
                             @foreach ($kegiatan as $item)
-                                <option value="{{ $item->id }}" {{ in_array($item->id, $kegiatan_id_use) ? 'selected' : '' }}>
+                                <option value="{{ $item->id }}"
+                                    {{ in_array($item->id, $kegiatan_id_use) ? 'selected' : '' }}>
                                     {{ $item->nama }}</option>
                             @endforeach
                         </select>
@@ -72,7 +75,7 @@
                 <button class="btn btn-danger float-right d-none btn_cancel mr-2"><i
                         class="fa fa-save mr-2"></i>Batal</button>
                 <button class="btn btn-warning float-right btn_edit"><i class="fa fa-save mr-2"></i>Edit</button>
-                <a href="{{ route('admin.jenis_iuran.index') }}" class="btn btn-secondary mr-2 float-right"><i
+                <a href="{{ route('admin.jadwal.index') }}" class="btn btn-secondary mr-2 float-right"><i
                         class="fa fa-arrow-left mr-2"></i>Kembali</a>
             </form>
         </div>
@@ -88,7 +91,7 @@
                 $('.btn_save').removeClass('d-none');
                 $('.btn_cancel').removeClass('d-none');
                 $('.form-control').attr('readonly', false);
-                $('.form-select').prop('disabled', false);
+                $('.form-control.form-select').attr('disabled', false);
             });
 
             $('.btn_cancel').on('click', function(e) {

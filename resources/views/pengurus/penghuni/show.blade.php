@@ -5,9 +5,8 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-md-12 d-flex">
-                    <a href="{{ route('admin.penghuni.index') }}" class="btn btn-secondary mr-2"><i
+                    <a href="{{ route('pengurus.penghuni.index') }}" class="btn btn-secondary mr-2"><i
                             class="fa fa-arrow-left mr-2"></i>Kembali</a>
-                    <h5 class="m-0 font-weight-bold text-primary">Tambah Data {{ $title }}</h6>
                 </div>
             </div>
         </div>
@@ -42,16 +41,12 @@
                     <div class="col-md-6 text-end">
                         <h4>List Penghuni</h4>
                     </div>
-                    <div class="col-md-6 text-left">
-                        <button type="submit" class="btn btn-danger float-right" id="btn-delete"><i
-                                class="fa fa-trash mr-2"></i>Hapus</button>
-                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped" id="table_list_siswa">
                         <thead>
                             <tr>
-                                <td><input type="checkbox" id="checkAllDelete"></td>
+                                <td>No</td>
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td></td>
@@ -60,7 +55,7 @@
                         <tbody>
                             @foreach ($penghuni as $key => $item)
                                 <tr>
-                                    <td><input type="checkbox" id="check-delete-{{ $key }}"></td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->siswa->nama }}</td>
                                     <td>{{ $item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                     <td>{{ $item->id }}</td>
@@ -71,43 +66,6 @@
                 </div>
 
                 <input type="hidden" name="data_siswa_deleted" id="data_siswa_deleted">
-            </form>
-            <hr>
-
-            <form action="{{ route('admin.penghuni.tambah_penghuni', $kamar->id) }}" method="POST" id="form-siswa">
-                @csrf
-                <div class="row mb-3">
-                    <div class="col-md-6 text-end">
-                        <h4>Tambah Siswa Ke Kamar</h4>
-                    </div>
-                    <div class="col-md-6 text-left">
-                        <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
-                                class="fa fa-save mr-2"></i>Simpan</button>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-striped" id="table_siswa">
-                        <thead>
-                            <tr>
-                                <td><input type="checkbox" id="checkAll"></td>
-                                <td>Nama</td>
-                                <td>Jenis Kelamin</td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($siswas as $key => $siswa)
-                                <tr>
-                                    <td><input type="checkbox" id="check-{{ $key }}"></td>
-                                    <td>{{ $siswa->nama }}</td>
-                                    <td>{{ $siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
-                                    <td>{{ $siswa->id }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <input type="hidden" name="data_siswa_selected" id="data_siswa_selected">
             </form>
         </div>
     </div>

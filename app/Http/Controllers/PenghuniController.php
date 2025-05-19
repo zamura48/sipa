@@ -17,6 +17,9 @@ class PenghuniController extends Controller
         $title = 'Penghuni Kamar';
         $data = Kamar::withCount('penghunis')->get();
 
+        if (auth()->user()->role_id == 2) {
+            return view('pengurus.penghuni.index', compact('title', 'data'));
+        }
         return view('admin.penghuni.index', compact('title', 'data'));
     }
 
@@ -62,6 +65,9 @@ class PenghuniController extends Controller
 
         $siswas = Siswa::whereDoesntHave('penghuni')->get();
 
+        if (auth()->user()->role_id == 2) {
+            return view('pengurus.penghuni.show', compact('title', 'kamar', 'sisa_kuota_kamar', 'siswas', 'penghuni'));
+        }
         return view('admin.penghuni.show', compact('title', 'kamar', 'sisa_kuota_kamar', 'siswas', 'penghuni'));
     }
 

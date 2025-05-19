@@ -38,6 +38,10 @@ class PendaftaranController extends Controller
             return view('walmur.pendaftaran.index', compact('title', 'data_pendaftaran'));
         }
 
+        if (auth()->user()->role_id == 2) {
+            return view('pengurus.pendaftaran.index', compact('title', 'data_pendaftaran'));
+        }
+
         return view('admin.pendaftaran.index', compact('title', 'data_pendaftaran'));
     }
 

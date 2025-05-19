@@ -57,7 +57,7 @@ class LoginController extends Controller
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'role_id' => 2])) {
             $request->session()->regenerate();
 
-            return redirect()->route('admin.dashboard.index');
+            return redirect()->route('pengurus.dashboard.index');
         }
 
         return back()->with([
