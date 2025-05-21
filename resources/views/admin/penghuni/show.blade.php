@@ -61,8 +61,8 @@
                             @foreach ($penghuni as $key => $item)
                                 <tr>
                                     <td><input type="checkbox" id="check-delete-{{ $key }}"></td>
-                                    <td>{{ $item->siswa->nama }}</td>
-                                    <td>{{ $item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                    <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
+                                    <td>{{ $item->siswa ? $item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' : '-' }}</td>
                                     <td>{{ $item->id }}</td>
                                 </tr>
                             @endforeach

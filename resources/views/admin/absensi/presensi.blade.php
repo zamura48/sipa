@@ -29,9 +29,9 @@
                             @foreach ($data as $key => $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->siswa->nama }}</td>
-                                    <td>{{ $item->siswa->kamar ? $item->siswa->kamar->nama : '' }}</td>
-                                    <td>{{ $item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                    <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
+                                    <td>{{ $item->siswa->kamar ? $item->siswa->kamar->nama : '-' }}</td>
+                                    <td>{{ $item->siswa ? $item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' : '-' }}</td>
                                     <td><input type="radio" name="absensi_{{ $item->id }}" class="check-absen"
                                             id="check-absen-{{ $key }}" data-id="{{ $item->id }}"
                                             {{ $item->absensi ? ($item->absensi->absen == 1 ? 'checked' : '') : '' }}

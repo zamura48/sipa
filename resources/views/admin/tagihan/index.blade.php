@@ -28,9 +28,9 @@
                         @foreach ($data as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->siswa->nama }} <br>
+                                <td>{{ $item->siswa ? $item->siswa->nama : '-' }} <br>
                                     <span class="badge badge-info">
-                                        NIS: {{ $item->siswa->nis }}
+                                        NIS: {{ $item->siswa ? $item->siswa->nis : '-' }}
                                     </span>
                                 </td>
                                 <td>{{ $item->iuran->nama }}</td>
