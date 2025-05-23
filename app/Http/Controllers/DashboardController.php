@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kamar;
 use App\Models\Pendaftaran;
+use App\Models\Sekolah;
 use App\Models\Siswa;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
@@ -22,7 +23,29 @@ class DashboardController extends Controller
         $tagihan_terbayar = $this->total_tagihan(1);
         $sisa_kamar = $this->sisa_kamar();
 
-        return view('admin.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar'));
+        $get_data_kamar = $this->sisa_kamar(false);
+        $data_nama_kamar = [];
+        $data_sisa_kamar = [];
+        foreach ($get_data_kamar as $key => $value) {
+            $data_nama_kamar[] = $value->nama;
+            $data_sisa_kamar[] = $value->jumlah_penghuni - $value->penghunis_count;
+        }
+
+        $get_sekolah = Sekolah::all();
+        $data_sekolah = [];
+        $total_pendaftar = [];
+        $total_pendaftar_confirm = [];
+        $total_pendaftar_not_confirm = [];
+        foreach ($get_sekolah as $key => $value) {
+            $data_sekolah[] = $value->nama_sekolah;
+            $confirm = $this->total_pendaftar(1, $value->id);
+            $not_confirm = $this->total_pendaftar(0, $value->id);
+            $total_pendaftar[] = $confirm + $not_confirm;
+            $total_pendaftar_confirm[] = $confirm;
+            $total_pendaftar_not_confirm[] = $not_confirm;
+        }
+
+        return view('admin.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah'));
     }
 
     public function dashboard_pengurus()
@@ -51,11 +74,15 @@ class DashboardController extends Controller
         return view('walmur.dashboard.index', compact('title', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar'));
     }
 
-    private function total_pendaftar($status)
+    private function total_pendaftar($status, $sekolah = '')
     {
-        $data_pendaftar = Pendaftaran::where('status', $status)->count();
+        if ($sekolah) {
+            $data_pendaftar = Pendaftaran::where('status', $status)->where('sekolah_id', $sekolah)->count();
+        } else {
+            $data_pendaftar = Pendaftaran::where('status', $status)->count();
+        }
 
-        return $data_pendaftar;
+        return $data_pendaftar ?? 0;
     }
 
     private function total_kamar()
@@ -92,9 +119,13 @@ class DashboardController extends Controller
         return $data_tagihan;
     }
 
-    private function sisa_kamar()
+    private function sisa_kamar($is_limit = true)
     {
-        $data = Kamar::withCount('penghunis')->orderBy('penghunis_count', 'desc')->limit(5)->get();
+        if ($is_limit) {
+            $data = Kamar::withCount('penghunis')->orderBy('penghunis_count', 'desc')->limit(5)->get();
+        } else {
+            $data = Kamar::withCount('penghunis')->orderBy('penghunis_count', 'desc')->get();
+        }
 
         return $data;
     }

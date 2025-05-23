@@ -22,6 +22,7 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Kapasitas Penghuni</th>
+                            <th>Jenis</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -31,6 +32,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->jumlah_penghuni }}</td>
+                                @if ($item->jenis == 'L')
+                                    <td>Laki - Laki</td>
+                                @elseif ($item->jenis == 'P')
+                                    <td>Perempuan</td>
+                                @else
+                                    <td>-</td>
+                                @endif
                                 <td>
                                     <a href="{{ route('admin.kamar.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail

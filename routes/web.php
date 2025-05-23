@@ -92,7 +92,9 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::resource('/tagihan', TagihanController::class);
     Route::resource('/penghuni', PenghuniController::class);
     Route::prefix('penghuni')->name('penghuni.')->group(function () {
+        Route::get('/pindah/{kamar}', [PenghuniController::class, 'pindah'])->name('pindah');
         Route::post('/tambah_penghuni/{kamar}', [PenghuniController::class, 'tambah_penghuni'])->name('tambah_penghuni');
+        Route::post('/update_penghuni/{kamar}', [PenghuniController::class, 'update_penghuni'])->name('update_penghuni');
         Route::post('/delete_penghuni/{kamar}', [PenghuniController::class, 'delete_penghuni'])->name('delete_penghuni');
     });
     Route::prefix('tagihan')->name('tagihan.')->group(function () {

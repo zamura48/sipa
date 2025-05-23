@@ -5,27 +5,33 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-md-12 d-flex">
-                    <a href="{{ route('admin.jadwal.index') }}" class="btn btn-secondary mr-2"><i
+                    <a href="{{ route('admin.penghuni.index') }}" class="btn btn-secondary mr-2"><i
                             class="fa fa-arrow-left mr-2"></i>Kembali</a>
+                    <h5 class="m-0 font-weight-bold text-primary">Tambah Data {{ $title }}</h6>
                 </div>
             </div>
         </div>
         <div class="card-body">
             <table class="table">
                 <tr>
-                    <td style="width: 150px">Nama Jadwal</td>
+                    <td style="width: 150px">Kamar</td>
                     <td style="width: 30px">:</td>
-                    <td>{{ $jadwal->nama }}</td>
+                    <td>{{ $kamar->nama }}</td>
                 </tr>
                 <tr>
-                    <td>Hari</td>
+                    <td>Kapasitas Kamar</td>
                     <td>:</td>
-                    <td>{{ $jadwal->hari }}</td>
+                    <td>{{ $kamar->jumlah_penghuni }}</td>
                 </tr>
                 <tr>
-                    <td>Jam</td>
+                    <td>Penghuni</td>
                     <td>:</td>
-                    <td>{{ $jadwal->jam }}</td>
+                    <td>{{ count($penghuni) }}</td>
+                </tr>
+                <tr>
+                    <td>Sisa</td>
+                    <td>:</td>
+                    <td>{{ $sisa_kuota_kamar }}</td>
                 </tr>
             </table>
             <hr>
@@ -35,35 +41,27 @@
     <div class="card shadow mb-4">
         <div class="card-header pb-0">
             <div class="row mb-3">
-                <div class="col-md-6 text-end">
-                    <h4>List Siswa Pada Jadwal</h4>
-                </div>
-                <div class="col-md-6 text-left">
-                    <button type="submit" class="btn btn-danger float-right" id="btn-delete"><i
-                            class="fa fa-trash mr-2"></i>Hapus</button>
+                <div class="col-md-6">
+                    <h4>List Penghuni</h4>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.jadwal.delete_siswa_jadwal', $jadwal->id) }}" method="POST"
-                id="form-delete-siswa">
-                @csrf
-                <table class="table" id="table_list_siswa">
+            <div class="table-responsive">
+                <table class="table table-striped" id="table_list_siswa">
                     <thead>
                         <tr>
-                            <td><input type="checkbox" id="checkAllDelete"></td>
+                            <td>No.</td>
                             <td>Nama</td>
-                            <td>Kamar</td>
                             <td>Jenis Kelamin</td>
                             <td></td>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($jadwal_siswa as $key => $item)
+                        @foreach ($penghuni as $key => $item)
                             <tr>
-                                <td><input type="checkbox" id="check-delete-{{ $key }}"></td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
-                                <td>{{ $item->siswa ? ($item->siswa->kamar ? $item->siswa->kamar->nama : '-') : '-' }}</td>
                                 <td>{{ $item->siswa ? ($item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}
                                 </td>
                                 <td>{{ $item->id }}</td>
@@ -71,16 +69,15 @@
                         @endforeach
                     </tbody>
                 </table>
-                <input type="hidden" name="data_siswa_deleted" id="data_siswa_deleted">
-            </form>
+            </div>
         </div>
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-header pb-0">
             <div class="row mb-3">
-                <div class="col-md-6 text-end">
-                    <h4>Tambah Siswa Ke Jadwal</h4>
+                <div class="col-md-6">
+                    <h4>Tambah Siswa Ke Kamar</h4>
                 </div>
                 <div class="col-md-6 text-left">
                     <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
@@ -89,30 +86,52 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.jadwal.store_siswa_jadwal', $jadwal->id) }}" method="POST" id="form-siswa">
-                @csrf
-                <table class="table" id="table_siswa">
-                    <thead>
-                        <tr>
-                            <td><input type="checkbox" id="checkAll"></td>
-                            <td>Nama</td>
-                            <td>Kamar</td>
-                            <td>Jenis Kelamin</td>
-                            {{-- <td>Aksi</td> --}}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($siswas as $key => $siswa)
-                            <tr>
-                                <td><input type="checkbox" id="check-{{ $key }}"></td>
-                                <td>{{ $siswa->nama }}</td>
-                                <td>{{ $siswa->kamar ? $siswa->kamar->nama : '' }}</td>
-                                <td>{{ $siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
-                                <td>{{ $siswa->id }}</td>
-                            </tr>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="kamar" class="form-label">Kamar</label>
+                    <select name="kamar" id="kamar"
+                        class="form-control form-select js-select2 @if ($errors->has('jenis')) is-invalid @endif"
+                        data-placeholder="- Pilih Kamar -">
+                        <option value=""></option>
+                        @foreach ($list_kamar as $item)
+                            <option value="{{ $item->id }}" {{ $kamar_sebelum == $item->id ? 'selected' : '' }}>
+                                {{ $item->nama }}</option>
                         @endforeach
-                    </tbody>
-                </table>
+                    </select>
+                    @if ($errors->has('jenis'))
+                        <div class="invalid-feedback">{{ $errors->first('jenis') }}</div>
+                    @endif
+                </div>
+                <div class="col-md-4 mb-3 mt-4">
+                    <a href="{{ route('admin.penghuni.pindah', $kamar->id) }}" class="btn btn-secondary mt-2">Reset</a>
+                </div>
+            </div>
+            <form action="{{ route('admin.penghuni.update_penghuni', $kamar->id) }}" method="POST" id="form-siswa">
+                @csrf
+                <div class="table-responsive">
+                    <table class="table table-striped" id="table_siswa">
+                        <thead>
+                            <tr>
+                                <td><input type="checkbox" id="checkAll"></td>
+                                <td>Nama</td>
+                                <td>Jenis Kelamin</td>
+                                <td>Kamar</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($siswas as $key => $value)
+                                <tr>
+                                    <td><input type="checkbox" id="check-{{ $key }}"></td>
+                                    <td>{{ $value->siswa->nama }}</td>
+                                    <td>{{ $value->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                    <td>{{ $value->kamar->nama }}</td>
+                                    <td>{{ $value->id }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 <input type="hidden" name="data_siswa_selected" id="data_siswa_selected">
             </form>
         </div>
@@ -138,7 +157,7 @@
                     targets: 0, // Tidak perlu array jika hanya satu kolom
                     orderable: false
                 }, {
-                    targets: 4,
+                    targets: 3,
                     visible: false
                 }]
             });
@@ -163,6 +182,12 @@
                 }
             });
 
+            $("#kamar").change(function(e) {
+                e.preventDefault();
+                let this_val = $(this).val();
+                window.location.href = window.location.href + "?kamar=" + this_val;
+            });
+
             $('#btn-save').click(function(e) {
                 e.preventDefault();
                 let data = [];
@@ -175,7 +200,6 @@
                 $.map(table.rows('.selected').data(), function(item, index) {
                     data.push(item[4]);
                 });
-
 
                 $("#data_siswa_selected").val(data);
                 $("#form-siswa").submit();
@@ -191,7 +215,7 @@
                 }
 
                 $.map(table_list_siswa.rows('.selected').data(), function(item, index) {
-                    data.push(item[4]);
+                    data.push(item[3]);
                 });
                 $("#data_siswa_deleted").val(data);
                 $("#form-delete-siswa").submit();

@@ -63,12 +63,39 @@ class PenghuniController extends Controller
         $penghuni = Penghuni::with('siswa')->where('kamar_id', $kamar->id)->get();
         $sisa_kuota_kamar = $kamar->jumlah_penghuni - $penghuni->count();
 
-        $siswas = Siswa::whereDoesntHave('penghuni')->get();
+        $siswas = Siswa::whereDoesntHave('penghuni')->where('jenis_kelamin', $kamar->jenis)->get();
 
         if (auth()->user()->role_id == 2) {
             return view('pengurus.penghuni.show', compact('title', 'kamar', 'sisa_kuota_kamar', 'siswas', 'penghuni'));
         }
         return view('admin.penghuni.show', compact('title', 'kamar', 'sisa_kuota_kamar', 'siswas', 'penghuni'));
+    }
+
+    public function pindah($kamar, Request $request)
+    {
+        $kamar_sebelum = $request->get('kamar');
+
+        $title = 'Penghuni Kamar';
+        $kamar = Kamar::where('id', $kamar)->first();
+        $penghuni = Penghuni::with('siswa')->where('kamar_id', $kamar->id)->get();
+        $sisa_kuota_kamar = $kamar->jumlah_penghuni - $penghuni->count();
+
+        $list_kamar = Kamar::where('id', '!=', $kamar->id)->where('jenis', $kamar->jenis)->get();
+        if ($kamar_sebelum) {
+            $siswas = Penghuni::with('siswa', 'kamar')->whereHas('siswa', function ($query) use ($kamar) {
+                $query->where('jenis_kelamin', $kamar->jenis);
+            })->whereHas('kamar', function ($query) use ($kamar) {
+                $query->where('id', '!=', $kamar->id);
+            })->where('kamar_id', $kamar_sebelum)->get();
+        } else {
+            $siswas = Penghuni::with('siswa', 'kamar')->whereHas('siswa', function ($query) use ($kamar) {
+                $query->where('jenis_kelamin', $kamar->jenis);
+            })->whereHas('kamar', function ($query) use ($kamar) {
+                $query->where('id', '!=', $kamar->id);
+            })->get();
+        }
+
+        return view('admin.penghuni.pindah', compact('title', 'kamar', 'sisa_kuota_kamar', 'siswas', 'penghuni', 'list_kamar', 'kamar_sebelum'));
     }
 
     /**
@@ -82,9 +109,17 @@ class PenghuniController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Penghuni $penghuni)
+    public function update_penghuni(Request $request, Kamar $kamar)
     {
-        //
+        $explode = explode(',', $request->post('data_siswa_selected'));
+
+        foreach ($explode as $key => $value) {
+            Penghuni::where(['id' => $value])->update([
+                'kamar_id' => $kamar->id
+            ]);
+        }
+
+        return redirect()->route('admin.penghuni.pindah', $kamar->id)->with('success', 'Data berhasil dipindah!');
     }
 
     /**

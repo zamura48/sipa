@@ -35,18 +35,24 @@
                 </tr>
             </table>
             <hr>
+        </div>
+    </div>
 
+    <div class="card shadow mb-4">
+        <div class="card-header pb-0">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>List Penghuni</h4>
+                </div>
+                <div class="col-md-6 text-left">
+                    <button type="submit" class="btn btn-danger float-right" id="btn-delete"><i
+                            class="fa fa-trash mr-2"></i>Hapus</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
             <form action="{{ route('admin.penghuni.delete_penghuni', $kamar->id) }}" method="POST" id="form-delete-siswa">
                 @csrf
-                <div class="row mb-3">
-                    <div class="col-md-6 text-end">
-                        <h4>List Penghuni</h4>
-                    </div>
-                    <div class="col-md-6 text-left">
-                        <button type="submit" class="btn btn-danger float-right" id="btn-delete"><i
-                                class="fa fa-trash mr-2"></i>Hapus</button>
-                    </div>
-                </div>
                 <div class="table-responsive">
                     <table class="table table-striped" id="table_list_siswa">
                         <thead>
@@ -62,7 +68,8 @@
                                 <tr>
                                     <td><input type="checkbox" id="check-delete-{{ $key }}"></td>
                                     <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
-                                    <td>{{ $item->siswa ? $item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' : '-' }}</td>
+                                    <td>{{ $item->siswa ? ($item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}
+                                    </td>
                                     <td>{{ $item->id }}</td>
                                 </tr>
                             @endforeach
@@ -72,19 +79,24 @@
 
                 <input type="hidden" name="data_siswa_deleted" id="data_siswa_deleted">
             </form>
-            <hr>
+        </div>
+    </div>
 
+    <div class="card shadow mb-4">
+        <div class="card-header pb-0">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Tambah Siswa Ke Kamar</h4>
+                </div>
+                <div class="col-md-6 text-left">
+                    <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
+                            class="fa fa-save mr-2"></i>Simpan</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
             <form action="{{ route('admin.penghuni.tambah_penghuni', $kamar->id) }}" method="POST" id="form-siswa">
                 @csrf
-                <div class="row mb-3">
-                    <div class="col-md-6 text-end">
-                        <h4>Tambah Siswa Ke Kamar</h4>
-                    </div>
-                    <div class="col-md-6 text-left">
-                        <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
-                                class="fa fa-save mr-2"></i>Simpan</button>
-                    </div>
-                </div>
                 <div class="table-responsive">
                     <table class="table table-striped" id="table_siswa">
                         <thead>

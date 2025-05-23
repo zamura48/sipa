@@ -16,6 +16,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
+                            <th>Jenis</th>
                             <th>Kapasitas</th>
                             <th>Penghuni</th>
                             <th>Sisa</th>
@@ -27,12 +28,22 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
+                                @if ($item->jenis == 'L')
+                                    <td>Laki - Laki</td>
+                                @elseif ($item->jenis == 'P')
+                                    <td>Perempuan</td>
+                                @else
+                                    <td>-</td>
+                                @endif
                                 <td>{{ $item->jumlah_penghuni }}</td>
                                 <td>{{ $item->penghunis_count }}</td>
                                 <td>{{ $item->jumlah_penghuni - $item->penghunis_count }}</td>
                                 <td>
                                     <a href="{{ route('admin.penghuni.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail
+                                    </a>
+                                    <a href="{{ route('admin.penghuni.pindah', $item->id) }}" class="btn btn-secondary btn-sm">
+                                        <i class="fa fa-retweet mr-2"></i> Pindah Kamar
                                     </a>
                                     <form action="{{ route('admin.penghuni.destroy', $item->id) }}" method="POST"
                                         style="display:inline;" id="delete-form-{{ $item->id }}">

@@ -16,4 +16,9 @@ class Penghuni extends Model
     {
         return $this->hasOne(Siswa::class, 'id', 'siswa_id');
     }
+
+    public function kamar()
+    {
+        return $this->hasOne(Kamar::class, 'id', 'kamar_id');
+    }
 }

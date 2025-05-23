@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengurus;
 use App\Models\Tagihan;
+use App\Models\User;
+use App\Models\WaliMurid;
 use Illuminate\Http\Request;
 
 class TagihanController extends Controller
@@ -81,6 +84,15 @@ class TagihanController extends Controller
             'status' => 2
         ]);
 
+        $get_walmur = WaliMurid::with('siswa')->whereHas('siswa', function ($query) use ($tagihan) {
+            $query->where('id', $tagihan->siswa_id);
+        })->first();
+
+        $text_wa = "Selamat tagihan anda sudah dikonfirmasi oleh admin.
+            \nSiswa dengan nama {$get_walmur->siswa->nama} akan segera di tempatkan ke kamar yang masih kosong.
+            \n\nTerimakasih";
+        send_wa($get_walmur->telepon, $text_wa);
+
         return redirect()->route('admin.tagihan.index')->with('success', 'Data berhasil simpan!');
     }
 
@@ -93,7 +105,7 @@ class TagihanController extends Controller
         ]);
 
         $file = $request->file('foto');
-        $file_name =  'Bukti_bayar'.time().'.'.$file->getClientOriginalExtension();
+        $file_name =  'Bukti_bayar' . time() . '.' . $file->getClientOriginalExtension();
         $file_save = 'bukti_bayar';
         $file->move($file_save, $file_name);
 
@@ -101,6 +113,16 @@ class TagihanController extends Controller
             'bukti_bayar' => $file_name,
             'status' => 1
         ]);
+
+        $get_walmur = WaliMurid::with('siswa')->whereHas('siswa', function ($query) use ($tagihan) {
+            $query->where('id', $tagihan->siswa_id);
+        })->first();
+        $get_admin = User::with('pengurus')->where('role_id', 1)->first();
+
+        $text_wa = "Wali Murid atas nama {$get_walmur->nama} sudah mengupload bukti bayar.
+            \nSilakan cek bukti bayar dan Konfirmasi.
+            \n\nTerimakasih";
+        send_wa($get_admin->telepon, $text_wa);
 
         return redirect()->route('walmur.tagihan.index')->with('success', 'Data berhasil simpan!');
     }

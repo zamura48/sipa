@@ -11,7 +11,7 @@ class Kamar extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "kamars";
-    protected $fillable = ['nama', 'jumlah_penghuni'];
+    protected $fillable = ['nama', 'jumlah_penghuni', 'jenis'];
 
     public function penghuni()
     {
