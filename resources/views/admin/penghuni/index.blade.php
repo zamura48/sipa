@@ -45,15 +45,6 @@
                                     <a href="{{ route('admin.penghuni.pindah', $item->id) }}" class="btn btn-secondary btn-sm">
                                         <i class="fa fa-retweet mr-2"></i> Pindah Kamar
                                     </a>
-                                    <form action="{{ route('admin.penghuni.destroy', $item->id) }}" method="POST"
-                                        style="display:inline;" id="delete-form-{{ $item->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="confirm_delete({{ $item->id }})">
-                                            <i class="fa fa-trash mr-2"></i> Hapus
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach
