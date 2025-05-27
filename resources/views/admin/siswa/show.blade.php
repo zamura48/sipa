@@ -15,17 +15,17 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label for="pengguna_id">Orang Tua</label>
-                        <select name="pengguna_id" id="pengguna_id"
+                        <label for="wali_murid_id">Orang Tua</label>
+                        <select name="wali_murid_id" id="wali_murid_id"
                             class="form-control @if ($errors->has('nis')) is-invalid @endif" readonly>
                             <option value="">-- Pilih Orang Tua --</option>
                             @foreach ($ortu as $key => $value)
                                 <option value="{{ $value->id }}"
-                                    {{ $value->id == $siswa->pengguna_id ? 'selected' : '' }}>{{ $value->nama }}</option>
+                                    {{ $value->id == $siswa->wali_murid_id ? 'selected' : '' }}>{{ $value->nama }}</option>
                             @endforeach
                         </select>
-                        @if ($errors->has('pengguna_id'))
-                            <div class="invalid-feedback">{{ $errors->first('pengguna_id') }}</div>
+                        @if ($errors->has('wali_murid_id'))
+                            <div class="invalid-feedback">{{ $errors->first('wali_murid_id') }}</div>
                         @endif
                     </div>
                     <div class="col-md-12 mb-3">

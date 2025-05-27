@@ -21,7 +21,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Hari, Jam</th>
+                            <th>tanggal</th>
                             <th>Kegiatan</th>
                             <th>Aksi</th>
                         </tr>
@@ -31,7 +31,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->hari }}, {{ date('H:i', strtotime($item->jam)) }}</td>
+                                <td>{{ datetime_indo($item->tanggal) }}</td>
                                 <td>
                                     <ul>
                                         @foreach ($item->jadwalDetails as $value)

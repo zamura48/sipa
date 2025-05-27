@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
 use App\Models\Siswa;
+use App\Models\WaliMurid;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller
@@ -14,8 +15,8 @@ class SiswaController extends Controller
     public function index()
     {
         $title = 'Siswa';
-        $data = Siswa::all()->load(['kamar', 'periode', 'ortu', 'sekolah']);
-        $data = Siswa::with(['kamar', 'periode', 'ortu', 'sekolah'])->get();
+        $data = Siswa::all()->load(['penghuni.kamar', 'periode', 'ortu', 'sekolah']);
+        $data = Siswa::with(['penghuni.kamar', 'periode', 'ortu', 'sekolah'])->get();
 
         // jika user yang login rolenya adalah 3(wali murid) maka data yang ditampilkan hanya siswa dengan pengguna_id saja
         if (auth()->user()->role_id == 3) {
@@ -68,7 +69,7 @@ class SiswaController extends Controller
     public function show(Siswa $siswa)
     {
         $title = 'Detail Siswa';
-        $ortu = Pengguna::with('user.role')->whereHas('user', function ($query) {
+        $ortu = WaliMurid::with('user.role')->whereHas('user', function ($query) {
             $query->where('role_id', 3);
         })->get();
         return view('admin.siswa.show', compact('title', 'siswa', 'ortu'));

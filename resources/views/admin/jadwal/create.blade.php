@@ -22,31 +22,22 @@
                         @endif
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="hari" class="form-label">Hari</label>
-                        <select name="hari" id="hari" class="form-control form-select js-select2 @if ($errors->has('hari')) is-invalid @endif" data-placeholder="- Pilih Hari -">
-                            <option value=""></option>
-                            @foreach ($weekday as $item)
-                                <option value="{{ $item }}" {{ old('hari') == $item ? 'selected' : '' }}>{{ $item }}</option>
-                            @endforeach
-                        </select>
-                        @if ($errors->has('hari'))
-                            <div class="invalid-feedback">{{ $errors->first('hari') }}</div>
-                        @endif
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="jam" class="form-label">Jam</label>
-                        <input type="time" class="form-control @if ($errors->has('jam')) is-invalid @endif"
-                            placeholder="Masukkan jam..." id="jam" name="jam" value="{{ old('jam') }}">
-                        @if ($errors->has('jam'))
-                            <div class="invalid-feedback">{{ $errors->first('jam') }}</div>
+                        <label for="tanggal" class="form-label">Tanggal</label>
+                        <input type="datetime-local" class="form-control @if ($errors->has('tanggal')) is-invalid @endif"
+                            placeholder="Masukkan tanggal..." id="tanggal" name="tanggal" value="{{ old('tanggal') }}">
+                        @if ($errors->has('tanggal'))
+                            <div class="invalid-feedback">{{ $errors->first('tanggal') }}</div>
                         @endif
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="kegiatan" class="form-label">Kegiatan</label>
-                        <select name="kegiatan[]" id="kegiatan" class="form-control form-select js-select2 @if ($errors->has('kegiatan')) is-invalid @endif" data-placeholder="- Pilih Kegiatan -" multiple="true">
+                        <select name="kegiatan[]" id="kegiatan"
+                            class="form-control form-select js-select2 @if ($errors->has('kegiatan')) is-invalid @endif"
+                            data-placeholder="- Pilih Kegiatan -" multiple="true">
                             <option value=""></option>
                             @foreach ($kegiatan as $item)
-                                <option value="{{ $item->id }}" {{ old('kegiatan') == $item->id ? 'selected' : '' }}>{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}" {{ old('kegiatan') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}</option>
                             @endforeach
                         </select>
                         @if ($errors->has('kegiatan'))

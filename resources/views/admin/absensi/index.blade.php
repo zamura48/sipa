@@ -16,17 +16,25 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Hari, Jam</th>
+                            <th>Tanggal</th>
                             <th>Kegiatan</th>
                             <th>Aksi <br><small class="text-danger">Tombol absen akan muncul sesuai dengan hari.</small></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $item)
+                            @php
+                                $tanggal = datetime_indo($item->tanggal);
+                                $explode = explode(', ', $tanggal);
+                                $hari = '';
+                                if (count($explode) > 0) {
+                                    $hari = $explode[0];
+                                }
+                            @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->hari }}, {{ date('H:i', strtotime($item->jam)) }}</td>
+                                <td>{{ $tanggal }}</td>
                                 <td>
                                     <ul>
                                         @foreach ($item->jadwalDetails as $value)
@@ -35,7 +43,7 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    @if (nama_hari_indo(date('l')) == $item->hari)
+                                    @if (nama_hari_indo(date('l')) == $hari)
                                         <a href="{{ route('admin.absensi.presensi', $item->id) }}"
                                             class="btn btn-primary btn-sm">
                                             <i class="fa fa-plus mr-2"></i> Absensi

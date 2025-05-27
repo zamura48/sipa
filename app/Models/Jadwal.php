@@ -11,7 +11,7 @@ class Jadwal extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "jadwals";
-    protected $fillable = ['hari', 'nama', 'jam', 'keterangan'];
+    protected $fillable = ['hari', 'nama', 'keterangan', 'tanggal'];
 
     public function jadwalDetails()
     {

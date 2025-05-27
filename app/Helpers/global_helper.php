@@ -91,3 +91,55 @@ function send_wa($nomor_telepon, $pesan)
     }
     echo $response;
 }
+
+function datetime_indo($datetime)
+{
+    if (!$datetime) {
+        return '-';
+    }
+
+    // Array nama hari dan bulan dalam Bahasa Indonesia
+    $hari = [
+        'Sunday' => 'Minggu',
+        'Monday' => 'Senin',
+        'Tuesday' => 'Selasa',
+        'Wednesday' => 'Rabu',
+        'Thursday' => 'Kamis',
+        'Friday' => 'Jumat',
+        'Saturday' => 'Sabtu'
+    ];
+
+    $bulan = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    ];
+
+    // Membuat objek DateTime
+    $date = new DateTime($datetime);
+
+    // Mendapatkan nama hari dalam bahasa Indonesia
+    $hariIndo = $hari[$date->format('l')];
+
+    // Mendapatkan tanggal, bulan, dan tahun
+    $tanggal = $date->format('d');
+    $bulanIndo = $bulan[(int)$date->format('m')];
+    $tahun = $date->format('Y');
+
+    // Mendapatkan jam dan menit
+    $jam = $date->format('H:i');
+
+    // Format akhir
+    $hasil = "$hariIndo, $tanggal $bulanIndo $tahun - $jam";
+
+    return $hasil;
+}

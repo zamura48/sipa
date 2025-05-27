@@ -24,27 +24,13 @@
                         @endif
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="hari" class="form-label">Hari</label>
-                        <select name="hari" id="hari"
-                            class="form-control form-select js-select2 @if ($errors->has('hari')) is-invalid @endif"
-                            data-placeholder="- Pilih Hari -" disabled>
-                            <option value=""></option>
-                            @foreach ($weekday as $item)
-                                <option value="{{ $item }}" {{ $jadwal->hari == $item ? 'selected' : '' }}>
-                                    {{ $item }}</option>
-                            @endforeach
-                        </select>
-                        @if ($errors->has('hari'))
-                            <div class="invalid-feedback">{{ $errors->first('hari') }}</div>
-                        @endif
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="jam" class="form-label">Jam</label>
-                        <input type="time" class="form-control @if ($errors->has('jam')) is-invalid @endif"
-                            placeholder="Masukkan jam..." id="jam" name="jam"
-                            value="{{ date('H:i', strtotime($jadwal->jam)) }}" readonly>
-                        @if ($errors->has('jam'))
-                            <div class="invalid-feedback">{{ $errors->first('jam') }}</div>
+                        <label for="tanggal" class="form-label">Tanggal</label>
+                        <input type="datetime-local"
+                            class="form-control @if ($errors->has('tanggal')) is-invalid @endif"
+                            placeholder="Masukkan tanggal..." id="tanggal" name="tanggal" value="{{ $jadwal->tanggal }}"
+                            readonly>
+                        @if ($errors->has('tanggal'))
+                            <div class="invalid-feedback">{{ $errors->first('tanggal') }}</div>
                         @endif
                     </div>
                     <div class="col-md-6 mb-3">
@@ -70,14 +56,14 @@
                         @endif
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary float-right d-none btn_save"><i
+                <button type="submit" class="btn btn-primary float-right d-none " id="btn_save"><i
                         class="fa fa-save mr-2"></i>Simpan</button>
                 <button class="btn btn-danger float-right d-none btn_cancel mr-2"><i
                         class="fa fa-save mr-2"></i>Batal</button>
-                <button class="btn btn-warning float-right btn_edit"><i class="fa fa-save mr-2"></i>Edit</button>
-                <a href="{{ route('admin.jadwal.index') }}" class="btn btn-secondary mr-2 float-right"><i
-                        class="fa fa-arrow-left mr-2"></i>Kembali</a>
             </form>
+            <button class="btn btn-warning float-right" id="btn_edit"><i class="fa fa-save mr-2"></i>Edit</button>
+            <a href="{{ route('admin.jadwal.index') }}" class="btn btn-secondary mr-2 float-right"><i
+                    class="fa fa-arrow-left mr-2"></i>Kembali</a>
         </div>
     </div>
 @endsection
@@ -85,10 +71,10 @@
 @push('js')
     <script>
         $(document).ready(function() {
-            $('.btn_edit').on('click', function(e) {
+            $('#btn_edit').on('click', function(e) {
                 e.preventDefault();
                 $(this).addClass('d-none');
-                $('.btn_save').removeClass('d-none');
+                $('#btn_save').removeClass('d-none');
                 $('.btn_cancel').removeClass('d-none');
                 $('.form-control').attr('readonly', false);
                 $('.form-control.form-select').attr('disabled', false);
@@ -97,8 +83,8 @@
             $('.btn_cancel').on('click', function(e) {
                 e.preventDefault();
                 $(this).addClass('d-none');
-                $('.btn_edit').removeClass('d-none');
-                $('.btn_save').addClass('d-none';);
+                $('#btn_edit').removeClass('d-none');
+                $('#btn_save').addClass('d-none');
                 $('.form-control').attr('readonly', true);
                 $('.form-select').prop('disabled', true);
             });

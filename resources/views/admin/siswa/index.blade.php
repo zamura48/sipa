@@ -44,7 +44,7 @@
                                 <td>{{ $item->jenis_kelamin = 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                 <td>{{ $item->ortu ? $item->ortu->nama : '' }}</td>
                                 <td>{{ format_date_w_bs($item->periode->tgl_mulai) . ' - ' . format_date_w_bs($item->periode->tgl_akhir) }}
-                                <td>{{ $item->kamar ? $item->kamar->nama : '-' }}</td>
+                                <td>{{ $item->penghuni ? $item->penghuni->kamar->nama : '-' }}</td>
                                 </td>
                                 @if (auth()->user()->role_id = 1)
                                     <td>

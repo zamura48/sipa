@@ -37,7 +37,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
                                 <td>{{ $item->jadwal->nama }}</td>
-                                <td>{{ $item->jadwal->hari . ' (' . date('H:i', strtotime($item->jadwal->jam)) . ') ' }} <br> {{ ' Tanggal Absen: ' . $tanggal }}
+                                <td>{{ datetime_indo($item->tanggal) }} <br> {{ ' Tanggal Absen: ' . $tanggal }}
                                 </td>
                                 <td>
                                     @if ($item->absensi)

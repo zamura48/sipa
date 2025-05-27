@@ -37,13 +37,13 @@ class JadwalController extends Controller
     public function siswa(Jadwal $jadwal)
     {
         $title = 'Tambah Siswa ke Jadwal';
-        $jadwal_siswa = JadwalBySiswa::with('siswa.kamar')->where('jadwal_id', $jadwal->id)->get();
+        $jadwal_siswa = JadwalBySiswa::with('siswa.penghuni.kamar')->where('jadwal_id', $jadwal->id)->get();
 
         $siswa_id = [];
         foreach ($jadwal_siswa as $key => $value) {
             $siswa_id[] = $value->siswa_id;
         }
-        $siswas = Siswa::with('kamar')->whereNotIn('id', $siswa_id)->get();
+        $siswas = Siswa::with('penghuni.kamar')->whereNotIn('id', $siswa_id)->get();
 
         return view('admin.jadwal.siswa', compact('title', 'jadwal_siswa', 'siswas', 'jadwal'));
     }
@@ -52,8 +52,8 @@ class JadwalController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'hari' => 'required',
-            'jam' => 'required',
+            // 'hari' => 'required',
+            'tanggal' => 'required',
             'kegiatan' => 'required',
         ]);
     }
@@ -80,8 +80,8 @@ class JadwalController extends Controller
 
         $id_jadwal = Jadwal::create([
             'nama' => $request->post('nama'),
-            'hari' => $request->post('hari'),
-            'jam' => $request->post('jam')
+            // 'hari' => $request->post('hari'),
+            'tanggal' => $request->post('tanggal'),
         ]);
 
         foreach ($request->kegiatan as $key => $value) {
@@ -124,8 +124,8 @@ class JadwalController extends Controller
 
         $jadwal->update([
             'nama' => $request->post('nama'),
-            'hari' => $request->post('hari'),
-            'jam' => $request->post('jam')
+            // 'hari' => $request->post('hari'),
+            'tanggal' => $request->post('tanggal')
         ]);
 
         JadwalDetail::where('jadwal_id', $jadwal->id)->delete();

@@ -17,15 +17,15 @@
                     <td style="width: 30px">:</td>
                     <td>{{ $jadwal->nama }}</td>
                 </tr>
-                <tr>
+                <tr class="d-none">
                     <td>Hari</td>
                     <td>:</td>
                     <td>{{ $jadwal->hari }}</td>
                 </tr>
                 <tr>
-                    <td>Jam</td>
+                    <td>Tanggal</td>
                     <td>:</td>
-                    <td>{{ $jadwal->jam }}</td>
+                    <td>{{ datetime_indo($jadwal->tanggal) }}</td>
                 </tr>
             </table>
             <hr>
@@ -63,7 +63,13 @@
                             <tr>
                                 <td><input type="checkbox" id="check-delete-{{ $key }}"></td>
                                 <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
-                                <td>{{ $item->siswa ? ($item->siswa->kamar ? $item->siswa->kamar->nama : '-') : '-' }}</td>
+                                <td>
+                                    @if ($item->siswa)
+                                        {{ $item->siswa->penghuni ? $item->siswa->penghuni->kamar->nama : '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>{{ $item->siswa ? ($item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}
                                 </td>
                                 <td>{{ $item->id }}</td>
@@ -106,7 +112,13 @@
                             <tr>
                                 <td><input type="checkbox" id="check-{{ $key }}"></td>
                                 <td>{{ $siswa->nama }}</td>
-                                <td>{{ $siswa->kamar ? $siswa->kamar->nama : '' }}</td>
+                                <td>
+                                    @if ($siswa->nama)
+                                        {{ $siswa->penghuni ? $siswa->penghuni->kamar->nama : '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>{{ $siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                 <td>{{ $siswa->id }}</td>
                             </tr>
