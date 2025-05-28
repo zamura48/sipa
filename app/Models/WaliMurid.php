@@ -15,12 +15,12 @@ class WaliMurid extends Model
 
     public function siswa()
     {
-        return $this->hasOne(Siswa::class, 'id', 'siswa_id');
+        return $this->hasOne(Siswa::class, 'wali_murid_id', 'id');
     }
 
     public function siswas()
     {
-        return $this->hasMany(Siswa::class, 'id', 'siswa_id');
+        return $this->hasMany(Siswa::class, 'wali_murid_id', 'id');
     }
 
     public function user()

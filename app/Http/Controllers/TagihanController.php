@@ -122,7 +122,9 @@ class TagihanController extends Controller
         $text_wa = "Wali Murid atas nama {$get_walmur->nama} sudah mengupload bukti bayar.
             \nSilakan cek bukti bayar dan Konfirmasi.
             \n\nTerimakasih";
-        send_wa($get_admin->telepon, $text_wa);
+        if ($get_admin->telepon) {
+            send_wa($get_admin->telepon, $text_wa);
+        }
 
         return redirect()->route('walmur.tagihan.index')->with('success', 'Data berhasil simpan!');
     }
