@@ -32,11 +32,19 @@
                         <div class="text-center text-lg-start mt-4 pt-2">
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
                                 style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-                            <p class="small fw-bold mt-2 pt-1 mb-0">Belum punya akun? <a href="{{ route('walmur.regis') }}"
-                                    class="link-danger">Daftar Sekarang</a></p>
-                            <small class="text-danger px-1">Note: Setelah melakukan pendaftaran, tunggu hingga admin melakukan
-                                konfirmasi. Kemudian anda akan mendapatkan notif yang berisi username dan password yang
-                                digunakan untuk login.</small>
+                            @if ($can_regis)
+                                <p class="small fw-bold mt-2 pt-1 mb-0">Belum punya akun? <a
+                                        href="{{ route('walmur.regis') }}" class="link-danger">Daftar Sekarang</a></p>
+                                <small class="text-danger px-1">Note: Setelah melakukan pendaftaran, tunggu hingga admin
+                                    melakukan
+                                    konfirmasi. Kemudian anda akan mendapatkan notif yang berisi username dan password yang
+                                    digunakan untuk login.</small>
+                            @else
+                            <br>
+                            <br>
+                                <small class="text-danger px-1">Note: Saat ini pendaftaran belum dibuka atau sudah ditutup.
+                                    Silakan tunggu periode pendaftaran selanjutnya.</small>
+                            @endif
                         </div>
 
                     </form>

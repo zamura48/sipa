@@ -32,6 +32,11 @@
                     <td>:</td>
                     <td>{{ $sisa_kuota_kamar }}</td>
                 </tr>
+                <tr>
+                    <td>Jenis Kamar</td>
+                    <td>:</td>
+                    <td>{{ $kamar->jenis ? $kamar->jenis == 'L' ? 'Laki-laki' : 'Perempuan' : '-'}}</td>
+                </tr>
             </table>
             <hr>
 

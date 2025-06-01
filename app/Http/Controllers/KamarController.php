@@ -38,6 +38,7 @@ class KamarController extends Controller
     {
         $request->validate([
             'nama' => 'required',
+            'jenis' => 'required',
             'jumlah_penghuni' => 'required|numeric',
         ]);
     }

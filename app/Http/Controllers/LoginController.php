@@ -70,7 +70,11 @@ class LoginController extends Controller
     {
         $title = 'Login';
 
-        return view('walmur.login.index', compact('title'));
+        $periode = Periode::where('tgl_mulai', '<=', date('Y-m-d'))
+            ->where('tgl_akhir', '>=', date('Y-m-d'))->where('status', 1)->first();
+        $can_regis = empty($periode) ? false : true;
+
+        return view('walmur.login.index', compact('title', 'can_regis'));
     }
 
     public function wali_murid_regis()
@@ -145,7 +149,6 @@ class LoginController extends Controller
         DB::beginTransaction();
         try {
             $pendaftaran = Pendaftaran::create($data_insert_siswa);
-
 
             if ($request->tipe_keringanan && $request->dokumen_pelengkap) {
                 foreach ($request->tipe_keringanan as $key => $value) {

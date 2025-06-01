@@ -21,13 +21,11 @@ class LaporanAbsensi extends Controller
 
         if ($tanggal) {
             $data = JadwalBySiswa::with([
-                'absensi' => function ($query) use ($tanggalHariIni) {
-                    $query->where('tanggal', $tanggalHariIni);
-                },
+                'absensi',
                 'jadwal',
                 'siswa',
-            ])->whereHas('jadwal', function ($q) use ($hariIndo) {
-                $q->where('hari', $hariIndo);
+            ])->whereHas('jadwal', function ($q) use ($tanggalHariIni) {
+                $q->whereRaw('DATE(tanggal) = ?', $tanggalHariIni);
             })->whereHas('siswa', function ($query) use ($wali_murid) {
                 if ($wali_murid) {
                     $query->where('wali_murid_id', $wali_murid);

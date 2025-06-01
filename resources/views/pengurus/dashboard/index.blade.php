@@ -72,7 +72,7 @@
                     <h4>Sisa Kamar</h4>
                 </div>
                 <div class="card-body">
-                    <div id="chart"></div>
+                    <div id="chart-sisa-kamar"></div>
                 </div>
             </div>
         </div>
@@ -118,47 +118,74 @@
         $(document).ready(function() {
             chart_sisa_kamar();
             chart_total_pendaftar();
+
+            $("#chart-sisa-kamar .apx-legend-position-bottom").html(`<div class="">
+    <div class="d-flex mt-2">
+        <div class="d-flex align-items-center mr-4">
+            <span class="d-inline-block mr-2" style="width: 14px; height: 14px; background-color: #008FFB;"></span>
+            <span>Laki-laki</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <span class="d-inline-block mr-2" style="width: 14px; height: 14px; background-color: #FEB019;"></span>
+            <span>Perempuan</span>
+        </div>
+    </div>
+</div>
+`);
         });
 
         function chart_sisa_kamar() {
+            let jenis_kamar = @json($data_jenis_kamar);
             var options = {
                 series: [{
+                    name: 'Total',
                     data: @json($data_sisa_kamar)
-                }],
+                }, ],
                 chart: {
-                    height: 350,
                     type: 'bar',
-                    events: {
-                        click: function(chart, w, e) {
-                            // console.log(chart, w, e)
-                        }
-                    }
+                    height: 350
                 },
-                // colors: colors,
                 plotOptions: {
                     bar: {
-                        columnWidth: '45%',
-                        distributed: true,
-                    }
+                        horizontal: false,
+                        columnWidth: '55%',
+                        borderRadius: 5,
+                        borderRadiusApplication: 'end',
+                        distributed: true // aktifkan ini
+                    },
                 },
+                colors: jenis_kamar.map(jenis => {
+                    return jenis == 'L' ? '#008FFB' : '#FEB019';
+                }),
                 dataLabels: {
                     enabled: false
                 },
-                legend: {
-                    show: false
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
                 },
                 xaxis: {
                     categories: @json($data_nama_kamar),
-                    labels: {
-                        style: {
-                            // colors: colors,
-                            fontSize: '12px'
+                },
+                yaxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val
                         }
                     }
                 }
             };
 
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            var chart = new ApexCharts(document.querySelector("#chart-sisa-kamar"), options);
             chart.render();
         }
 

@@ -34,7 +34,9 @@
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ format_date_w_bs($item->tgl_mulai) }}</td>
                                 <td>{{ format_date_w_bs($item->tgl_akhir) }}</td>
-                                <td>{{ $item->status == '1' ? 'Aktif' : 'Tidak Aktif' }}</td>
+                                <td>{!! $item->status
+                                    ? '<span class="badge badge-success">Aktif</span>'
+                                    : '<span class="badge badge-danger">Tidak Aktif</span>' !!}</td>
                                 <td>
                                     <a href="{{ route('admin.periode.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail

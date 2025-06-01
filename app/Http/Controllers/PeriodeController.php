@@ -55,6 +55,11 @@ class PeriodeController extends Controller
         $tgl_akhir = format_date($request->input('tgl_akhir'));
         $request->merge(['tgl_mulai' => $tgl_mulai, 'tgl_akhir' => $tgl_akhir]);
 
+        if ($request->post('status') == 1) {
+            Periode::where('status', 1)->update([
+                'status' => 0
+            ]);
+        }
         Periode::create($request->all());
 
         return redirect()->route('admin.periode.index')->with('success', 'Data berhasil ditambahkan!');
@@ -88,7 +93,23 @@ class PeriodeController extends Controller
         $tgl_akhir = format_date($request->input('tgl_akhir'));
         $request->merge(['tgl_mulai' => $tgl_mulai, 'tgl_akhir' => $tgl_akhir]);
 
-        $periode->update($request->all());
+        $data = $request->except('status');
+        $data['nama'] = $request->post('nama');
+        $data['tgl_mulai'] = $tgl_mulai;
+        $data['tgl_akhir'] = $tgl_akhir;
+
+        if ($request->post('status') == 1) {
+            // Reset semua status ke 0
+            Periode::query()->update(['status' => 0]);
+
+            // REFRESH MODEL AGAR TIDAK PAKAI CACHE
+            $periode->refresh();
+
+            // Pastikan status record ini adalah 1
+            $data['status'] = 1;
+        }
+
+        $periode->update($data);
 
         return redirect()->route('admin.periode.index')->with('success', 'Data berhasil diperbaharui!');
     }

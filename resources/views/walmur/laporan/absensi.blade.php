@@ -24,7 +24,7 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Jadwal</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal Absen</th>
                             <th>Absensi</th>
                         </tr>
                     </thead>
@@ -36,9 +36,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
-                                <td>{{ $item->jadwal->nama }}</td>
-                                <td>{{ datetime_indo($item->tanggal) }} <br>
-                                    {{ ' Tanggal Absen: ' . $tanggal }}
+                                <td>{{ $item->jadwal->nama }} <br> {{ datetime_indo($item->jadwal->tanggal) }}</td>
+                                <td>{{ $tanggal }}
                                 </td>
                                 <td>
                                     @if ($item->absensi)
@@ -92,7 +91,7 @@
                         .each(function(group, i) {
                             if (last !== group) {
                                 $(rows).eq(i).before(
-                                    '<tr class="group"><td colspan="7">Nama: <span class="badge badge-success">' +
+                                    '<tr class="group"><td colspan="7">Nama Siswa: <span class="badge badge-success">' +
                                     group + '</span></td></tr>'
                                 );
 

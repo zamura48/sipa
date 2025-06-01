@@ -17,7 +17,7 @@ class JadwalController extends Controller
     public function index()
     {
         $title = 'Jadwal';
-        $data = Jadwal::with('jadwalDetails')->orderBy('hari', 'ASC')->get();
+        $data = Jadwal::with('jadwalDetails')->orderBy('tanggal', 'DESC')->get();
 
         return view('admin.jadwal.index', compact('title', 'data'));
     }

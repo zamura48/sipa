@@ -34,7 +34,7 @@ class SiswaController extends Controller
     public function create()
     {
         $title = 'Tambah Siswa';
-        $ortu = Pengguna::with('user.role')->whereHas('user', function ($query) {
+        $ortu = WaliMurid::with('user.role')->whereHas('user', function ($query) {
             $query->where('role_id', 3);
         })->get();
         return view('admin.siswa.create', compact('title', 'ortu'));

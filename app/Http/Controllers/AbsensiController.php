@@ -15,7 +15,7 @@ class AbsensiController extends Controller
     public function index()
     {
         $title = 'Absensi';
-        $data = Jadwal::with('jadwalDetails')->get();
+        $data = Jadwal::with('jadwalDetails')->orderBy('tanggal', 'DESC')->get();
 
         if (auth()->user()->role_id == 2) {
             return view('pengurus.absensi.index', compact('title', 'data'));
@@ -27,7 +27,7 @@ class AbsensiController extends Controller
     public function presensi(Jadwal $jadwal)
     {
         $title = 'Absensi Siswa ' . $jadwal->nama;
-        $data = JadwalBySiswa::with(['siswa.kamar', 'absensi' => function ($q) {
+        $data = JadwalBySiswa::with(['siswa.penghuni.kamar', 'absensi' => function ($q) {
             $q->where('tanggal', date('Y-m-d'));
         }])->where('jadwal_id', $jadwal->id)->get();
 

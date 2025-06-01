@@ -98,16 +98,20 @@ class TagihanController extends Controller
 
     public function upload_bayar(Request $request, Tagihan $tagihan)
     {
-        $request->validate([
-            'foto' => 'required|file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
-        ], [
-            'foto' => 'Bukti bayar wajib diisi.'
-        ]);
+        $file_name = '';
+        if ($tagihan->total_semua != 0) {
+            $request->validate([
+                'foto' => 'required|file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
+            ], [
+                'foto' => 'Bukti bayar wajib diisi.'
+            ]);
 
-        $file = $request->file('foto');
-        $file_name =  'Bukti_bayar' . time() . '.' . $file->getClientOriginalExtension();
-        $file_save = 'bukti_bayar';
-        $file->move($file_save, $file_name);
+            $file = $request->file('foto');
+            $file_name =  'Bukti_bayar' . time() . '.' . $file->getClientOriginalExtension();
+            $file_save = 'bukti_bayar';
+            $file->move($file_save, $file_name);
+        }
+
 
         $tagihan->update([
             'bukti_bayar' => $file_name,

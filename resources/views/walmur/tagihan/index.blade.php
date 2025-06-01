@@ -20,7 +20,7 @@
                             {{-- <th class="d-none">Jatuh Tempo</th> --}}
                             <th>Tagihan</th>
                             <th>Status Tagihan</th>
-                            <th>Aksi</th>
+                            <th>Aksi <br><small class="text-danger">Jika tagihan sudah dibayar tetapi nominal tagihan Rp0/Gratis maka kolom aksi ini akan kosong</small></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,8 @@
                                 </td>
                                 <td>{{ $item->iuran->nama }}</td>
                                 {{-- <td class="d-none">{{ $item->jatuh_tempo }}</td> --}}
-                                <td>Rp{{ format_currency($item->total_semua) }}</td>
+                                <td>Rp{{ format_currency($item->total_semua) }}
+                                    {{ $item->total_semua == 0 ? '(Gratis)' : '' }}</td>
                                 <td>
                                     @if ($item->status == 1)
                                         <span class="badge badge-warning">Sudah Bayar</span>
@@ -49,8 +50,12 @@
                                         <a href="{{ route('walmur.tagihan.bayar', $item->id) }}"
                                             class="btn btn-primary">Bayar</a>
                                     @else
-                                        <a href="{{ asset('bukti_bayar/' . $item->bukti_bayar) }}" target="_blank"
-                                            class="btn btn-info">Lihat Foto</a>
+                                        @if ($item->bukti_bayar)
+                                            <a href="{{ asset('bukti_bayar/' . $item->bukti_bayar) }}" target="_blank"
+                                                class="btn btn-info">Lihat Foto</a>
+                                        @else
+                                            -
+                                        @endif
                                     @endif
                                 </td>
                             </tr>
