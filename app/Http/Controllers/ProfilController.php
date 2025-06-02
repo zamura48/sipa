@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengurus;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\WaliMurid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfilController extends Controller
 {
@@ -17,7 +20,22 @@ class ProfilController extends Controller
         $pengurus = Pengurus::with('user')->where('id', auth()->user()->pengurus_id)->first();
         $roles = Role::where('id', auth()->user()->role_id)->get();
 
-        return view('admin.profil.index', compact('title', 'pengurus', 'roles'));
+        $role = '';
+        switch (auth()->user()->role_id) {
+            case '1':
+                $role = 'admin';
+                $pengurus = Pengurus::with('user')->where('id', auth()->user()->pengurus_id)->first();
+                break;
+            case '2':
+                $role = 'pengurus';
+                $pengurus = Pengurus::with('user')->where('id', auth()->user()->pengurus_id)->first();
+                break;
+            default:
+                $role = 'walmur';
+                $pengurus = WaliMurid::with('user')->where('id', auth()->user()->wali_murid_id)->first();
+                break;
+        }
+        return view($role . '.profil.index', compact('title', 'pengurus', 'roles'));
     }
 
     /**
@@ -55,7 +73,7 @@ class ProfilController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update_pengurus(Request $request, string $id)
+    public function update_data_diri(Request $request, string $id)
     {
         $request->validate([
             'nama' => 'required',
@@ -70,9 +88,53 @@ class ProfilController extends Controller
             'alamat' => $request->alamat ?? '',
         ];
 
-        Pengurus::where('id', $id)->update($data_update);
+        $role = '';
+        switch (auth()->user()->role_id) {
+            case '1':
+                $role = 'admin';
+                Pengurus::where('id', auth()->user()->pengurus_id)->update($data_update);
+                break;
+            case '2':
+                $role = 'pengurus';
+                Pengurus::where('id', auth()->user()->pengurus_id)->update($data_update);
+                break;
+            default:
+                $role = 'walmur';
+                WaliMurid::where('id', auth()->user()->wali_murid_id)->update($data_update);
+                break;
+        }
+        return redirect()->route($role . '.profil.index')->with('success', 'Data berhasil diupdate!');
+    }
 
-        return redirect()->route('admin.pengurus.index')->with('success', 'Data berhasil diupdate!');
+    public function update_akun(Request $request, string $id)
+    {
+        $request->validate([
+            'username' => 'required',
+        ]);
+
+        $data_update = [
+            'username' => $request->post('username'),
+        ];
+
+        if ($request->post('password')) {
+            $data_update['password'] = Hash::make($request->post('password'));
+        }
+
+        User::where('id', auth()->user()->id)->update($data_update);
+
+        $role = '';
+        switch (auth()->user()->role_id) {
+            case '1':
+                $role = 'admin';
+                break;
+            case '2':
+                $role = 'pengurus';
+                break;
+            default:
+                $role = 'walmur';
+                break;
+        }
+        return redirect()->route($role . '.profil.index')->with('success', 'Data berhasil diupdate!');
     }
 
     /**

@@ -56,6 +56,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::get('login/logout', [LoginController::class, 'logout'])->name('login.logout');
     Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::put('update_data_diri/{pengurus}', [ProfilController::class, 'update_data_diri'])->name('profil.update_data_diri');
+    Route::put('update_akun/{pengurus}', [ProfilController::class, 'update_akun'])->name('profil.update_akun');
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_admin'])->name('index');
@@ -111,6 +113,8 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
 Route::middleware('pengurus')->name('pengurus.')->prefix('pengurus')->group(function () {
     Route::get('login/logout', [LoginController::class, 'logout'])->name('login.logout');
     Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::put('update_data_diri/{pengurus}', [ProfilController::class, 'update_data_diri'])->name('profil.update_data_diri');
+    Route::put('update_akun/{pengurus}', [ProfilController::class, 'update_akun'])->name('profil.update_akun');
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_pengurus'])->name('index');
@@ -137,6 +141,8 @@ Route::middleware('pengurus')->name('pengurus.')->prefix('pengurus')->group(func
 Route::middleware('walmur')->name('walmur.')->prefix('wali_murid')->group(function () {
     Route::get('login/logout', [LoginController::class, 'logout'])->name('login.logout');
     Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::put('update_data_diri/{walmur}', [ProfilController::class, 'update_data_diri'])->name('profil.update_data_diri');
+    Route::put('update_akun/{walmur}', [ProfilController::class, 'update_akun'])->name('profil.update_akun');
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_walmur'])->name('index');

@@ -16,7 +16,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12 nav-tab" id="tab-data-diri">
-                    <form action="{{ route('admin.profil.update_data_diri', $pengurus->id) }}" method="POST">
+                    <form action="{{ route('walmur.profil.update_data_diri', $pengurus->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="row">
@@ -87,7 +87,7 @@
                     </form>
                 </div>
                 <div class="col-md-12 nav-tab d-none" id="tab-akun">
-                    <form action="{{ route('admin.profil.update_akun', $pengurus->id) }}" method="POST">
+                    <form action="{{ route('walmur.profil.update_akun', $pengurus->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="row">
