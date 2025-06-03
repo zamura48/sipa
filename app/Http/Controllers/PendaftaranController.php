@@ -252,10 +252,16 @@ class PendaftaranController extends Controller
             }
 
             $subtotal = (int) $iuran->total - (int) $total_keringanan;
-            Tagihan::where('id', '=', $tagihan->id)->update([
+            $data_update = [
                 'total_semua_keringanan' => $total_keringanan,
                 'total_semua' => $subtotal > 0 ? $subtotal : 0
-            ]);
+            ];
+
+            if ($subtotal == 0) {
+                $data_update['status'] = 1;
+            }
+
+            Tagihan::where('id', '=', $tagihan->id)->update($data_update);
 
             $pendaftaran->update(['status' => 1]);
 
