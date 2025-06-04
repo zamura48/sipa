@@ -88,8 +88,7 @@ class TagihanController extends Controller
             $query->where('id', $tagihan->siswa_id);
         })->first();
 
-        $text_wa = "Selamat tagihan anda sudah dikonfirmasi oleh admin.
-            \nSiswa dengan nama {$get_walmur->siswa->nama} akan segera di tempatkan ke kamar yang masih kosong.
+        $text_wa = "Selamat tagihan untuk siswa dengan nama {$get_walmur->siswa->nama} sudah dikonfirmasi oleh admin.
             \n\nTerimakasih";
         send_wa($get_walmur->telepon, $text_wa);
 
@@ -126,8 +125,9 @@ class TagihanController extends Controller
         $text_wa = "Wali Murid atas nama {$get_walmur->nama} sudah mengupload bukti bayar.
             \nSilakan cek bukti bayar dan Konfirmasi.
             \n\nTerimakasih";
-        if ($get_admin->telepon) {
-            send_wa($get_admin->telepon, $text_wa);
+
+        if ($get_admin->pengurus->telepon) {
+            send_wa($get_admin->pengurus->telepon, $text_wa);
         }
 
         return redirect()->route('walmur.tagihan.index')->with('success', 'Data berhasil simpan!');
