@@ -42,7 +42,7 @@
                                 <td>
                                     @if ($item->absensi)
                                         @if ($item->absensi->absen == 1)
-                                            <span class="badge badge-warning">Absen</span>
+                                            <span class="badge badge-warning">Alpha</span>
                                         @endif
                                         @if ($item->absensi->izin == 1)
                                             <span class="badge badge-secondary">Izin</span>

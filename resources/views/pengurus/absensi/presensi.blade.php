@@ -30,8 +30,15 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
-                                    <td>{{ $item->siswa ? $item->siswa->kamar ? $item->siswa->kamar->nama : '-' : '-' }}</td>
-                                    <td>{{ $item->siswa ? $item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' : '-' }}</td>
+                                    <td>
+                                        @if ($item->siswa && isset($item->siswa->penghuni->kamar) )
+                                            {{ $item->siswa->penghuni->kamar->nama }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->siswa ? ($item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}
+                                    </td>
                                     <td><input type="radio" name="absensi_{{ $item->id }}" class="check-absen"
                                             id="check-absen-{{ $key }}" data-id="{{ $item->id }}"
                                             {{ $item->absensi ? ($item->absensi->absen == 1 ? 'checked' : '') : '' }}
@@ -66,20 +73,35 @@
         $(document).ready(function() {
             var table = $('#data_table').DataTable();
 
+            $('.check-absen').each(function(index, element) {
+                let checked = $(element).attr('checked');
+                if (checked) {
+                    let this_val = $(element).val();
+                    let siswa_id = $(element).data('id');
+
+                    store_absen(this_val, siswa_id);
+                }
+
+            });
+
             // Menangani perubahan radio button
             $('.check-absen').change(function() {
-                let this_val = $(this)
-                    .val(); // Nilai dari radio button yang dipilih (1 = Absen, 2 = Izin, 3 = Sakit)
+                let this_val = $(this).val(); // Nilai dari radio button yang dipilih (1 = Absen, 2 = Izin, 3 = Sakit)
                 let siswa_id = $(this).data('id'); // ID siswa dari data-id
-                let absensiData = JSON.parse($('#data_siswa_absen').val() || '{}');
 
-                // Update data absen pada objek absensiData
-                absensiData[siswa_id] = this_val;
-
-                // Menyimpan data absen ke hidden input
-                $('#data_siswa_absen').val(JSON.stringify(absensiData));
+                store_absen(this_val, siswa_id);
             });
 
         });
+
+        function store_absen(value, siswa_id) {
+            let absensiData = JSON.parse($('#data_siswa_absen').val() || '{}');
+
+            // Update data absen pada objek absensiData
+            absensiData[siswa_id] = value;
+
+            // Menyimpan data absen ke hidden input
+            $('#data_siswa_absen').val(JSON.stringify(absensiData));
+        }
     </script>
 @endpush

@@ -23,10 +23,18 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $item)
+                            @php
+                                $tanggal = $item->tanggal;
+                                $explode = explode(', ', $tanggal);
+                                $hari = '';
+                                if (count($explode) > 0) {
+                                    $hari = $explode[0];
+                                }
+                            @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ datetime_indo($item->tanggal) }}</td>
+                                <td>{{ datetime_indo($tanggal) }}</td>
                                 <td>
                                     <ul>
                                         @foreach ($item->jadwalDetails as $value)
@@ -35,7 +43,7 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    @if (nama_hari_indo(date('l')) == $item->hari)
+                                    @if (date('Y-m-d', strtotime($tanggal)) == date('Y-m-d'))
                                         <a href="{{ route('pengurus.absensi.presensi', $item->id) }}"
                                             class="btn btn-primary btn-sm">
                                             <i class="fa fa-plus mr-2"></i> Absensi

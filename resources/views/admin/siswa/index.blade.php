@@ -41,7 +41,7 @@
                                 <td>{{ $item->sekolah ? $item->sekolah->nama_sekolah : '' }}</td>
                                 <td>{{ $item->nis }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->jenis_kelamin = 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                <td>{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                 <td>{{ $item->ortu ? $item->ortu->nama : '' }}</td>
                                 <td>{{ format_date_w_bs($item->periode->tgl_mulai) . ' - ' . format_date_w_bs($item->periode->tgl_akhir) }}
                                 <td>{{ $item->penghuni ? $item->penghuni->kamar->nama : '-' }}</td>

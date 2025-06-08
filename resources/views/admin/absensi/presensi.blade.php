@@ -30,7 +30,12 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->siswa ? $item->siswa->nama : '-' }}</td>
-                                    <td>{{ $item->siswa ? ($item->siswa->penghuni->kamar ? $item->siswa->penghuni->kamar->nama : '-') : '-' }}
+                                    <td>
+                                        @if ($item->siswa && isset($item->siswa->penghuni->kamar) )
+                                            {{ $item->siswa->penghuni->kamar->nama }}
+                                        @else
+                                            -
+                                        @endif
                                     </td>
                                     <td>{{ $item->siswa ? ($item->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}
                                     </td>
