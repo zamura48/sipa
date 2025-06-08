@@ -269,8 +269,14 @@ class PendaftaranController extends Controller
             $text_wa = "Selamat siswa dengan nama {$pendaftaran->nama_siswa} telah terdaftar ke asrama.
             \nAnda dapat memantau kegiatan siswa dengan login ke halaman wali murid.
             $text_username
-            \n Silakan melakukan pembayaran dengan nominal Rp.{$nominal_pembayaran}.
-            \n Jika sudah anda dapat mengupload bukti bayar pada halaman wali murid pada menu Tagihan.
+            \nSilakan melakukan pembayaran dengan nominal Rp.{$nominal_pembayaran} ke salah satu rekening berikut:
+            \n1. BCA
+            \nNo. Rekening: 1234567890
+            \nAtas Nama: Setiawan
+            \n2. BRI
+            \nNo. Rekening: 1234567890
+            \nAtas Nama: Setiawan
+            \nJika sudah anda dapat mengupload bukti bayar pada halaman wali murid pada menu Tagihan.
             \n\nTerimakasih";
             send_wa($pendaftaran->telepon_ortu, $text_wa);
 

@@ -43,7 +43,15 @@
                                 <td>Nominal Pembayaran</td>
                                 <td>:</td>
                                 <td>Rp{{ format_currency($data->total_semua) }}
-                                    {{ $data->total_semua == 0 ? '(Gratis)' : '' }}</td>
+                                    {{ $data->total_semua == 0 ? '(Gratis)' : '' }} <br>
+                                    Silakan lakukan pembayaran ke salah satu rekening berikut: <br>
+                                    1. BCA <br>
+                                    No. Rekening: 1234567890 <br>
+                                    Atas Nama: Setiawan <br>
+                                    2. BRI <br>
+                                    No. Rekening: 1234567890 <br>
+                                    Atas Nama: Setiawan <br>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -56,9 +64,11 @@
                         @endif
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="foto" class="form-label">Bukti Bayar <br><small class="text-danger">Catatan: jika nominal pembayaran Rp0/Gratis bisa langsung klik tombol simpan.</small></label>
+                        <label for="foto" class="form-label">Bukti Bayar <br><small class="text-danger">Catatan: jika
+                                nominal pembayaran Rp0/Gratis bisa langsung klik tombol simpan.</small></label>
                         <input type="file" class="form-control-file @error('foto') is-invalid @enderror"
-                            placeholder="Masukkan foto ..." id="foto" name="foto" value="{{ old('foto') }}" accept=".jpg,.jpeg,.png">
+                            placeholder="Masukkan foto ..." id="foto" name="foto" value="{{ old('foto') }}"
+                            accept=".jpg,.jpeg,.png">
                         @if ($errors->has('foto'))
                             <div class="invalid-feedback">{{ $errors->first('foto') }}</div>
                         @endif
