@@ -415,7 +415,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
+                            <span data-purecounter-start="0" data-purecounter-end="{{ $total_siswa }}" data-purecounter-duration="1"
                                 class="purecounter"></span>
                             <p>Penghuni</p>
                         </div>
@@ -423,7 +423,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
+                            <span data-purecounter-start="0" data-purecounter-end="{{ $total_pengurus }}" data-purecounter-duration="1"
                                 class="purecounter"></span>
                             <p>Pengurus</p>
                         </div>
@@ -431,7 +431,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
+                            <span data-purecounter-start="0" data-purecounter-end="{{ $total_admin }}" data-purecounter-duration="1"
                                 class="purecounter"></span>
                             <p>Admin</p>
                         </div>
