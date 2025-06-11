@@ -17,4 +17,9 @@ class Jadwal extends Model
     {
         return $this->hasMany(JadwalDetail::class, 'jadwal_id', 'id');
     }
+
+    public function jadwalDetail()
+    {
+        return $this->hasOne(JadwalDetail::class, 'jadwal_id', 'id');
+    }
 }

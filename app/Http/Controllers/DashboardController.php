@@ -44,14 +44,19 @@ class DashboardController extends Controller
         }
 
         $tanggal_hari_ini = Carbon::today();
-        $data_jadwal = Jadwal::whereDate('tanggal', $tanggal_hari_ini)->get();
+        $data_jadwal = Jadwal::with('jadwalDetail.kegiatan')->whereDate('tanggal', $tanggal_hari_ini)->get();
         $absensi_absen = [];
         $absensi_izin = [];
         $absensi_masuk = [];
         $belum_diabsen = [];
         $jadwal_label = [];
         foreach ($data_jadwal as $key => $value) {
-            $jadwal_label[] = $value->nama;
+            $jam = $value->tanggal ? ' (' . date('H:i', strtotime($value->tanggal)) . ')' : '-';
+            $nama_kegiatan = '';
+            if (isset($value->jadwalDetail->kegiatan->nama)) {
+                $nama_kegiatan = $value->jadwalDetail->kegiatan->nama;
+            }
+            $jadwal_label[] = $nama_kegiatan . $jam;
             $absensi_absen[] = $this->jadwal($value->id, 0, 1);
             $absensi_izin[] = $this->jadwal($value->id, 0, 0, 1);
             $absensi_masuk[] = $this->jadwal($value->id, 0, 0, 0, 1);
