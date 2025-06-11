@@ -36,7 +36,7 @@
                 <tr>
                     <td>Jenis Kamar</td>
                     <td>:</td>
-                    <td>{{ $kamar->jenis ? $kamar->jenis == 'L' ? 'Laki-laki' : 'Perempuan' : '-'}}</td>
+                    <td>{{ $kamar->jenis ? ($kamar->jenis == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}</td>
                 </tr>
             </table>
             <hr>
@@ -171,6 +171,54 @@
                     $(this).find('[type="checkbox"]').prop('checked', true);
                 } else {
                     $(this).find('[type="checkbox"]').prop('checked', false);
+                }
+            });
+
+            $("#checkAll").click(function(e) {
+                const checked = $(this).prop("checked");
+
+                $('.dt-select-checkbox').prop('checked', checked);
+
+                // Tambah atau hapus class 'selected' di setiap row
+                $('#table_siswa tbody tr').each(function() {
+                    if (checked) {
+                        $(this).find('[type="checkbox"]').prop('checked', true);
+                        $(this).addClass('selected');
+                    } else {
+                        $(this).removeClass('selected');
+                        $(this).find('[type="checkbox"]').prop('checked', false);
+                    }
+                });
+
+                // DataTables select/deselect jika digunakan
+                if (checked) {
+                    table.rows().select();
+                } else {
+                    table.rows().deselect();
+                }
+            });
+
+            $("#checkAllDelete").click(function(e) {
+                const checked = $(this).prop("checked");
+
+                $('.dt-select-checkbox').prop('checked', checked);
+
+                // Tambah atau hapus class 'selected' di setiap row
+                $('#table_list_siswa tbody tr').each(function() {
+                    if (checked) {
+                        $(this).find('[type="checkbox"]').prop('checked', true);
+                        $(this).addClass('selected');
+                    } else {
+                        $(this).removeClass('selected');
+                        $(this).find('[type="checkbox"]').prop('checked', false);
+                    }
+                });
+
+                // DataTables select/deselect jika digunakan
+                if (checked) {
+                    table_list_siswa.rows().select();
+                } else {
+                    table_list_siswa.rows().deselect();
                 }
             });
 

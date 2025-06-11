@@ -175,6 +175,54 @@
                 }
             });
 
+            $("#checkAll").click(function(e) {
+                const checked = $(this).prop("checked");
+
+                $('.dt-select-checkbox').prop('checked', checked);
+
+                // Tambah atau hapus class 'selected' di setiap row
+                $('#table_siswa tbody tr').each(function() {
+                    if (checked) {
+                        $(this).find('[type="checkbox"]').prop('checked', true);
+                        $(this).addClass('selected');
+                    } else {
+                        $(this).removeClass('selected');
+                        $(this).find('[type="checkbox"]').prop('checked', false);
+                    }
+                });
+
+                // DataTables select/deselect jika digunakan
+                if (checked) {
+                    table.rows().select();
+                } else {
+                    table.rows().deselect();
+                }
+            });
+
+            $("#checkAllDelete").click(function(e) {
+                const checked = $(this).prop("checked");
+
+                $('.dt-select-checkbox').prop('checked', checked);
+
+                // Tambah atau hapus class 'selected' di setiap row
+                $('#table_list_siswa tbody tr').each(function() {
+                    if (checked) {
+                        $(this).find('[type="checkbox"]').prop('checked', true);
+                        $(this).addClass('selected');
+                    } else {
+                        $(this).removeClass('selected');
+                        $(this).find('[type="checkbox"]').prop('checked', false);
+                    }
+                });
+
+                // DataTables select/deselect jika digunakan
+                if (checked) {
+                    table_list_siswa.rows().select();
+                } else {
+                    table_list_siswa.rows().deselect();
+                }
+            });
+
             $('#btn-save').click(function(e) {
                 e.preventDefault();
                 let data = [];

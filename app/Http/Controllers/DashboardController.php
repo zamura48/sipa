@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
+use App\Models\Jadwal;
+use App\Models\JadwalBySiswa;
 use App\Models\Kamar;
 use App\Models\Pendaftaran;
 use App\Models\Sekolah;
 use App\Models\Siswa;
 use App\Models\Tagihan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -39,6 +43,21 @@ class DashboardController extends Controller
             $data_nama_tagihan[] = $value->nama;
         }
 
+        $tanggal_hari_ini = Carbon::today();
+        $data_jadwal = Jadwal::whereDate('tanggal', $tanggal_hari_ini)->get();
+        $absensi_absen = [];
+        $absensi_izin = [];
+        $absensi_masuk = [];
+        $belum_diabsen = [];
+        $jadwal_label = [];
+        foreach ($data_jadwal as $key => $value) {
+            $jadwal_label[] = $value->nama;
+            $absensi_absen[] = $this->jadwal($value->id, 0, 1);
+            $absensi_izin[] = $this->jadwal($value->id, 0, 0, 1);
+            $absensi_masuk[] = $this->jadwal($value->id, 0, 0, 0, 1);
+            $belum_diabsen[] = $this->jadwal($value->id, 1);
+        }
+
         $get_data_kamar = $this->sisa_kamar(false);
         $data_jenis_kamar = [];
         $data_nama_kamar = [];
@@ -63,7 +82,7 @@ class DashboardController extends Controller
             $total_pendaftar_not_confirm[] = $not_confirm;
         }
 
-        return view('admin.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah', 'data_tagihan', 'data_nama_tagihan'));
+        return view('admin.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah', 'data_tagihan', 'data_nama_tagihan', 'absensi_absen', 'absensi_izin', 'absensi_masuk', 'belum_diabsen', 'jadwal_label', 'tanggal_hari_ini'));
     }
 
     public function dashboard_pengurus()
@@ -88,6 +107,21 @@ class DashboardController extends Controller
             $data_sisa_kamar[] = $value->jumlah_penghuni - $value->penghunis_count;
         }
 
+        $tanggal_hari_ini = Carbon::today();
+        $data_jadwal = Jadwal::whereDate('tanggal', $tanggal_hari_ini)->get();
+        $absensi_absen = [];
+        $absensi_izin = [];
+        $absensi_masuk = [];
+        $belum_diabsen = [];
+        $jadwal_label = [];
+        foreach ($data_jadwal as $key => $value) {
+            $jadwal_label[] = $value->nama;
+            $absensi_absen[] = $this->jadwal($value->id, 0, 1);
+            $absensi_izin[] = $this->jadwal($value->id, 0, 0, 1);
+            $absensi_masuk[] = $this->jadwal($value->id, 0, 0, 0, 1);
+            $belum_diabsen[] = $this->jadwal($value->id, 1);
+        }
+
         $get_sekolah = Sekolah::all();
         $data_sekolah = [];
         $total_pendaftar = [];
@@ -102,7 +136,7 @@ class DashboardController extends Controller
             $total_pendaftar_not_confirm[] = $not_confirm;
         }
 
-        return view('pengurus.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah'));
+        return view('pengurus.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah', 'absensi_absen', 'absensi_izin', 'absensi_masuk', 'belum_diabsen', 'jadwal_label', 'tanggal_hari_ini'));
     }
 
     public function dashboard_walmur()
@@ -114,6 +148,28 @@ class DashboardController extends Controller
         $tagihan_terbayar = $this->total_tagihan(1);
 
         return view('walmur.dashboard.index', compact('title', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar'));
+    }
+
+    private function jadwal($jadwal_id, $belum_absen = 0, $absen = 0, $izin = 0, $masuk = 0)
+    {
+        $total = 0;
+        if ($belum_absen) {
+            // Belum absen = tidak punya relasi absensi
+            $total = JadwalBySiswa::where('jadwal_id', $jadwal_id)
+                ->whereDoesntHave('absensi')
+                ->count();
+        } else {
+            // Sudah absen dan cocok dengan filter
+            $total = JadwalBySiswa::where('jadwal_id', $jadwal_id)
+                ->whereHas('absensi', function ($q) use ($absen, $izin, $masuk) {
+                    $q->where('absen', $absen)
+                        ->where('izin', $izin)
+                        ->where('masuk', $masuk);
+                })
+                ->count();
+        }
+
+        return $total;
     }
 
     private function total_pendaftar($status, $sekolah = '')

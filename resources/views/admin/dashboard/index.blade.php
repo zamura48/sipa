@@ -119,6 +119,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-6 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h4>Total Absensi Per Tanggal {{ date_indo($tanggal_hari_ini) }}</h4>
+                </div>
+                <div class="card-body">
+                    <div id="chart-absensi"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-xl-6 col-md-6 mb-4">
@@ -162,6 +172,7 @@
             chart_sisa_kamar();
             chart_total_pendaftar();
             chart_tagihan();
+            chart_total_absensi();
 
             $("#chart-sisa-kamar .apx-legend-position-bottom").html(`<div class="">
     <div class="d-flex mt-2">
@@ -338,6 +349,65 @@
             };
 
             var chart = new ApexCharts(document.querySelector("#chart-total-pendaftar"), options);
+            chart.render();
+        }
+
+        function chart_total_absensi() {
+            var options = {
+                series: [{
+                    name: 'Alpha',
+                    data: @json($absensi_absen)
+                }, {
+                    name: 'Masuk',
+                    data: @json($absensi_masuk)
+                }, {
+                    name: 'Izin',
+                    data: @json($absensi_izin)
+                }, {
+                    name: 'Belum Diabsen',
+                    data: @json($belum_diabsen)
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        borderRadius: 5,
+                        borderRadiusApplication: 'end'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: @json($jadwal_label),
+                },
+                yaxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart-absensi"), options);
             chart.render();
         }
     </script>
