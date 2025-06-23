@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="nis" class="form-label">NIS</label>
-                        <input type="text" class="form-control @error('nis') is-invalid @enderror"
+                        <input type="number" class="form-control @error('nis') is-invalid @enderror"
                             placeholder="Masukkan nis..." id="nis" name="nis" value="{{ old('nis') }}">
                         @if ($errors->has('nis'))
                             <div class="invalid-feedback">{{ $errors->first('nis') }}</div>
