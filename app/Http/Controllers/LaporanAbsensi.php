@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\JadwalBySiswa;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class LaporanAbsensi extends Controller
@@ -11,31 +12,39 @@ class LaporanAbsensi extends Controller
     public function index(Request $request)
     {
         $tanggal = $request->get('tanggal');
+        $g_siswa = $request->get('siswa') ?? 0;
 
         $title = 'Laporan Absensi';
-        $tanggalHariIni =  $tanggal ? $tanggal : date('Y-m-d');
+        $tanggalHariIni =  $tanggal ? $tanggal : '';
         $hari = date('l', strtotime($tanggalHariIni));
         $hariIndo = nama_hari_indo($hari);
         $data = [];
         $wali_murid = auth()->user()->wali_murid_id;
 
-        if ($tanggal) {
+        $siswas = Siswa::all();
+
+        if ($tanggal || $g_siswa) {
             $data = JadwalBySiswa::with([
                 'absensi',
                 'jadwal',
                 'siswa',
             ])->whereHas('jadwal', function ($q) use ($tanggalHariIni) {
-                $q->whereRaw('DATE(tanggal) = ?', $tanggalHariIni);
-            })->whereHas('siswa', function ($query) use ($wali_murid) {
+                if ($tanggalHariIni) {
+                    $q->whereRaw('DATE(tanggal) = ?', $tanggalHariIni);
+                }
+            })->whereHas('siswa', function ($query) use ($wali_murid, $g_siswa) {
                 if ($wali_murid) {
                     $query->where('wali_murid_id', $wali_murid);
                 }
-            })->orderBy('siswa_id', 'ASC')->get();
+                if ($g_siswa) {
+                    $query->where('id', $g_siswa);
+                }
+            })->orderBy('id', 'DESC')->get();
         }
         $weekday = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
         if (auth()->user()->role_id != 3) {
-            return view('admin.laporan.absensi', compact('title', 'data', 'weekday', 'tanggal'));
+            return view('admin.laporan.absensi', compact('title', 'data', 'weekday', 'tanggal', 'siswas', 'g_siswa'));
         } else {
             return view('walmur.laporan.absensi', compact('title', 'data', 'weekday', 'tanggal'));
         }

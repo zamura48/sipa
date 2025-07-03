@@ -44,20 +44,25 @@ class AbsensiController extends Controller
 
         // Mendekode data JSON yang ada dalam 'data_siswa_absen' menjadi array atau objek PHP
         $decode_data = json_decode($data_post['data_siswa_absen']);
+        $decode_alasan_siswa_absen = json_decode($data_post['alasan_siswa_absen']);
+
+        $alasan_absen = [];
+        foreach ($decode_alasan_siswa_absen as $key => $value) {
+            $alasan_absen[$key] = $value;
+        }
 
         // Melakukan iterasi untuk setiap data absensi siswa
         foreach ($decode_data as $key => $value) {
-
             // Menggunakan updateOrCreate untuk mencari atau membuat record baru di tabel Absensi
             Absensi::updateOrCreate(
                 // Kondisi pencarian, mencari berdasarkan jadwal_by_siswa_id dan tanggal saat ini
                 ['jadwal_by_siswa_id' => $key, 'tanggal' => date('Y-m-d')],
                 // Data yang akan diset atau diperbarui
                 [
-                    'siswa_id' => 0,
                     'absen' => $value == 1 ? 1 : 0,  // Jika absen, set 'absen' = 1, jika tidak = 0
                     'izin' => $value == 2 ? 1 : 0,    // Jika izin, set 'izin' = 1, jika tidak = 0
                     'masuk' => $value == 3 ? 1 : 0,   // Jika masuk, set 'masuk' = 1, jika tidak = 0
+                    'alasan' => $value == 2 ? $alasan_absen[$key] : ''
                 ]
             );
         }

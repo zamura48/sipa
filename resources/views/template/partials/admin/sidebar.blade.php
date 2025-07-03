@@ -141,6 +141,10 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Penghuni</span></a>
         </li>
+        <li class="nav-item {{ $sub_modul == 'pelanggaran' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.pelanggaran.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Pelanggaran</span></a>
         <li class="nav-item {{ $sub_modul == 'absensi' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.absensi.index') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -173,6 +177,10 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Penghuni</span></a>
         </li>
+        <li class="nav-item {{ $sub_modul == 'pelanggaran' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('pengurus.pelanggaran.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Pelanggaran</span></a>
         <li class="nav-item {{ $sub_modul == 'absensi' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('pengurus.absensi.index') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -208,6 +216,11 @@
             <a class="nav-link" href="{{ route('walmur.siswa.index') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Siswa</span></a>
+        </li>
+        <li class="nav-item {{ $sub_modul == 'pelanggaran' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('walmur.pelanggaran.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Pelanggaran</span></a>
         </li>
         <li class="nav-item {{ $sub_modul == 'tagihan' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('walmur.tagihan.index') }}">

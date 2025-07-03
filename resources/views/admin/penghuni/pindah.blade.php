@@ -36,7 +36,7 @@
                 <tr>
                     <td>Jenis Kamar</td>
                     <td>:</td>
-                    <td>{{ $kamar->jenis ? $kamar->jenis == 'L' ? 'Laki-laki' : 'Perempuan' : '-'}}</td>
+                    <td>{{ $kamar->jenis ? ($kamar->jenis == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}</td>
                 </tr>
             </table>
             <hr>
@@ -85,8 +85,10 @@
                     <h4>Tambah Siswa Ke Kamar</h4>
                 </div>
                 <div class="col-md-6 text-left">
-                    <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
-                            class="fa fa-save mr-2"></i>Simpan</button>
+                    @if ($sisa_kuota_kamar > 0)
+                        <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
+                                class="fa fa-save mr-2"></i>Simpan</button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -117,7 +119,11 @@
                     <table class="table table-striped" id="table_siswa">
                         <thead>
                             <tr>
-                                <td><input type="checkbox" id="checkAll"></td>
+                                @if ($sisa_kuota_kamar > 0)
+                                    <td><input type="checkbox" id="checkAll"></td>
+                                @else
+                                    <td></td>
+                                @endif
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td>Kamar</td>
@@ -127,7 +133,11 @@
                         <tbody>
                             @foreach ($siswas as $key => $value)
                                 <tr>
-                                    <td><input type="checkbox" id="check-{{ $key }}"></td>
+                                    @if ($sisa_kuota_kamar > 0)
+                                        <td><input type="checkbox" id="check-{{ $key }}"></td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                     <td>{{ $value->siswa->nama }}</td>
                                     <td>{{ $value->siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                     <td>{{ $value->kamar->nama }}</td>
@@ -167,15 +177,17 @@
                 }]
             });
 
-            table.on('click', 'tbody tr', function(e) {
-                e.currentTarget.classList.toggle('selected');
+            @if ($sisa_kuota_kamar > 0)
+                table.on('click', 'tbody tr', function(e) {
+                    e.currentTarget.classList.toggle('selected');
 
-                if ($(this).hasClass('selected')) {
-                    $(this).find('[type="checkbox"]').prop('checked', true);
-                } else {
-                    $(this).find('[type="checkbox"]').prop('checked', false);
-                }
-            });
+                    if ($(this).hasClass('selected')) {
+                        $(this).find('[type="checkbox"]').prop('checked', true);
+                    } else {
+                        $(this).find('[type="checkbox"]').prop('checked', false);
+                    }
+                });
+            @endif
 
             table_list_siswa.on('click', 'tbody tr', function(e) {
                 e.currentTarget.classList.toggle('selected');

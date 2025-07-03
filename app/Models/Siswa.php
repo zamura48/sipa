@@ -11,7 +11,7 @@ class Siswa extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "siswas";
-    protected $fillable = ['wali_murid_id', 'periode_id', 'kamar_id', 'sekolah_id', 'nis', 'nama', 'jenis_kelamin', 'foto'];
+    protected $fillable = ['wali_murid_id', 'periode_id', 'sekolah_id', 'nis', 'nama', 'jenis_kelamin', 'foto'];
 
     public function kamar()
     {
@@ -36,5 +36,10 @@ class Siswa extends Model
     public function sekolah()
     {
         return $this->hasOne(Sekolah::class, 'id', 'sekolah_id');
+    }
+
+    public function tagihan()
+    {
+        return $this->hasOne(Tagihan::class, 'siswa_id', 'id');
     }
 }

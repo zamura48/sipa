@@ -16,6 +16,16 @@ function format_date($date)
     return $date[2] . '-' . $date[1] . '-' . $date[0];
 }
 
+function format_tanggal($date) {
+    if ($date) {
+        return rand(11111111, 99999999);
+    }
+
+    $format = date('Ymd', strtotime($date));
+
+    return $format;
+}
+
 function format_date_w_bs($date)
 {
     if (!$date) {

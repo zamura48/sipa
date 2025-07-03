@@ -26,6 +26,8 @@ class DashboardController extends Controller
         $total_siswa = $this->total_siswa();
         $tagihan_belum_terbayar = $this->total_tagihan(0);
         $tagihan_terbayar = $this->total_tagihan(1);
+        $tagihan_ditolak = $this->total_tagihan(3);
+        $total_pendapatan = $this->total_pendapatan();
         $sisa_kamar = $this->sisa_kamar();
 
         $data_tagihan = [];
@@ -87,7 +89,7 @@ class DashboardController extends Controller
             $total_pendaftar_not_confirm[] = $not_confirm;
         }
 
-        return view('admin.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah', 'data_tagihan', 'data_nama_tagihan', 'absensi_absen', 'absensi_izin', 'absensi_masuk', 'belum_diabsen', 'jadwal_label', 'tanggal_hari_ini'));
+        return view('admin.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah', 'data_tagihan', 'data_nama_tagihan', 'absensi_absen', 'absensi_izin', 'absensi_masuk', 'belum_diabsen', 'jadwal_label', 'tanggal_hari_ini', 'tagihan_ditolak', 'total_pendapatan'));
     }
 
     public function dashboard_pengurus()
@@ -100,6 +102,8 @@ class DashboardController extends Controller
         $total_siswa = $this->total_siswa();
         $tagihan_belum_terbayar = $this->total_tagihan(0);
         $tagihan_terbayar = $this->total_tagihan(1);
+        $tagihan_ditolak = $this->total_tagihan(3);
+        $total_pendapatan = $this->total_pendapatan();
         $sisa_kamar = $this->sisa_kamar();
 
         $get_data_kamar = $this->sisa_kamar(false);
@@ -141,7 +145,7 @@ class DashboardController extends Controller
             $total_pendaftar_not_confirm[] = $not_confirm;
         }
 
-        return view('pengurus.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah', 'absensi_absen', 'absensi_izin', 'absensi_masuk', 'belum_diabsen', 'jadwal_label', 'tanggal_hari_ini'));
+        return view('pengurus.dashboard.index', compact('title', 'pendaftar_belum_confirm', 'pendaftar_confirm', 'total_kamar', 'total_siswa', 'tagihan_belum_terbayar', 'tagihan_terbayar', 'sisa_kamar', 'data_nama_kamar', 'data_jenis_kamar', 'data_sisa_kamar', 'total_pendaftar', 'total_pendaftar_confirm', 'total_pendaftar_not_confirm', 'data_sekolah', 'absensi_absen', 'absensi_izin', 'absensi_masuk', 'belum_diabsen', 'jadwal_label', 'tanggal_hari_ini', 'tagihan_ditolak', 'total_pendapatan'));
     }
 
     public function dashboard_walmur()
@@ -216,13 +220,21 @@ class DashboardController extends Controller
             })->where('status', $status)->count();
         } else {
             if ($status == 1) {
-                $data_tagihan = Tagihan::where('status', '>=', 1)->count();
+                $data_tagihan = Tagihan::where('status', '>=', 1)->whereNotIn('status', [4])->count();
             } else {
                 $data_tagihan = Tagihan::where('status', $status)->count();
             }
         }
 
 
+        return $data_tagihan;
+    }
+
+    private function total_pendapatan()
+    {
+        $data_tagihan = Tagihan::where('status', 2)
+            ->whereNotIn('status', [4])
+            ->sum('total_semua');
         return $data_tagihan;
     }
 

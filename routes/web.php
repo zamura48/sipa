@@ -11,6 +11,8 @@ use App\Http\Controllers\KeringananController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LaporanAbsensi;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\PengurusController;
@@ -41,6 +43,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index']);
 Route::get('/login', [LandingController::class, 'login'])->name('landing.login');
+Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
 
 Route::middleware('guest')->group(function () {
     Route::get('admin/login', [LoginController::class, 'admin_login'])->name('admin.login');
@@ -69,6 +72,7 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     Route::resource('/jenis_iuran', JenisIuranController::class);
     Route::resource('/pilihan', PilihanController::class);
     Route::resource('/absensi', AbsensiController::class);
+    Route::resource('/pelanggaran', PelanggaranController::class);
     Route::prefix('absensi')->name('absensi.')->group(function () {
         Route::get('presensi/{jadwal}', [AbsensiController::class, 'presensi'])->name('presensi');
         Route::post('presensi/save/{jadwal}', [AbsensiController::class, 'presensi_save'])->name('presensi.save');
@@ -101,6 +105,7 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
     });
     Route::prefix('tagihan')->name('tagihan.')->group(function () {
         Route::post('/bayar/konfirmasi_pembayaran/{tagihan}', [TagihanController::class, 'konfirmasi_pembayaran'])->name('konfirmasi_pembayaran');
+        Route::post('/bayar/tolak_pembayaran/{tagihan}', [TagihanController::class, 'tolak_pembayaran'])->name('tolak_pembayaran');
     });
     Route::resource('/tagihan_keringanan', TagihanKeringananController::class);
     Route::resource('/user', UserController::class);
@@ -115,6 +120,7 @@ Route::middleware('pengurus')->name('pengurus.')->prefix('pengurus')->group(func
     Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
     Route::put('update_data_diri/{pengurus}', [ProfilController::class, 'update_data_diri'])->name('profil.update_data_diri');
     Route::put('update_akun/{pengurus}', [ProfilController::class, 'update_akun'])->name('profil.update_akun');
+    Route::resource('/pelanggaran', PelanggaranController::class);
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_pengurus'])->name('index');
@@ -143,6 +149,7 @@ Route::middleware('walmur')->name('walmur.')->prefix('wali_murid')->group(functi
     Route::get('profil', [ProfilController::class, 'index'])->name('profil.index');
     Route::put('update_data_diri/{walmur}', [ProfilController::class, 'update_data_diri'])->name('profil.update_data_diri');
     Route::put('update_akun/{walmur}', [ProfilController::class, 'update_akun'])->name('profil.update_akun');
+    Route::resource('/pelanggaran', PelanggaranController::class);
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard_walmur'])->name('index');

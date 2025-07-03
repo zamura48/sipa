@@ -7,6 +7,8 @@ use App\Models\Tagihan;
 use App\Models\User;
 use App\Models\WaliMurid;
 use Illuminate\Http\Request;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class TagihanController extends Controller
 {
@@ -65,9 +67,46 @@ class TagihanController extends Controller
     {
         $title = 'Bayar Tagihan';
 
-        $data = $tagihan->load('iuran', 'siswa');
+        $data = $tagihan->load('iuran', 'siswa.ortu');
 
-        return view('walmur.tagihan.bayar', compact('title', 'data'));
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
+
+        $first_name = '-';
+        $last_name = '-';
+        $phone_number = '08999999991';
+        if ($data->siswa->ortu) {
+            $ortu_name = $data->siswa->ortu->nama;
+            $explode = explode(' ', $ortu_name);
+            $phone_number = $data->siswa->ortu->telepon;
+
+            if (count($explode) > 1) {
+                $first_name = $explode[0];
+                $last_name = implode(' ', array_slice($explode, 1));
+            } else {
+                $first_name = $explode[0];
+                $last_name = $explode[0];
+            }
+        }
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $data->id.format_tanggal($data->created_at),
+                'gross_amount' => $tagihan->total_semua,
+            ],
+            'customer_details' => [
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => 'testing@gamil.conm',
+                'phone' => $phone_number,
+            ],
+        ];
+
+        $snapToken = Snap::getSnapToken($params);
+
+        return view('walmur.tagihan.bayar', compact('title', 'data', 'snapToken'));
     }
 
     /**
@@ -95,6 +134,26 @@ class TagihanController extends Controller
         return redirect()->route('admin.tagihan.index')->with('success', 'Data berhasil simpan!');
     }
 
+    public function tolak_pembayaran(Request $request, Tagihan $tagihan)
+    {
+        $alasan = $request->post('alasan');
+        $tagihan->update([
+            'status' => 3,
+            'alasan' => $alasan
+        ]);
+
+        $get_walmur = WaliMurid::with('siswa')->whereHas('siswa', function ($query) use ($tagihan) {
+            $query->where('id', $tagihan->siswa_id);
+        })->first();
+
+        $text_wa = "Pembayaran tagihan untuk siswa dengan nama {$get_walmur->siswa->nama} telah ditolak oleh admin.
+            \nDengan alsan ditolak: {$alasan}
+            \n\nTerimakasih";
+        send_wa($get_walmur->telepon, $text_wa);
+
+        return redirect()->route('admin.tagihan.index')->with('success', 'Data berhasil simpan!');
+    }
+
     public function upload_bayar(Request $request, Tagihan $tagihan)
     {
         $file_name = '';
@@ -114,7 +173,7 @@ class TagihanController extends Controller
 
         $tagihan->update([
             'bukti_bayar' => $file_name,
-            'status' => 1
+            'status' => $tagihan->status == 3 ? 4 : 1
         ]);
 
         $get_walmur = WaliMurid::with('siswa')->whereHas('siswa', function ($query) use ($tagihan) {

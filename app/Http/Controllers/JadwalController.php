@@ -43,7 +43,12 @@ class JadwalController extends Controller
         foreach ($jadwal_siswa as $key => $value) {
             $siswa_id[] = $value->siswa_id;
         }
-        $siswas = Siswa::with('penghuni.kamar')->whereNotIn('id', $siswa_id)->get();
+
+        $siswas = Siswa::with(['penghuni.kamar', 'tagihan' => function ($q) {
+            $q->where('status', 2);
+        }])->whereHas('tagihan', function ($q) {
+                $q->where('status', 2);
+            })->whereNotIn('id', $siswa_id)->get();
 
         return view('admin.jadwal.siswa', compact('title', 'jadwal_siswa', 'siswas', 'jadwal'));
     }

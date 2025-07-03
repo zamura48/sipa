@@ -63,7 +63,16 @@ class PenghuniController extends Controller
         $penghuni = Penghuni::with('siswa')->where('kamar_id', $kamar->id)->get();
         $sisa_kuota_kamar = $kamar->jumlah_penghuni - $penghuni->count();
 
-        $siswas = Siswa::whereDoesntHave('penghuni')->where('jenis_kelamin', $kamar->jenis)->get();
+        $siswas = Siswa::whereDoesntHave('penghuni')
+            ->whereHas('tagihan', function ($q) {
+                $q->where('status', 2);
+            })
+            ->with(['tagihan' => function ($q) {
+                $q->where('status', 2);
+            }])
+            ->where('jenis_kelamin', $kamar->jenis)
+            ->get();
+
 
         if (auth()->user()->role_id == 2) {
             return view('pengurus.penghuni.show', compact('title', 'kamar', 'sisa_kuota_kamar', 'siswas', 'penghuni'));

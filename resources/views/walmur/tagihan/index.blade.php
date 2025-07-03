@@ -20,7 +20,8 @@
                             {{-- <th class="d-none">Jatuh Tempo</th> --}}
                             <th>Tagihan</th>
                             <th>Status Tagihan</th>
-                            <th>Aksi <br><small class="text-danger">Jika tagihan sudah dibayar tetapi nominal tagihan Rp0/Gratis maka kolom aksi ini akan kosong</small></th>
+                            <th>Aksi <br><small class="text-danger">Jika tagihan sudah dibayar tetapi nominal tagihan
+                                    Rp0/Gratis maka kolom aksi ini akan kosong</small></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,18 +42,32 @@
                                         <span class="badge badge-warning">Sudah Bayar</span>
                                     @elseif ($item->status == 2)
                                         <span class="badge badge-success">Dikonfirmasi Admin</span>
+                                    @elseif ($item->status == 3)
+                                        <span class="badge badge-danger">Pembayaran Ditolak</span>
+                                    @elseif ($item->status == 4)
+                                        <span class="badge badge-info">Bayar Ulang</span>
                                     @else
-                                        <span class="badge badge-danger">Belum Bayar</span>
+                                        <span class="badge badge-secondary">Belum Bayar</span>
+                                    @endif
+                                    @if ($item->alasan)
+                                        <span class="badge badge-danger">Alasan ditolak:
+                                            {{ $item->alasan }}</span><br>
                                     @endif
                                 </td>
                                 <td>
                                     @if ($item->status == 0)
                                         <a href="{{ route('walmur.tagihan.bayar', $item->id) }}"
                                             class="btn btn-primary">Bayar</a>
+                                    @elseif ($item->status == 3)
+                                        <a href="{{ route('walmur.tagihan.bayar', $item->id) }}"
+                                            class="btn btn-primary">Bayar</a>
                                     @else
                                         @if ($item->bukti_bayar)
                                             <a href="{{ asset('bukti_bayar/' . $item->bukti_bayar) }}" target="_blank"
                                                 class="btn btn-info">Lihat Foto</a>
+                                        @elseif ($item->transaction_status)
+                                            Bank: <span style="font-weight: bold; text-transform: uppercase">{{ $item->bank }}</span> <br>
+                                            VA: <span class="badge badge-info">{{ $item->va_number }}</span>
                                         @else
                                             -
                                         @endif

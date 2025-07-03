@@ -94,8 +94,10 @@
                     <h4>Tambah Siswa Ke Kamar</h4>
                 </div>
                 <div class="col-md-6 text-left">
-                    <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
-                            class="fa fa-save mr-2"></i>Simpan</button>
+                    @if ($sisa_kuota_kamar > 0)
+                        <button type="submit" class="btn btn-primary float-right" id="btn-save"><i
+                                class="fa fa-save mr-2"></i>Simpan</button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -106,7 +108,11 @@
                     <table class="table table-striped" id="table_siswa">
                         <thead>
                             <tr>
-                                <td><input type="checkbox" id="checkAll"></td>
+                                @if ($sisa_kuota_kamar > 0)
+                                    <td><input type="checkbox" id="checkAll"></td>
+                                @else
+                                    <td></td>
+                                @endif
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td></td>
@@ -115,7 +121,11 @@
                         <tbody>
                             @foreach ($siswas as $key => $siswa)
                                 <tr>
-                                    <td><input type="checkbox" id="check-{{ $key }}"></td>
+                                    @if ($sisa_kuota_kamar > 0)
+                                        <td><input type="checkbox" id="check-{{ $key }}"></td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                     <td>{{ $siswa->nama }}</td>
                                     <td>{{ $siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                     <td>{{ $siswa->id }}</td>
@@ -154,15 +164,17 @@
                 }]
             });
 
-            table.on('click', 'tbody tr', function(e) {
-                e.currentTarget.classList.toggle('selected');
+            @if ($sisa_kuota_kamar > 0)
+                table.on('click', 'tbody tr', function(e) {
+                    e.currentTarget.classList.toggle('selected');
 
-                if ($(this).hasClass('selected')) {
-                    $(this).find('[type="checkbox"]').prop('checked', true);
-                } else {
-                    $(this).find('[type="checkbox"]').prop('checked', false);
-                }
-            });
+                    if ($(this).hasClass('selected')) {
+                        $(this).find('[type="checkbox"]').prop('checked', true);
+                    } else {
+                        $(this).find('[type="checkbox"]').prop('checked', false);
+                    }
+                });
+            @endif
 
             table_list_siswa.on('click', 'tbody tr', function(e) {
                 e.currentTarget.classList.toggle('selected');

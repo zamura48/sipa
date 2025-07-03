@@ -1,104 +1,64 @@
-@extends('template.admin')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="m-0 font-weight-bold text-primary">Tambah Data {{ $title }}</h6>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form action="{{ route('walmur.tagihan.upload_bayar', $data->id) }}" enctype="multipart/form-data" method="POST">
-                @csrf
-                <div class="row">
-                    <div class="col-md-12 mb-3 border-bottom">
-                        <table class="table">
-                            <tr>
-                                <td style="width: 250px">NIS</td>
-                                <td style="width: 20px">:</td>
-                                <td>{{ $data->siswa->nis }}</td>
-                            </tr>
-                            <tr>
-                                <td>Nama Siswa</td>
-                                <td>:</td>
-                                <td>{{ $data->siswa->nama }}</td>
-                            </tr>
-                            <tr>
-                                <td>Jenis Iuran</td>
-                                <td>:</td>
-                                <td>{{ $data->iuran->nama }}</td>
-                            </tr>
-                            <tr>
-                                <td>Nominal Pembayaran</td>
-                                <td>:</td>
-                                <td>Rp{{ format_currency($data->total_semua) }}
-                                    {{ $data->total_semua == 0 ? '(Gratis)' : '' }} <br>
-                                    Silakan lakukan pembayaran ke salah satu rekening berikut: <br>
-                                    1. BCA <br>
-                                    No. Rekening: 1234567890 <br>
-                                    Atas Nama: Setiawan <br>
-                                    2. BRI <br>
-                                    No. Rekening: 1234567890 <br>
-                                    Atas Nama: Setiawan <br>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-md-12 mb-3 d-none">
-                        <label for="nama" class="form-label">Nominal Bayar</label>
-                        <input type="text" class="form-control @error('nama') is-invalid @enderror"
-                            placeholder="Masukkan nama..." id="nama" name="nama" value="{{ old('nama') }}">
-                        @if ($errors->has('nama'))
-                            <div class="invalid-feedback">{{ $errors->first('nama') }}</div>
-                        @endif
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="foto" class="form-label">Bukti Bayar <br><small class="text-danger">Catatan: jika
-                                nominal pembayaran Rp0/Gratis bisa langsung klik tombol simpan.</small></label>
-                        <input type="file" class="form-control-file @error('foto') is-invalid @enderror"
-                            placeholder="Masukkan foto ..." id="foto" name="foto" value="{{ old('foto') }}"
-                            accept=".jpg,.jpeg,.png">
-                        @if ($errors->has('foto'))
-                            <div class="invalid-feedback">{{ $errors->first('foto') }}</div>
-                        @endif
-                    </div>
-                </div>
-                <div id="ext_input_keringanan"></div>
-                <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save mr-2"></i>Simpan</button>
-                <a href="{{ route('walmur.tagihan.index') }}" class="btn btn-secondary mr-2 float-right"><i
-                        class="fa fa-arrow-left mr-2"></i>Kembali</a>
-            </form>
-        </div>
-    </div>
-@endsection
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pembayaran</title>
+</head>
 
-@push('js')
-    <script>
-        $(document).ready(function() {});
+<body>
+    <form action="{{ '/midtrans/callback' }}" method="POST" id="form-success">
+        @csrf
+        <input type="hidden" name="id" id="id" value="{{ $data->id }}">
+        <input type="hidden" name="bank" id="bank">
+        <input type="hidden" name="pdf" id="pdf">
+        <input type="hidden" name="payment_type" id="payment_type">
+        <input type="hidden" name="transaction_id" id="transaction_id">
+        <input type="hidden" name="va_number" id="va_number">
+        <input type="hidden" name="transaction_status" id="transaction_status">
+    </form>
+    <script src="<?= asset('assets/lib/sb_admin') ?>/vendor/jquery/jquery.min.js"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
+    <script type="text/javascript">
+        window.snap.pay('{{ $snapToken }}', {
+            onSuccess: function(result) {
+                $("#bank").val(result['va_numbers'][0]['bank']);
+                $("#va_number").val(result['va_numbers'][0]['va_number']);
+                $("#pdf").val(result.pdf_url);
+                $("#payment_type").val(result.payment_type);
+                $("#transaction_id").val(result.transaction_id);
+                $("#transaction_status").val(result.transaction_status);
 
-        $('.btn_add_ext').click(function(e) {
-            e.preventDefault();
-            let clone_element = $(this).parent().parent().clone();
+                $("#form-success").submit();
 
-            clone_element.find('.btn_add_ext').parent().find('small').remove();
-            clone_element.find('.btn_add_ext').removeClass('btn_add_ext btn-info').addClass(
-                'btn_remove_ext btn-danger').html('<i class="fa fa-minus"></i> Hapus Keringanan');
-            $("#ext_input_keringanan").append(clone_element);
-        });
+                alert("Pembayaran berhasil!");
+                // kirim data ke backend jika perlu
+            },
+            onPending: function(result) {
+                console.log('pending', result);
 
-        $(document).on('click', '.btn_remove_ext', function() {
-            $(this).parent().parent().remove();
+                $("#bank").val(result['va_numbers'][0]['bank']);
+                $("#va_number").val(result['va_numbers'][0]['va_number']);
+                $("#pdf").val(result.pdf_url);
+                $("#payment_type").val(result.payment_type);
+                $("#transaction_id").val(result.transaction_id);
+                $("#transaction_status").val(result.transaction_status);
+
+                alert("Menunggu pembayaran...");
+            },
+            onError: function(result) {
+                alert("Pembayaran gagal.");
+            },
+            onClose: function() {
+                alert('Kamu menutup jendela pembayaran!');
+                window.location.href = '{{ route('walmur.tagihan.index') }}';
+                // Aksi lain jika perlu: redirect, tampilkan pesan, dll.
+            }
         });
     </script>
-@endpush
+</body>
+
+</html>

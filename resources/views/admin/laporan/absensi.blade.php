@@ -8,10 +8,29 @@
                     <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h6>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <span class="text-danger">Pilih Tanggal Terlebih Dahulu</span>
-                        <input type="date" name="tanggal" id="tanggal" class="form-control" placeholder="Pilih Tanggal"
-                            value="{{ $tanggal ?? '' }}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="text-danger">Pilih Filter Terlebih Dahulu</span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Siswa</label>
+                            <select name="siswa" id="siswa" class="form-control js-select2">
+                                <option value="">-- Pilih Siswa --</option>
+                                @foreach ($siswas as $item)
+                                    <option value="{{ $item->id }}" {{ $g_siswa == $item->id ? 'selected' : '' }}>{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 d-flex">
+                            <div class="form-group">
+                                <label for="">Tanggal</label>
+                                <input type="date" name="tanggal" id="tanggal" class="form-control"
+                                    placeholder="Pilih Tanggal" value="{{ $tanggal ?? '' }}">
+                            </div>
+                            <div class="mt-4">
+                                <button class="btn btn-warning btn-sm mt-3 ml-3" id="clear_tanggal">Kosongkan Tanggal</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -45,7 +64,8 @@
                                             <span class="badge badge-warning">Alpha</span>
                                         @endif
                                         @if ($item->absensi->izin == 1)
-                                            <span class="badge badge-secondary">Izin</span>
+                                            <span class="badge badge-secondary">Izin</span><br>
+                                            Alasan izin: {{ $item->absensi->alasan }}
                                         @endif
                                         @if ($item->absensi->masuk == 1)
                                             <span class="badge badge-success">Masuk</span>
@@ -103,7 +123,24 @@
 
             $("#tanggal").change(function(e) {
                 e.preventDefault();
-                window.location.href = "{{ url()->current() }}?tanggal=" + $(this).val();
+                let siswa = $("#siswa").val();
+                window.location.href = "{{ url()->current() }}?tanggal=" + $(this).val() + '&siswa=' + siswa;
+            });
+
+            $("#siswa").change(function(e) {
+                e.preventDefault();
+                let tanggal = $("#tanggal").val();
+                window.location.href = "{{ url()->current() }}?tanggal=" + tanggal + '&siswa=' + $(this).val();
+            });
+
+            $("#clear_tanggal").click(function (e) {
+                e.preventDefault();
+                $("#tanggal").val('');
+
+                let tanggal = $("#tanggal").val();
+                let siswa = $("#siswa").val();
+
+                window.location.href = "{{ url()->current() }}?tanggal=" + tanggal + '&siswa=' + siswa;
             });
         });
 
