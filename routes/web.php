@@ -10,6 +10,7 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KeringananController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LaporanAbsensi;
+use App\Http\Controllers\LaporanKeuangan;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PelanggaranController;
@@ -112,6 +113,7 @@ Route::middleware('admin')->name('admin.')->prefix('admin')->group(function () {
 
     Route::prefix('laporan')->name('laporan.')->group(function () {
         Route::get('absensi', [LaporanAbsensi::class, 'index'])->name('absensi.index');
+        Route::get('keuangan', [LaporanKeuangan::class, 'index'])->name('keuangan.index');
     });
 });
 

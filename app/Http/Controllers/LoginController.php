@@ -71,10 +71,13 @@ class LoginController extends Controller
         $title = 'Login';
 
         $periode = Periode::where('tgl_mulai', '<=', date('Y-m-d'))
-            ->where('tgl_akhir', '>=', date('Y-m-d'))->where('status', 1)->first();
+            ->where('tgl_akhir', '>=', date('Y-m-d'))->orWhere('status', 1)->first();
         $can_regis = empty($periode) ? false : true;
 
-        return view('walmur.login.index', compact('title', 'can_regis'));
+        $total_pendaftar = Pendaftaran::where('periode_id', $periode->id)->count();
+        $cek_kuota = $total_pendaftar > $periode->kapasitas ? false : true;
+
+        return view('walmur.login.index', compact('title', 'can_regis', 'cek_kuota'));
     }
 
     public function wali_murid_regis()
@@ -120,6 +123,11 @@ class LoginController extends Controller
 
         if (empty($periode)) {
             return redirect()->route('walmur.regis')->with('error', 'Pendaftaran Belum Dibuka.');
+        }
+
+        $total_pendaftar = Pendaftaran::where('periode_id', $periode->id)->count();
+        if ($total_pendaftar > $periode->kapasitas) {
+            return redirect()->route('walmur.regis')->with('error', 'Mohon maaf pendaftaran sudah penuh.');
         }
 
         $data_insert_siswa = [

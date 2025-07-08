@@ -11,5 +11,5 @@ class Periode extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "periodes";
-    protected $fillable = ['tgl_mulai', 'tgl_akhir', 'nama', 'status'];
+    protected $fillable = ['tgl_mulai', 'tgl_akhir', 'nama', 'status', 'kapasitas'];
 }

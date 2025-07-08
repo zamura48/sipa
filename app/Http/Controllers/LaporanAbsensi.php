@@ -11,26 +11,24 @@ class LaporanAbsensi extends Controller
 {
     public function index(Request $request)
     {
-        $tanggal = $request->get('tanggal');
+        $tanggal_awal = $request->get('tanggal_awal');
+        $tanggal_akhir = $request->get('tanggal_akhir');
         $g_siswa = $request->get('siswa') ?? 0;
 
         $title = 'Laporan Absensi';
-        $tanggalHariIni =  $tanggal ? $tanggal : '';
-        $hari = date('l', strtotime($tanggalHariIni));
-        $hariIndo = nama_hari_indo($hari);
         $data = [];
         $wali_murid = auth()->user()->wali_murid_id;
 
         $siswas = Siswa::all();
 
-        if ($tanggal || $g_siswa) {
+        if (($tanggal_awal && $tanggal_akhir) || $g_siswa) {
             $data = JadwalBySiswa::with([
                 'absensi',
                 'jadwal',
                 'siswa',
-            ])->whereHas('jadwal', function ($q) use ($tanggalHariIni) {
-                if ($tanggalHariIni) {
-                    $q->whereRaw('DATE(tanggal) = ?', $tanggalHariIni);
+            ])->whereHas('jadwal', function ($q) use ($tanggal_awal, $tanggal_akhir) {
+                if ($tanggal_awal) {
+                    $q->whereBetween('tanggal', [$tanggal_awal, $tanggal_akhir]);
                 }
             })->whereHas('siswa', function ($query) use ($wali_murid, $g_siswa) {
                 if ($wali_murid) {
@@ -44,9 +42,9 @@ class LaporanAbsensi extends Controller
         $weekday = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
         if (auth()->user()->role_id != 3) {
-            return view('admin.laporan.absensi', compact('title', 'data', 'weekday', 'tanggal', 'siswas', 'g_siswa'));
+            return view('admin.laporan.absensi', compact('title', 'data', 'weekday', 'tanggal_awal', 'tanggal_akhir', 'siswas', 'g_siswa'));
         } else {
-            return view('walmur.laporan.absensi', compact('title', 'data', 'weekday', 'tanggal'));
+            return view('walmur.laporan.absensi', compact('title', 'data', 'weekday', 'tanggal_awal', 'tanggal_akhir'));
         }
     }
 }

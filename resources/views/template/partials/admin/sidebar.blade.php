@@ -160,6 +160,11 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Laporan Absensi</span></a>
         </li>
+        <li class="nav-item {{ $sub_modul == 'laporan/keuangan' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.laporan.keuangan.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Laporan Keuangan</span></a>
+        </li>
     @endif
 
     @if (auth()->user()->role_id == 2)

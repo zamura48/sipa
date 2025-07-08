@@ -51,10 +51,19 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="tgl_akhir" class="form-label">Tanggal Akhir</label>
-                        <input type="text" class="form-control @error('tgl_akhir') is-invalid @enderror"
+                        <input type="text" class="form-control js-datepicker @error('tgl_akhir') is-invalid @enderror"
                             placeholder="Masukkan tanggal akhir..." id="tgl_akhir" name="tgl_akhir"
                             value="{{ old('tgl_akhir', format_date_w_bs($periode->tgl_akhir)) }}" readonly>
                         @error('tgl_akhir')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="kapasitas" class="form-label">Kapasitas</label>
+                        <input type="number" class="form-control @error('kapasitas') is-invalid @enderror"
+                            placeholder="Masukkan kapasitas..." id="kapasitas" name="kapasitas"
+                            value="{{ old('kapasitas', $periode->kapasitas) }}" readonly>
+                        @error('kapasitas')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

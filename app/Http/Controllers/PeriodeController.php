@@ -91,12 +91,14 @@ class PeriodeController extends Controller
 
         $tgl_mulai = format_date($request->input('tgl_mulai'));
         $tgl_akhir = format_date($request->input('tgl_akhir'));
+        $kapasitas = $request->input('kapasitas');
         $request->merge(['tgl_mulai' => $tgl_mulai, 'tgl_akhir' => $tgl_akhir]);
 
         $data = $request->except('status');
         $data['nama'] = $request->post('nama');
         $data['tgl_mulai'] = $tgl_mulai;
         $data['tgl_akhir'] = $tgl_akhir;
+        $data['kapasitas'] = $kapasitas;
 
         if ($request->post('status') == 1) {
             // Reset semua status ke 0

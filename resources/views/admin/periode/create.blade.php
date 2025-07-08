@@ -56,6 +56,15 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="kapasitas" class="form-label">Kapasitas</label>
+                        <input type="number" class="form-control @error('kapasitas') is-invalid @enderror"
+                            placeholder="Masukkan kapasitas..." id="kapasitas" name="kapasitas"
+                            value="{{ old('kapasitas') }}">
+                        @error('kapasitas')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save mr-2"></i>Simpan</button>
                 <a href="{{ route('admin.periode.index') }}" class="btn btn-secondary mr-2 float-right"><i

@@ -7,7 +7,7 @@
                 <div class="col-md-6 mb-3">
                     <h5 class="m-0 font-weight-bold text-primary">Daftar Data {{ $title }}</h6>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
                             <span class="text-danger">Pilih Filter Terlebih Dahulu</span>
@@ -17,18 +17,25 @@
                             <select name="siswa" id="siswa" class="form-control js-select2">
                                 <option value="">-- Pilih Siswa --</option>
                                 @foreach ($siswas as $item)
-                                    <option value="{{ $item->id }}" {{ $g_siswa == $item->id ? 'selected' : '' }}>{{ $item->nama }}</option>
+                                    <option value="{{ $item->id }}" {{ $g_siswa == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 d-flex">
                             <div class="form-group">
-                                <label for="">Tanggal</label>
-                                <input type="date" name="tanggal" id="tanggal" class="form-control"
-                                    placeholder="Pilih Tanggal" value="{{ $tanggal ?? '' }}">
+                                <label for="">Tanggal Awal</label>
+                                <input type="date" name="tanggal_awal" id="tanggal_awal" class="form-control"
+                                    placeholder="Pilih Tanggal" value="{{ $tanggal_awal ?? '' }}">
+                            </div>
+                            <div class="form-group ml-3">
+                                <label for="">Tanggal Akhir</label>
+                                <input type="date" name="tanggal_akhir" id="tanggal_akhir" class="form-control"
+                                    placeholder="Pilih Tanggal" value="{{ $tanggal_akhir ?? '' }}">
                             </div>
                             <div class="mt-4">
-                                <button class="btn btn-warning btn-sm mt-3 ml-3" id="clear_tanggal">Kosongkan Tanggal</button>
+                                <button class="btn btn-success btn-sm mt-3 ml-3" id="cari_data">Cari</button>
+                                <button class="btn btn-warning btn-sm mt-3 ml-3" id="clear_tanggal">Clear</button>
                             </div>
                         </div>
                     </div>
@@ -36,6 +43,58 @@
             </div>
         </div>
         <div class="card-body">
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Alpha</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"> <span id="total_absen"></span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Izin</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"> <span id="total_izin"></span></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Masuk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"> <span id="total_masuk"></span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table id="data_table" class="table table-striped mt-4">
                     <thead>
@@ -48,6 +107,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $absen = 0;
+                            $izin = 0;
+                            $masuk = 0;
+                        @endphp
                         @foreach ($data as $item)
                             @php
                                 $tanggal = $item->absensi ? $item->absensi->tanggal : '-';
@@ -72,6 +136,20 @@
                                         @endif
                                     @endif
                                 </td>
+                                @php
+                                    if ($item->absensi) {
+                                        $absen += $item->absensi->absen;
+                                        $izin += $item->absensi->izin;
+                                        $masuk += $item->absensi->masuk;
+                                    }
+                                @endphp
+                                @if ($loop->last)
+                                    <script>
+                                        document.getElementById("total_absen").innerText = '{{ $absen }}';
+                                        document.getElementById("total_izin").innerText = '{{ $izin }}';
+                                        document.getElementById("total_masuk").innerText = '{{ $masuk }}';
+                                    </script>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -121,26 +199,25 @@
                 }
             });
 
-            $("#tanggal").change(function(e) {
+            $("#cari_data").click(function(e) {
                 e.preventDefault();
+                let tanggal_awal = $("#tanggal_awal").val();
+                let tanggal_akhir = $("#tanggal_akhir").val();
                 let siswa = $("#siswa").val();
-                window.location.href = "{{ url()->current() }}?tanggal=" + $(this).val() + '&siswa=' + siswa;
+                window.location.href = "{{ url()->current() }}?tanggal_awal=" + tanggal_awal +
+                    "&tanggal_akhir=" + tanggal_akhir + "&siswa=" +
+                    siswa;
             });
 
-            $("#siswa").change(function(e) {
+            $("#clear_tanggal").click(function(e) {
                 e.preventDefault();
-                let tanggal = $("#tanggal").val();
-                window.location.href = "{{ url()->current() }}?tanggal=" + tanggal + '&siswa=' + $(this).val();
-            });
+                let tanggal_awal = $("#tanggal_awal").val('');
+                let tanggal_akhir = $("#tanggal_akhir").val('');
+                let siswa = $("#siswa").val('');
 
-            $("#clear_tanggal").click(function (e) {
-                e.preventDefault();
-                $("#tanggal").val('');
-
-                let tanggal = $("#tanggal").val();
-                let siswa = $("#siswa").val();
-
-                window.location.href = "{{ url()->current() }}?tanggal=" + tanggal + '&siswa=' + siswa;
+                window.location.href = "{{ url()->current() }}?tanggal_awal=" + tanggal_awal +
+                    "&tanggal_akhir=" + tanggal_akhir + "&siswa=" +
+                    siswa;
             });
         });
 

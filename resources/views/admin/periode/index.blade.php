@@ -24,6 +24,7 @@
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Akhir</th>
                             <th>Status</th>
+                            <th>Kapasitas</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -37,6 +38,7 @@
                                 <td>{!! $item->status
                                     ? '<span class="badge badge-success">Aktif</span>'
                                     : '<span class="badge badge-danger">Tidak Aktif</span>' !!}</td>
+                                <td>{{ $item->kapasitas ?? '-' }}</td>
                                 <td>
                                     <a href="{{ route('admin.periode.show', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fa fa-info mr-2"></i> Detail
