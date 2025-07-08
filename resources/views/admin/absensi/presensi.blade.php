@@ -50,7 +50,7 @@
                                             {{ $item->absensi ? ($item->absensi->izin == 1 ? 'checked' : '') : '' }}
                                             value="2">
                                         <textarea name="alasan_{{ $item->id }}" id="alasan{{ $item->id }}" cols="10" rows="2"
-                                            class="form-control alasan_absen">{{ $item->absensi->alasan }}</textarea>
+                                            class="form-control alasan_absen">{{ $item->absensi ? $item->absensi->alasan : '-' }}</textarea>
                                     </td>
                                     <td><input type="radio" name="absensi_{{ $item->id }}" class="check-absen"
                                             id="check-sakit-{{ $key }}" data-id="{{ $item->id }}"

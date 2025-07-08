@@ -62,7 +62,7 @@ class AbsensiController extends Controller
                     'absen' => $value == 1 ? 1 : 0,  // Jika absen, set 'absen' = 1, jika tidak = 0
                     'izin' => $value == 2 ? 1 : 0,    // Jika izin, set 'izin' = 1, jika tidak = 0
                     'masuk' => $value == 3 ? 1 : 0,   // Jika masuk, set 'masuk' = 1, jika tidak = 0
-                    'alasan' => $value == 2 ? $alasan_absen[$key] : ''
+                    'alasan' => $value == 2 ? $alasan_absen[$key] : '-'
                 ]
             );
         }
