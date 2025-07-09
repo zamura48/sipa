@@ -194,8 +194,7 @@
                 let tanggal_akhir = $("#tanggal_akhir").val();
                 let siswa = $("#siswa").val();
                 window.location.href = "{{ url()->current() }}?tanggal_awal=" + tanggal_awal +
-                    "&tanggal_akhir=" + tanggal_akhir + "&siswa=" +
-                    siswa;
+                    "&tanggal_akhir=" + tanggal_akhir;
             });
 
             $("#clear_tanggal").click(function(e) {
@@ -205,8 +204,7 @@
                 let siswa = $("#siswa").val('');
 
                 window.location.href = "{{ url()->current() }}?tanggal_awal=" + tanggal_awal +
-                    "&tanggal_akhir=" + tanggal_akhir + "&siswa=" +
-                    siswa;
+                    "&tanggal_akhir=" + tanggal_akhir;
             });
         });
 

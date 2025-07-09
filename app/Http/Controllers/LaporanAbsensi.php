@@ -13,7 +13,7 @@ class LaporanAbsensi extends Controller
     {
         $tanggal_awal = $request->get('tanggal_awal');
         $tanggal_akhir = $request->get('tanggal_akhir');
-        $g_siswa = $request->get('siswa') ?? 0;
+        $g_siswa = $request->get('siswa');
 
         $title = 'Laporan Absensi';
         $data = [];
