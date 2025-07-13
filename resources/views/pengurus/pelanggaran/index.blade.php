@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('pengurus.pelanggaran.store') }}" method="POST">
+            <form action="{{ route('pengurus.pelanggaran.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="id" id="id">
                 <div class="row">
@@ -43,7 +43,16 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="foto">Foto Pelanggaran</label> <br>
+                            <input type="file" name="foto" id="foto">
+                            @if ($errors->has('foto'))
+                                <div class="invalid-feedback">{{ $errors->first('foto') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label for="catatan">Catatan</label>
                             <textarea name="catatan" id="catatan" class="form-control" cols="30" rows="5">{{ old('catatan') }}</textarea>
@@ -77,6 +86,7 @@
                             <th>Siswa</th>
                             <th>Kategori</th>
                             <th>Catatan</th>
+                            <th>Foto Pelanggaran</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -103,6 +113,14 @@
                                 @endphp
                                 <td>{{ $kategori }}</td>
                                 <td>{{ $item->catatan }}</td>
+                                <td>
+                                    @if ($item->foto)
+                                        <a href="{{ asset('foto/' . $item->foto) }}" target="_blank"><img
+                                                src="{{ asset('foto/' . $item->foto) }}" alt="" width="50"></a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>
                                     <button class="btn btn-warning btn-sm btn-ubah" data-id="{{ $item->id }}" data-siswa="{{ $item->siswa_id }}" data-catatan="{{ $item->catatan }}" data-kategori="{{ $item->kategori }}">
                                         <i class="fa fa-info mr-2"></i> Ubah

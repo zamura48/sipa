@@ -12,12 +12,22 @@
                         <div class="col-md-12">
                             <span class="text-danger">Pilih Filter Terlebih Dahulu</span>
                         </div>
-                        <div class="col-md-6">
-                            <label for="">Siswa</label>
+                        <div class="col-md-3">
+                            <label for="siswa">Siswa</label>
                             <select name="siswa" id="siswa" class="form-control js-select2">
-                                <option value="">-- Pilih Siswa --</option>
+                                <option value="">Tampilkan Semua</option>
                                 @foreach ($siswas as $item)
                                     <option value="{{ $item->id }}" {{ $g_siswa == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="jadwal">Jadwal</label>
+                            <select name="jadwal" id="jadwal" class="form-control js-select2">
+                                <option value="">Tampilkan Semua</option>
+                                @foreach ($jadwals as $item)
+                                    <option value="{{ $item->id }}" {{ $p_jadwal == $item->id ? 'selected' : '' }}>
                                         {{ $item->nama }}</option>
                                 @endforeach
                             </select>
@@ -203,10 +213,10 @@
                 e.preventDefault();
                 let tanggal_awal = $("#tanggal_awal").val();
                 let tanggal_akhir = $("#tanggal_akhir").val();
+                let jadwal = $("#jadwal").val();
                 let siswa = $("#siswa").val();
                 window.location.href = "{{ url()->current() }}?tanggal_awal=" + tanggal_awal +
-                    "&tanggal_akhir=" + tanggal_akhir + "&siswa=" +
-                    siswa;
+                    "&tanggal_akhir=" + tanggal_akhir + "&siswa=" + siswa + "&jadwal=" + jadwal;
             });
 
             $("#clear_tanggal").click(function(e) {

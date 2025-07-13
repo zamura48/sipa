@@ -18,6 +18,7 @@
                             <th>Nama </th>
                             <th>Kategori Pelanggaran</th>
                             <th>Catatan</th>
+                            <th>Foto Pelanggaran</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,6 +44,14 @@
                                 @endphp
                                 <td>{{ $kategori }}</td>
                                 <td>{{ $item->catatan }}</td>
+                                <td>
+                                    @if ($item->foto)
+                                        <a href="{{ asset('foto/' . $item->foto) }}" target="_blank"><img
+                                                src="{{ asset('foto/' . $item->foto) }}" alt="" width="50"></a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

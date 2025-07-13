@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card shadow mb-4">
-        <div class="card-header">
+        <div class="card-header" id="card-form">
             <div class="row">
                 <div class="col-md-8">
                     <h5 class="m-0 font-weight-bold text-primary" id="card-name">Tambah Siswa Pelanggaran</h5>
@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.pelanggaran.store') }}" method="POST">
+            <form action="{{ route('admin.pelanggaran.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="id" id="id">
                 <div class="row">
@@ -43,12 +43,21 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="foto">Foto Pelanggaran</label> <br>
+                            <input type="file" name="foto" id="foto">
+                            @if ($errors->has('foto'))
+                                <div class="invalid-feedback">{{ $errors->first('foto') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label for="catatan">Catatan</label>
                             <textarea name="catatan" id="catatan" class="form-control" cols="30" rows="5">{{ old('catatan') }}</textarea>
                             @if ($errors->has('catatan'))
-                                <div class="invalid-feedback">{{ $errors->first('kategori') }}</div>
+                                <div class="invalid-feedback">{{ $errors->first('catatan') }}</div>
                             @endif
                         </div>
                     </div>
@@ -77,6 +86,7 @@
                             <th>Siswa</th>
                             <th>Kategori</th>
                             <th>Catatan</th>
+                            <th>Foto Pelanggaran</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -104,7 +114,17 @@
                                 <td>{{ $kategori }}</td>
                                 <td>{{ $item->catatan }}</td>
                                 <td>
-                                    <button class="btn btn-warning btn-sm btn-ubah" data-id="{{ $item->id }}" data-siswa="{{ $item->siswa_id }}" data-catatan="{{ $item->catatan }}" data-kategori="{{ $item->kategori }}">
+                                    @if ($item->foto)
+                                        <a href="{{ asset('foto/' . $item->foto) }}" target="_blank"><img
+                                                src="{{ asset('foto/' . $item->foto) }}" alt="" width="50"></a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm btn-ubah" data-id="{{ $item->id }}"
+                                        data-siswa="{{ $item->siswa_id }}" data-catatan="{{ $item->catatan }}"
+                                        data-kategori="{{ $item->kategori }}">
                                         <i class="fa fa-info mr-2"></i> Ubah
                                     </button>
                                     <form action="{{ route('admin.pelanggaran.destroy', $item->id) }}" method="POST"
@@ -152,7 +172,7 @@
             });
         }
 
-        $(".btn-ubah").click(function (e) {
+        $(".btn-ubah").click(function(e) {
             e.preventDefault();
             let this_id = $(this).data('id');
             let this_siswa = $(this).data('siswa');
@@ -165,6 +185,8 @@
             $("#catatan").val(this_catatan);
 
             $("#card-name").text("Ubah Siswa Pelanggaran");
+
+            window.location.href = "#card-form";
         });
     </script>
 @endpush

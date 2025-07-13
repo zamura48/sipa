@@ -65,6 +65,17 @@ class PelanggaranController extends Controller
             'catatan' => $request->post('catatan'),
         ];
 
+        $file = $request->file('foto');
+        if ($file) {
+            $request->validate([
+                'foto' => 'file|mimes:jpeg,png,jpg|mimetypes:image/jpeg,image/png'
+            ]);
+            $file_name = time() . '.' . $file->getClientOriginalExtension();
+            $file_save = 'foto';
+            $file->move($file_save, $file_name);
+            $data_array['foto'] = $file_name;
+        }
+
         if ($id) {
             Pelanggaran::where('id', $id)->update($data_array);
         } else {
@@ -73,10 +84,25 @@ class PelanggaranController extends Controller
 
         $get_data = Siswa::with('ortu')->where('id', $siswa)->first();
 
-        $text_wa = "Siswa dengan nama {$get_data->nama} telah mendapatkan pelanggaran $kategori dengan alasan sebagai berikut:
+        $label_kategori = '';
+        switch ($kategori) {
+            case 1:
+                $kategori = 'Ringan';
+                break;
+            case 2:
+                $kategori = 'Sedang';
+                break;
+            case 3:
+                $kategori = 'Berat';
+                break;
+            default:
+                break;
+        }
+
+        $text_wa = "Siswa dengan nama {$get_data->nama} telah mendapatkan pelanggaran $label_kategori dengan alasan sebagai berikut:
             \n$catatan
             \n\nTerimakasih";
-        send_wa($get_data->ortu->telepon, $text_wa);
+        // send_wa($get_data->ortu->telepon, $text_wa);
 
         $role = 'admin';
         if (auth()->user()->role_id == 2) {
@@ -120,6 +146,6 @@ class PelanggaranController extends Controller
         if (auth()->user()->role_id == 2) {
             $role = 'pengurus';
         }
-        return redirect()->route($role.'.pelanggaran.index')->with('success', 'Data berhasil diihapus!');
+        return redirect()->route($role . '.pelanggaran.index')->with('success', 'Data berhasil diihapus!');
     }
 }
