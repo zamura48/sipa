@@ -102,7 +102,7 @@ class PelanggaranController extends Controller
         $text_wa = "Siswa dengan nama {$get_data->nama} telah mendapatkan pelanggaran $label_kategori dengan alasan sebagai berikut:
             \n$catatan
             \n\nTerimakasih";
-        // send_wa($get_data->ortu->telepon, $text_wa);
+        send_wa($get_data->ortu->telepon, $text_wa);
 
         $role = 'admin';
         if (auth()->user()->role_id == 2) {
